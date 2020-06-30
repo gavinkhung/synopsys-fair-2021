@@ -64,7 +64,7 @@ class _profile extends State<profile> {
         lat.toString() +
         '&lon=' +
         long.toString() +
-        '&appid=b8e57c2f739e789baa6832069b18933b&units=metric';
+        '&appid=37795b488cf66ea843c7a1c2aadf149e&units=metric';
     var request = await http.get(path);
     return json.decode(request.body);
   }
@@ -111,6 +111,7 @@ class _profile extends State<profile> {
                           );
                         } else if (value.hasData) {
                           weather = value.data;
+
                           if (weather != null) {
                             temp = weather['main']['temp'].round().toString();
                             minTemp =
@@ -583,13 +584,13 @@ class _profile extends State<profile> {
                             )
                           ],
                         ),
-                        // FlatButton.icon(
-                        //   icon: Icon(Icons.flip),
-                        //   label: Text("Sign Out"),
-                        //   onPressed: () async {
-                        //     await _signOut();
-                        //   },
-                        // ),
+                        FlatButton.icon(
+                          icon: Icon(Icons.flip),
+                          label: Text("Sign Out"),
+                          onPressed: () async {
+                            await _signOut();
+                          },
+                        ),
                       ],
                     ),
                     buildWeatherCard(context),
