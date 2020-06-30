@@ -42,7 +42,6 @@ dependencies:
   auto_size_text: ^2.1.0
   curved_navigation_bar: ^0.3.1
   country_code_picker: ^1.3.14
-  percent_indicator: ^2.1.1
   google_maps_flutter: 0.5.28+1
   permission_handler: ^3.1.0
   dots_indicator: ^1.1.0
@@ -75,6 +74,7 @@ flutter:
     - images/lpdlogonobg.png
     - data/en.json
     - data/hi.json
+    - data/keys.json
     # data/diseases.json
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -14,6 +14,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
 
 class profile extends StatefulWidget {
   String _username = "";
@@ -59,12 +60,16 @@ class _profile extends State<profile> {
     List<String> location = fb.data['location'].toString().split(" ");
     lat = location[0];
     long = location[1];
-
+    String apiKey = await rootBundle.loadString("data/keys.json");
+    String weatherKey = jsonDecode(apiKey)["weather"];
     String path = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
         lat.toString() +
         '&lon=' +
         long.toString() +
-        '&appid=37795b488cf66ea843c7a1c2aadf149e&units=metric';
+        '&appid=' +
+        weatherKey +
+        '&units=metric';
+    print(path);
     var request = await http.get(path);
     return json.decode(request.body);
   }
