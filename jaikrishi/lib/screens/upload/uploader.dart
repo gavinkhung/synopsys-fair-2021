@@ -59,6 +59,7 @@ class _UploaderState extends State<Uploader> {
     if (user != null) {
       var request = http.MultipartRequest('POST', Uri.parse(url));
       request.fields['uid'] = widget.phone;
+      request.headers["Content-Type"] = "multipart/form-data";
       request.files.add(await http.MultipartFile.fromPath('image', path));
       var res = await request.send();
       var response = await res.stream.bytesToString();

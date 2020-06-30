@@ -69,7 +69,6 @@ class _profile extends State<profile> {
         '&appid=' +
         weatherKey +
         '&units=metric';
-    print(path);
     var request = await http.get(path);
     return json.decode(request.body);
   }
