@@ -112,7 +112,9 @@ class History extends StatefulWidget {
                             " " +
                             step2 +
                             " " +
-                            step3,
+                            step3 +
+                            DemoLocalizations.of(context).vals["FirstPage"]
+                                ["9"],
                         sharePositionOrigin:
                             box.localToGlobal(Offset.zero) & box.size);
                   },
@@ -173,7 +175,9 @@ class History extends StatefulWidget {
                                             .vals["History"]["warns"] +
                                         tp +
                                         DemoLocalizations.of(context)
-                                            .vals["History"]["warningDisease"],
+                                            .vals["History"]["warningDisease"] +
+                                        DemoLocalizations.of(context)
+                                            .vals["FirstPage"]["9"],
                                     sharePositionOrigin:
                                         box.localToGlobal(Offset.zero) &
                                             box.size);

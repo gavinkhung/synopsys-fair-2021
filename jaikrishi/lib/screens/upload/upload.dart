@@ -162,7 +162,7 @@ class _Upload extends State<Upload> {
                                               DemoLocalizations.of(context)
                                                       .vals["DiseaseDetection"]
                                                   ["9"] +
-                                              " www.jaikrishi.com",
+                                              " https://play.google.com/store/apps/details?id=com.jaikrishi.appjaikrishi",
                                           sharePositionOrigin:
                                               box.localToGlobal(Offset.zero) &
                                                   box.size);

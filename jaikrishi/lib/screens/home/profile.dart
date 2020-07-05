@@ -588,13 +588,13 @@ class _profile extends State<profile> {
                             )
                           ],
                         ),
-                        FlatButton.icon(
-                          icon: Icon(Icons.flip),
-                          label: Text("Sign Out"),
-                          onPressed: () async {
-                            await _signOut();
-                          },
-                        ),
+                        // FlatButton.icon(
+                        //   icon: Icon(Icons.flip),
+                        //   label: Text("Sign Out"),
+                        //   onPressed: () async {
+                        //     await _signOut();
+                        //   },
+                        // ),
                       ],
                     ),
                     buildWeatherCard(context),
