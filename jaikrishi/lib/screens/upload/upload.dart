@@ -2,38 +2,40 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/widgets/buttons.dart';
 import 'package:leaf_problem_detection/widgets/card.dart';
-import 'package:share/share.dart';
-import 'package:leaf_problem_detection/screens/upload/local_widgets/imageProcessing.dart';
+import 'package:provider/provider.dart';
+
+import 'package:leaf_problem_detection/utils/imageProcessing.dart';
 
 import 'package:leaf_problem_detection/screens/upload/uploader.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'local_widgets/diseaseText.dart';
+
 class Upload extends StatefulWidget {
-  File _imageFile = null;
-  String _response;
-  String _phone;
-  String _url;
-  Upload(this._response, this._imageFile, this._phone, this._url);
+  File _imageFile;
+  String _response = "";
+
+  Upload(this._imageFile, this._response);
 
   @override
-  _Upload createState() =>
-      _Upload(this._response, this._imageFile, this._phone, this._url);
+  _Upload createState() => _Upload(this._imageFile, this._response);
 }
 
 class _Upload extends State<Upload> {
-  File _imageFile = null;
+  File _imageFile;
   bool drawFirst;
   double _position = 0;
   String _response;
-  String _phone;
+  String _uid;
   String _disease = "rice";
-  String _url;
   String illness;
 
-  _Upload(this._response, this._imageFile, this._phone, this._url);
+  _Upload(this._imageFile, this._response);
 
   @override
   void initState() {
@@ -59,52 +61,6 @@ class _Upload extends State<Upload> {
         _position = controller.page;
       });
     });
-    Widget getPageOne() {
-      if (_response == "Healthy Crop") _response = "Healthy";
-      return Expanded(
-          child: Center(
-              child: FutureBuilder(
-                  future: History.loadJson(_response),
-                  builder: (context, data) {
-                    if (data.hasData) {
-                      return Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _response != "This is not rice" &&
-                                    _response !=
-                                        "Image is unclear. Please try again" &&
-                                    _response != "Healthy Crop"
-                                ? buildDiseaseReport(data.data)
-                                : Text(
-                                    data.data["Disease"],
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                            _response != "This is not rice" &&
-                                    _response !=
-                                        "Image is unclear. Please try again" &&
-                                    _response != "Healthy"
-                                ? infoButton(context, data.data)
-                                : Container(
-                                    height: 0,
-                                  ),
-                            shareButton(
-                                context,
-                                "JaiKrishi " +
-                                    DemoLocalizations.of(context)
-                                        .vals["DiseaseDetection"]["8"] +
-                                    data.data["Disease"] +
-                                    DemoLocalizations.of(context)
-                                        .vals["DiseaseDetection"]["9"] +
-                                    " www.jaikrishi.com")
-                          ]);
-                    } else {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  })));
-    }
 
     return Container(
       //padding: EdgeInsets.all(30),
@@ -210,7 +166,7 @@ class _Upload extends State<Upload> {
                                   ],
                                 ),
                               ),
-                              detectionButtons(context)
+                              detectionButtons(context, _imageFile)
                             ],
                           ],
                         ),
@@ -230,7 +186,7 @@ class _Upload extends State<Upload> {
                             child: IntrinsicHeight(
                               child: Column(
                                 children: [
-                                  getPageOne(),
+                                  diseaseText(context, _response),
                                 ],
                               ),
                             ),
@@ -505,46 +461,5 @@ class _Upload extends State<Upload> {
         ],
       ),
     );
-  }
-
-  Text buildDiseaseReport(Map data) {
-    if (_response == null) {
-      return Text("");
-    }
-
-    return Text(
-      DemoLocalizations.of(context).vals["DetectRice"]["2"] + data["Disease"],
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-    );
-  }
-
-  Positioned detectionButtons(BuildContext context) {
-    return Positioned(
-        bottom: 20,
-        left: 20,
-        child: Container(
-          padding: EdgeInsets.only(right: 40),
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Container(
-                    decoration: BoxDecoration(
-                        color: Color.fromRGBO(196, 243, 220, 1),
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Uploader(
-                      file: _imageFile,
-                      url: _url.toString() +
-                          "/upload?uid=" +
-                          _phone +
-                          "&crop=" +
-                          _disease,
-                      phone: _phone,
-                    )),
-              ]),
-            ],
-          ),
-        ));
   }
 }

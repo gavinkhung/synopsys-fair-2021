@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:leaf_problem_detection/utils/files.dart';
 import 'package:provider/provider.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 
@@ -41,8 +42,32 @@ setVals(BuildContext context, FirebaseUser user) async {
       double.parse(locData.substring(0, locData.indexOf(" "))),
       double.parse(locData.substring(locData.indexOf(" "))));
   Provider.of<UserModel>(context, listen: false).loc = loc;
+  Provider.of<UserModel>(context, listen: false).url = await getUrl();
+  Provider.of<UserModel>(context, listen: false).data = await loadJson();
 }
 
 Future<DocumentSnapshot> getData(String uid) {
   return Firestore.instance.collection("users").document(uid).get();
+}
+
+Future<String> getUrl() async {
+  var ref =
+      await Firestore.instance.collection("data").document("backend").get();
+  return ref["ip"];
+}
+
+Future<QuerySnapshot> getPrevNotifs(String _uid) {
+  return Firestore.instance
+      .collection("users")
+      .document(_uid)
+      .collection("daily_diseases")
+      .getDocuments();
+}
+
+Future<QuerySnapshot> getPrevDisease(String _uid) {
+  return Firestore.instance
+      .collection("users")
+      .document(_uid)
+      .collection("image_diseases")
+      .getDocuments();
 }

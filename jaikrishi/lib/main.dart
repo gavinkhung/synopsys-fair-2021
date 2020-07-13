@@ -12,6 +12,9 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => UserModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => ImageModel(),
+        ),
       ],
       child: MyApp(),
     ),
