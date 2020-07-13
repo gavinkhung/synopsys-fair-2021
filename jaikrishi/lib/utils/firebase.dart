@@ -9,9 +9,9 @@ StreamBuilder autoLogin(Widget success, Widget failed) {
       if (snapshot.connectionState == ConnectionState.active) {
         FirebaseUser user = snapshot.data;
         if (user == null) {
-          return Container(child: success);
-        } else {
           return Container(child: failed);
+        } else {
+          return Container(child: success);
         }
       } else {
         return Scaffold(
@@ -22,10 +22,10 @@ StreamBuilder autoLogin(Widget success, Widget failed) {
   );
 }
 
-Future<QuerySnapshot> getPrevDisease() {
+Future<QuerySnapshot> getPrevDisease(String uid) {
   return Firestore.instance
       .collection("users")
-      .document(_phone)
+      .document(uid)
       .collection("image_diseases")
       .getDocuments();
 }
