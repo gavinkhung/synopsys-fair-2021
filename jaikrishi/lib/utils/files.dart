@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
+import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -9,13 +11,11 @@ Future<String> localPath() async {
   return directory.path;
 }
 
-Future<void> setupLocalData(String local, String uid) async {
-  var temp1 = getUrl();
+Future<void> setupLocalData(String url, String local, String uid) async {
   var temp2 = localPath();
-  String url = await temp1;
   String path = await temp2;
   File data = File('$path/data.json');
-  String json = await getData(url, path, uid);
+  String json = await getData(url, local, uid);
   data.writeAsString(json);
 }
 
@@ -29,7 +29,9 @@ Future<String> getData(String url, String local, String uid) async {
   return request.body;
 }
 
-Future<Map> loadJson() async {
+Future<Map> loadJson(String url, BuildContext context, String uid) async {
+  await setupLocalData(
+      url, DemoLocalizations.of(context).locale.countryCode, uid);
   final directory = await getApplicationDocumentsDirectory();
   final file = File(directory.path + '/data.json');
   String data = file.readAsStringSync();

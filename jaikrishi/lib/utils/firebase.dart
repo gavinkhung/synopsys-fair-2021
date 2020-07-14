@@ -3,10 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:leaf_problem_detection/utils/files.dart';
+import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:provider/provider.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 
-StreamBuilder autoLogin(Widget success, Widget failed) {
+StreamBuilder autoLogin(BuildContext cont, Widget success, Widget failed) {
   return StreamBuilder(
     stream: FirebaseAuth.instance.onAuthStateChanged,
     builder: (context, snapshot) {
@@ -15,7 +16,8 @@ StreamBuilder autoLogin(Widget success, Widget failed) {
         if (user == null) {
           return Container(child: failed);
         } else {
-          setVals(context, user);
+          setVals(cont, user);
+          DemoLocalizations.of(cont).setVals();
           return Container(child: success);
         }
       } else {
@@ -42,8 +44,11 @@ setVals(BuildContext context, FirebaseUser user) async {
       double.parse(locData.substring(0, locData.indexOf(" "))),
       double.parse(locData.substring(locData.indexOf(" "))));
   Provider.of<UserModel>(context, listen: false).loc = loc;
-  Provider.of<UserModel>(context, listen: false).url = await getUrl();
-  Provider.of<UserModel>(context, listen: false).data = await loadJson();
+  String url = await getUrl();
+  Provider.of<UserModel>(context, listen: false).url = url;
+
+  Provider.of<UserModel>(context, listen: false).data =
+      await loadJson(url, context, user.uid);
 }
 
 Future<DocumentSnapshot> getData(String uid) {

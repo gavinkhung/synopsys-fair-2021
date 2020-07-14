@@ -6,7 +6,7 @@ import 'dart:convert';
 class DemoLocalizations {
   DemoLocalizations(this.locale);
 
-  final Locale locale;
+  Locale locale;
 
   static DemoLocalizations of(BuildContext context) {
     return Localizations.of<DemoLocalizations>(context, DemoLocalizations);

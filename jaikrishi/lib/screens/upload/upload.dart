@@ -31,7 +31,6 @@ class _Upload extends State<Upload> {
   bool drawFirst;
   double _position = 0;
   String _response;
-  String _uid;
   String _disease = "rice";
   String illness;
 

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:leaf_problem_detection/screens/upload/upload.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:provider/provider.dart';
+import 'models/image_model.dart';
 import 'models/user_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -49,11 +51,9 @@ class App extends StatefulWidget {
 
 class _App extends State<App> {
   Widget build(BuildContext context) {
+    print("hi");
     return Scaffold(
-      body: autoLogin(
-        Text("pee"),
-        Text("poo"),
-      ),
+      body: autoLogin(context, Text("poo"), Upload(null, "")),
     );
   }
 }
