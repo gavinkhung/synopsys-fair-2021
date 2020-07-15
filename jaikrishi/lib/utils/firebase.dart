@@ -7,7 +7,38 @@ import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:provider/provider.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+
+final FirebaseAnalytics analytics = FirebaseAnalytics();
+FirebaseAnalyticsObserver observer =
+    FirebaseAnalyticsObserver(analytics: analytics);
+
+Future<void> sendAnalyticsEvent(BuildContext context) async {
+  FirebaseAnalytics analytics = Provider.of<FirebaseAnalytics>(context);
+  await analytics.logEvent(name: 'started_app', parameters: <String, dynamic>{
+    'string': 'string',
+    'int': 42,
+    'long': 12345678910,
+    'double': 42.0,
+    'bool': true,
+  });
+}
+
+List<FirebaseAnalyticsObserver> getanalyticsNav(BuildContext context) {
+  return [Provider.of<FirebaseAnalyticsObserver>(context)];
+}
+
+dynamic getAnalytics() {
+  return Provider<FirebaseAnalytics>.value(value: analytics);
+}
+
+dynamic getAnalyticsProvider() {
+  return Provider<FirebaseAnalyticsObserver>.value(value: observer);
+}
+
 StreamBuilder autoLogin(BuildContext cont, Widget success, Widget failed) {
+  sendAnalyticsEvent(cont);
   return StreamBuilder(
     stream: FirebaseAuth.instance.onAuthStateChanged,
     builder: (context, snapshot) {

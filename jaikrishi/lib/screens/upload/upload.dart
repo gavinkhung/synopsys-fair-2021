@@ -174,253 +174,19 @@ class _Upload extends State<Upload> {
                   ),
                   _response == null
                       ? Text("")
-                      : Container(
-                          padding: EdgeInsets.all(20),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Color.fromRGBO(196, 243, 220, 1),
-                                borderRadius: BorderRadius.circular(20)),
-                            padding: EdgeInsets.only(
-                                left: 20, right: 20, bottom: 20, top: 20),
-                            child: IntrinsicHeight(
-                              child: Column(
-                                children: [
-                                  diseaseText(context, _response),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                  _imageFile == null
-                      ? card(
+                      : card(
                           context,
                           IntrinsicHeight(
                             child: Column(
                               children: [
-                                Text(
-                                  DemoLocalizations.of(context)
-                                      .vals["DiseaseDetection"]["2"],
-                                  style: TextStyle(
-                                      fontSize:
-                                          MediaQuery.of(context).size.height >
-                                                  600
-                                              ? 20
-                                              : 15),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: Divider(
-                                    color: Color.fromRGBO(24, 165, 123, 1),
-                                    thickness: 2,
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(
-                                      left: 10, right: 10, bottom: 10, top: 2),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("1. ",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                    .size
-                                                                    .height <
-                                                                600
-                                                            ? 15
-                                                            : 20)),
-                                            Flexible(
-                                              child: Text(
-                                                  DemoLocalizations.of(context)
-                                                          .vals[
-                                                      "DiseaseDetection"]["3"],
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      fontSize:
-                                                          MediaQuery.of(context)
-                                                                      .size
-                                                                      .height <
-                                                                  600
-                                                              ? 15
-                                                              : 20)),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("2. ",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                    .size
-                                                                    .height <
-                                                                600
-                                                            ? 15
-                                                            : 20)),
-                                            Flexible(
-                                              child: Text(
-                                                  DemoLocalizations.of(context)
-                                                          .vals[
-                                                      "DiseaseDetection"]["4"],
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      fontSize:
-                                                          MediaQuery.of(context)
-                                                                      .size
-                                                                      .height <
-                                                                  600
-                                                              ? 15
-                                                              : 20)),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("3. ",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                    .size
-                                                                    .height <
-                                                                600
-                                                            ? 15
-                                                            : 20)),
-                                            Flexible(
-                                              child: Text(
-                                                  DemoLocalizations.of(context)
-                                                          .vals[
-                                                      "DiseaseDetection"]["5"],
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      fontSize:
-                                                          MediaQuery.of(context)
-                                                                      .size
-                                                                      .height <
-                                                                  600
-                                                              ? 15
-                                                              : 20)),
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                          height: MediaQuery.of(context)
-                                                      .size
-                                                      .height <
-                                                  600
-                                              ? 90
-                                              : 150,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          padding: EdgeInsets.all(10),
-                                          child: Image.network(
-                                            "https://i1.wp.com/agfax.com/wp-content/uploads/leaf-blast-texas-am-07012014-facebook-600.jpg?fit=600%2C398&ssl=1",
-                                            scale: 1.5,
-                                            fit: BoxFit.fill,
-                                          ),
-                                        )
-                                      ]),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(top: 7),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Color.fromRGBO(24, 165, 123, 1)),
-                                  height: 50,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            cropSelectoin(context, true);
-                                          },
-                                          child: Center(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                IconButton(
-                                                    icon: Icon(
-                                                      Icons.photo_camera,
-                                                      color: Colors.white,
-                                                    ),
-                                                    iconSize: 30.0,
-                                                    onPressed: () {
-                                                      cropSelectoin(
-                                                          context, true);
-                                                    }),
-                                                Text(
-                                                  DemoLocalizations.of(context)
-                                                          .vals[
-                                                      "DiseaseDetection"]["6"],
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      VerticalDivider(color: Colors.white),
-                                      Expanded(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            cropSelectoin(context, false);
-                                          },
-                                          child: Center(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                IconButton(
-                                                    icon: Icon(
-                                                        Icons.photo_library,
-                                                        color: Colors.white),
-                                                    iconSize: 30.0,
-                                                    onPressed: () {
-                                                      cropSelectoin(
-                                                          context, false);
-                                                    }),
-                                                Text(
-                                                  DemoLocalizations.of(context)
-                                                          .vals[
-                                                      "DiseaseDetection"]["7"],
-                                                  maxLines: 1,
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
+                                diseaseText(context, _response),
                               ],
                             ),
-                          ),
+                          )),
+                  _imageFile == null
+                      ? card(
+                          context,
+                          buildInstructions(context),
                         )
                       : Container(),
                 ],
@@ -450,6 +216,7 @@ class _Upload extends State<Upload> {
                   : selected = await imgSrc(ImageSource.gallery);
               setState(() {
                 _disease = 'rice';
+                Provider.of<UserModel>(context, listen: false).crop = "rice";
                 Navigator.pop(
                     context, DemoLocalizations.of(context).vals["Crops"]["1"]);
 
@@ -457,6 +224,180 @@ class _Upload extends State<Upload> {
               });
             },
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildInstructions(BuildContext context) {
+    return IntrinsicHeight(
+      child: Column(
+        children: [
+          Text(
+            DemoLocalizations.of(context).vals["DiseaseDetection"]["2"],
+            style: TextStyle(
+                fontSize: MediaQuery.of(context).size.height > 600 ? 20 : 15),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Divider(
+              color: Color.fromRGBO(24, 165, 123, 1),
+              thickness: 2,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 2),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("1. ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: MediaQuery.of(context).size.height < 600
+                              ? 15
+                              : 20)),
+                  Flexible(
+                    child: Text(
+                        DemoLocalizations.of(context).vals["DiseaseDetection"]
+                            ["3"],
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: MediaQuery.of(context).size.height < 600
+                                ? 15
+                                : 20)),
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("2. ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: MediaQuery.of(context).size.height < 600
+                              ? 15
+                              : 20)),
+                  Flexible(
+                    child: Text(
+                        DemoLocalizations.of(context).vals["DiseaseDetection"]
+                            ["4"],
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: MediaQuery.of(context).size.height < 600
+                                ? 15
+                                : 20)),
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("3. ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: MediaQuery.of(context).size.height < 600
+                              ? 15
+                              : 20)),
+                  Flexible(
+                    child: Text(
+                        DemoLocalizations.of(context).vals["DiseaseDetection"]
+                            ["5"],
+                        style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: MediaQuery.of(context).size.height < 600
+                                ? 15
+                                : 20)),
+                  ),
+                ],
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height < 600 ? 90 : 150,
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(10),
+                child: Image.network(
+                  "https://i1.wp.com/agfax.com/wp-content/uploads/leaf-blast-texas-am-07012014-facebook-600.jpg?fit=600%2C398&ssl=1",
+                  scale: 1.5,
+                  fit: BoxFit.fill,
+                ),
+              )
+            ]),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 7),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Color.fromRGBO(24, 165, 123, 1)),
+            height: 50,
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      cropSelectoin(context, true);
+                    },
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              icon: Icon(
+                                Icons.photo_camera,
+                                color: Colors.white,
+                              ),
+                              iconSize: 30.0,
+                              onPressed: () {
+                                cropSelectoin(context, true);
+                              }),
+                          Text(
+                            DemoLocalizations.of(context)
+                                .vals["DiseaseDetection"]["6"],
+                            maxLines: 1,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                VerticalDivider(color: Colors.white),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      cropSelectoin(context, false);
+                    },
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              icon: Icon(Icons.photo_library,
+                                  color: Colors.white),
+                              iconSize: 30.0,
+                              onPressed: () {
+                                cropSelectoin(context, false);
+                              }),
+                          Text(
+                            DemoLocalizations.of(context)
+                                .vals["DiseaseDetection"]["7"],
+                            maxLines: 1,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

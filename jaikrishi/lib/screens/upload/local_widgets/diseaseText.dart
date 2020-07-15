@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/widgets/buttons.dart';
 import 'package:provider/provider.dart';
+import 'package:leaf_problem_detection/screens/upload/upload.dart';
 
 import '../uploader.dart';
 
