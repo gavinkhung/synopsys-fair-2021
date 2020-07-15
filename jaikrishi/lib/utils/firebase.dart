@@ -9,12 +9,42 @@ import 'package:leaf_problem_detection/utils/location.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 Firestore _firebaseStore = Firestore.instance;
 bool justSignedUp = false;
 
+final FirebaseAnalytics analytics = FirebaseAnalytics();
+FirebaseAnalyticsObserver observer =
+    FirebaseAnalyticsObserver(analytics: analytics);
+
+Future<void> sendAnalyticsEvent(BuildContext context) async {
+  FirebaseAnalytics analytics = Provider.of<FirebaseAnalytics>(context);
+  await analytics.logEvent(name: 'started_app', parameters: <String, dynamic>{
+    'string': 'string',
+    'int': 42,
+    'long': 12345678910,
+    'double': 42.0,
+    'bool': true,
+  });
+}
+
+List<FirebaseAnalyticsObserver> getanalyticsNav(BuildContext context) {
+  return [Provider.of<FirebaseAnalyticsObserver>(context)];
+}
+
+dynamic getAnalytics() {
+  return Provider<FirebaseAnalytics>.value(value: analytics);
+}
+
+dynamic getAnalyticsProvider() {
+  return Provider<FirebaseAnalyticsObserver>.value(value: observer);
+}
+
 StreamBuilder autoLogin(BuildContext cont) {
+  sendAnalyticsEvent(cont);
   return StreamBuilder(
     stream: _auth.onAuthStateChanged,
     builder: (context, snapshot) {
@@ -64,6 +94,16 @@ StreamBuilder autoLogin(BuildContext cont) {
   );
 }
 
+Future<DocumentSnapshot> getData(String uid) {
+  return Firestore.instance.collection("users").document(uid).get();
+}
+
+Future<String> getUrl() async {
+  var ref =
+      await Firestore.instance.collection("data").document("backend").get();
+  return ref["ip"];
+}
+
 setVals(BuildContext context, FirebaseUser user) async {
   print(user.uid);
   UserModel userModel = Provider.of<UserModel>(context, listen: false);
@@ -94,16 +134,6 @@ setVals(BuildContext context, FirebaseUser user) async {
   userModel.url = url;
 
   userModel.data = await loadJson(url, context, user.uid);
-}
-
-Future<DocumentSnapshot> getData(String uid) {
-  return Firestore.instance.collection("users").document(uid).get();
-}
-
-Future<String> getUrl() async {
-  var ref =
-      await Firestore.instance.collection("data").document("backend").get();
-  return ref["ip"];
 }
 
 Future<QuerySnapshot> getPrevNotifs(String _uid) {

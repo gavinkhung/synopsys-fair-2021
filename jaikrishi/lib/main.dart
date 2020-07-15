@@ -20,6 +20,8 @@ void main() {
         ChangeNotifierProvider(
           create: (context) => ImageModel(),
         ),
+        getAnalytics(),
+        getAnalyticsProvider(),
       ],
       child: MyApp(),
     ),
@@ -41,6 +43,7 @@ class MyApp extends StatelessWidget {
         const Locale('hi', ''),
       ],
       home: App(),
+      navigatorObservers: getanalyticsNav(context),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -56,7 +59,6 @@ class _App extends State<App> {
   final PermissionHandler _permissionHandler = PermissionHandler();
 
   Widget build(BuildContext context) {
-    print("hi");
     return Scaffold(
       body: autoLogin(context),
     );
