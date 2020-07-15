@@ -16,18 +16,13 @@ import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
-  String _username = "";
-  String _url;
-  Home(this._username, this._url);
+  Home();
 
   @override
-  _Home createState() => _Home(this._username, this._url);
+  _Home createState() => _Home();
 }
 
 class _Home extends State<Home> {
-  _Home(this._username, this._url);
-  String _username = "";
-  String _url;
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   int _currentTabIndex = 0;
   Color _pageColor = Color.fromRGBO(24, 165, 123, 1);
@@ -35,14 +30,14 @@ class _Home extends State<Home> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
   final Firestore _db = Firestore.instance;
 
-  setUpLang() async {
-    String path = _url.toString() +
-        "/diseases?loc=" +
-        DemoLocalizations.of(context).locale.languageCode +
-        "&uid=" +
-        _username.toString();
-    var request = await http.post(path);
-  }
+  // setUpLang() async {
+  //   String path = _url.toString() +
+  //       "/diseases?loc=" +
+  //       DemoLocalizations.of(context).locale.languageCode +
+  //       "&uid=" +
+  //       _username.toString();
+  //   var request = await http.post(path);
+  // }
 
   @override
   void initState() {
@@ -160,7 +155,10 @@ class _Home extends State<Home> {
     String token = await _fcm.getToken();
     if (token != null) {
       FirebaseUser user = await _auth.currentUser();
-      _db.collection('users').document(_username).updateData({
+      _db
+          .collection('users')
+          .document(Provider.of<UserModel>(context, listen: false).uid)
+          .updateData({
         'token': token,
       });
     }
@@ -168,7 +166,7 @@ class _Home extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    setUpLang();
+    // setUpLang();
     BottomNavigationBarItem _bottomIcons(IconData icon, double size) {
       return BottomNavigationBarItem(
         icon: Icon(icon, size: size),
