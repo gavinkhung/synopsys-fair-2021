@@ -25,47 +25,47 @@ class UserModel extends ChangeNotifier {
   Map get data => _data;
 
   set loc(LatLng val) {
-    loc = val;
-    notifyListeners();
+    _loc = val;
+    //notifyListeners();
   }
 
   set data(Map val) {
     _data = val;
-    notifyListeners();
+    //notifyListeners();
   }
 
   set seed(DateTime val) {
     _seed = val;
-    notifyListeners();
+    //notifyListeners();
   }
 
   set trans(DateTime val) {
     _trans = val;
-    notifyListeners();
+    //notifyListeners();
   }
 
   set crop(String val) {
     _crop = val;
-    notifyListeners();
+    //notifyListeners();
   }
 
   set type(int val) {
     _type = val;
-    notifyListeners();
+    //notifyListeners();
   }
 
   set phoneNumber(String value) {
     _phoneNumber = value;
-    notifyListeners();
+    //notifyListeners();
   }
 
   set uid(String val) {
     _uid = val;
-    notifyListeners();
+    //notifyListeners();
   }
 
   set url(String val) {
     _url = val;
-    notifyListeners();
+    //notifyListeners();
   }
 }

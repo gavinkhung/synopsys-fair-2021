@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/screens/upload/upload.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
+import 'package:leaf_problem_detection/utils/location.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'models/image_model.dart';
 import 'models/user_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:location/location.dart' as loc;
 
 void main() {
   runApp(
@@ -50,10 +53,12 @@ class App extends StatefulWidget {
 }
 
 class _App extends State<App> {
+  final PermissionHandler _permissionHandler = PermissionHandler();
+
   Widget build(BuildContext context) {
     print("hi");
     return Scaffold(
-      body: autoLogin(context, Text("poo"), Upload(null, "")),
+      body: autoLogin(context),
     );
   }
 }
