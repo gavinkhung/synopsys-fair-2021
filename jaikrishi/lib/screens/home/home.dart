@@ -122,13 +122,13 @@ class _Home extends State<Home> {
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case "0":
-        return MaterialPageRoute(builder: (context) => Upload(null, ""));
+        return MaterialPageRoute(builder: (context) => Upload(null, null));
       case "1":
-      // return MaterialPageRoute(builder: (context) => History());
+        return MaterialPageRoute(builder: (context) => Upload(null, null));
       case "2":
         return MaterialPageRoute(builder: (context) => profile());
       default:
-        return MaterialPageRoute(builder: (context) => Upload(null, ""));
+        return MaterialPageRoute(builder: (context) => Upload(null, null));
     }
   }
 }
