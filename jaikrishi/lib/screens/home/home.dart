@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/screens/history/history.dart';
-// import 'package:leaf_problem_detection/screens/home/profile.dart';
+import 'package:leaf_problem_detection/screens/home/profile.dart';
 import 'package:leaf_problem_detection/screens/upload/upload.dart';
 import 'package:leaf_problem_detection/main.dart';
 import 'package:http/http.dart' as http;
@@ -126,7 +126,7 @@ class _Home extends State<Home> {
       case "1":
       // return MaterialPageRoute(builder: (context) => History());
       case "2":
-      // return MaterialPageRoute(builder: (context) => Profile());
+        return MaterialPageRoute(builder: (context) => profile());
       default:
         return MaterialPageRoute(builder: (context) => Upload(null, ""));
     }

@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:leaf_problem_detection/screens/authentication/auth.dart';
+import 'package:leaf_problem_detection/screens/home/home.dart';
 import 'package:leaf_problem_detection/utils/files.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/utils/location.dart';
@@ -14,6 +18,7 @@ import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 Firestore _firebaseStore = Firestore.instance;
@@ -37,7 +42,7 @@ Future<void> sendAnalyticsEvent(BuildContext context) async {
   });
 }
 
-List<FirebaseAnalyticsObserver> getanalyticsNav(BuildContext context) {
+List<NavigatorObserver> getanalyticsNav(BuildContext context) {
   return [Provider.of<FirebaseAnalyticsObserver>(context)];
 }
 
@@ -89,7 +94,7 @@ StreamBuilder autoLogin(BuildContext cont) {
             setVals(cont, user);
           }
 
-          return Container(child: Text("pee"));
+          return Home();
         }
       } else {
         return Scaffold(
@@ -301,3 +306,65 @@ List<Widget> getText(BuildContext context, String text) {
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
   return Future<void>.value();
 }
+
+Future<Map> getWeatherData(String uid) async {
+  DocumentSnapshot fb =
+      await Firestore.instance.collection("users").document(uid).get();
+  String lat = "20", long = "79";
+  List<String> location = fb.data['location'].toString().split(" ");
+  lat = location[0];
+  long = location[1];
+  String apiKey = await rootBundle.loadString("data/keys.json");
+  String weatherKey = jsonDecode(apiKey)["weather"];
+  String path = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
+      lat.toString() +
+      '&lon=' +
+      long.toString() +
+      '&appid=' +
+      weatherKey +
+      '&units=metric';
+
+  var request = await http.get(path);
+  return json.decode(request.body);
+}
+
+FutureBuilder showUsername(String uid, TextEditingController controller{
+  return FutureBuilder<DocumentSnapshot>(
+      future: Firestore.instance.collection("users").document(uid).get(),
+      builder: (context, data) {
+        if (data.hasData) {
+          if (data.data["name"] != null) controller.text = data.data["name"];
+          return Container(
+            width: MediaQuery.of(context).size.width / 8 * 7,
+            child: TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintMaxLines: 1,
+                hintText: controller.text == ""
+                    ? DemoLocalizations.of(context).vals["FirstPage"]["14"]
+                    : "",
+              ),
+              style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.height < 600 ? 20 : 30,
+                  color: Colors.white),
+              onSubmitted: (String s) {
+                addUsername(uid, controller.text);
+              },
+            ),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      });
+}
+
+
+
+  addUsername(String uid, String name) async {
+    await Firestore.instance
+        .collection("users")
+        .document(uid)
+        .updateData({"name": name});
+  }
+
