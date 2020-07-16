@@ -7,7 +7,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/screens/history/history.dart';
-import 'package:leaf_problem_detection/screens/home/profile.dart';
 import 'package:leaf_problem_detection/screens/upload/upload.dart';
 import 'package:leaf_problem_detection/main.dart';
 import 'package:http/http.dart' as http;
@@ -246,13 +245,13 @@ class _Home extends State<Home> {
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case "0":
-        return MaterialPageRoute(builder: (context) => Upload(null, ""));
+        return MaterialPageRoute(builder: (context) => Upload(null, null));
       case "1":
-      // return MaterialPageRoute(builder: (context) => History());
+        return MaterialPageRoute(builder: (context) => Upload(null, null));
       case "2":
-      // return MaterialPageRoute(builder: (context) => Profile());
+        return MaterialPageRoute(builder: (context) => Upload(null, null));
       default:
-        return MaterialPageRoute(builder: (context) => Upload(null, ""));
+        return MaterialPageRoute(builder: (context) => Upload(null, null));
     }
   }
 }

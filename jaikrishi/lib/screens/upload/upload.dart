@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -41,7 +42,11 @@ class _Upload extends State<Upload> {
     if (_imageFile != null && _imageFile.path == "") {
       _imageFile = null;
     }
-
+    // try {
+    //   FirebaseAuth.instance.signOut();
+    // } catch (e) {
+    //   print(e);
+    // }
     super.initState();
   }
 
@@ -95,9 +100,13 @@ class _Upload extends State<Upload> {
                                           .vals["DiseaseDetection"]["1"],
                                       maxLines: 1,
                                       style: TextStyle(
-                                          color:
-                                              Color.fromRGBO(24, 165, 123, 1),
-                                          fontSize: 100),
+                                        color: Color.fromRGBO(24, 165, 123, 1),
+                                        fontSize:
+                                            MediaQuery.of(context).size.height >
+                                                    600
+                                                ? 25
+                                                : 20,
+                                      ),
                                     ),
                                   ),
                                 ],

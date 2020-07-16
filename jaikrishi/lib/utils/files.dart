@@ -30,12 +30,13 @@ Future<String> getData(String url, String local, String uid) async {
 }
 
 Future<Map> loadJson(String url, BuildContext context, String uid) async {
-  await setupLocalData(
-      url, DemoLocalizations.of(context).locale.countryCode, uid);
+  await setupLocalData(url, "en", uid);
   final directory = await getApplicationDocumentsDirectory();
   final file = File(directory.path + '/data.json');
   String data = file.readAsStringSync();
+  print(data);
   Map temp = jsonDecode(data);
+  print("Load: " + data);
   return temp;
 }
 
