@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:leaf_problem_detection/screens/authentication/auth.dart';
@@ -11,12 +13,16 @@ import 'package:provider/provider.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
+import 'dart:io';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 Firestore _firebaseStore = Firestore.instance;
 bool justSignedUp = false;
 
 final FirebaseAnalytics analytics = FirebaseAnalytics();
+final FirebaseMessaging _fcm = FirebaseMessaging();
+final Firestore _db = Firestore.instance;
+
 FirebaseAnalyticsObserver observer =
     FirebaseAnalyticsObserver(analytics: analytics);
 
@@ -174,4 +180,124 @@ void setData(Map<String, dynamic> map, int version, BuildContext context) {
           merge: true,
         );
   }
+}
+
+void setUpNotifs(BuildContext context) {
+  if (Platform.isIOS) {
+    _fcm.onIosSettingsRegistered.listen((event) {
+      _saveDeviceToken(context);
+    });
+    _fcm.requestNotificationPermissions(IosNotificationSettings());
+  } else {
+    _saveDeviceToken(context);
+  }
+
+  _fcm.configure(
+    onMessage: (Map<String, dynamic> message) async {
+      showDialog<void>(
+        context: context, // user must tap button!
+        builder: (BuildContext context) {
+          List<Widget> steps = [
+            Text(message['notification']['body'].toString()),
+          ];
+          if (message['notification']['body'].toString().startsWith("[")) {
+            steps =
+                getText(context, message['notification']['body'].toString());
+          } else if (message['notification']['body']
+              .toString()
+              .startsWith("*")) {
+            steps = [
+              Text(message['notification']['body'].toString().substring(1))
+            ];
+          } else {
+            String data = Provider.of<UserModel>(context, listen: false)
+                .data[message['notification']['body'].toString()]["Disease"];
+            steps = [
+              Text(DemoLocalizations.of(context).vals["History"]["highChance"] +
+                  data +
+                  DemoLocalizations.of(context).vals["History"]["present"])
+            ];
+          }
+
+          return CupertinoAlertDialog(
+            title: Column(
+              children: [
+                Text(message['notification']['title']),
+                Divider(
+                  color: Color.fromRGBO(24, 165, 123, 1),
+                )
+              ],
+            ),
+            content: Container(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.height / 40),
+              child: Column(children: steps),
+            ),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: Icon(
+                  Icons.check,
+                  color: Color.fromRGBO(24, 165, 123, 1),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    },
+    onLaunch: (Map<String, dynamic> message) async {},
+    onResume: (Map<String, dynamic> message) async {},
+  );
+}
+
+_saveDeviceToken(BuildContext context) async {
+  String token = await _fcm.getToken();
+  if (token != null) {
+    FirebaseUser user = await _auth.currentUser();
+    _db
+        .collection('users')
+        .document(Provider.of<UserModel>(context, listen: false).uid)
+        .updateData({
+      'token': token,
+    });
+  }
+}
+
+List<Widget> getText(BuildContext context, String text) {
+  text = text.substring(2, text.length - 2);
+
+  List<String> steps = text.split("',");
+  List<Widget> stepWidgets = [];
+  for (int i = 0; i < steps.length; i++) {
+    if (steps[i].substring(0, steps[i].indexOf(":")).trim() == "\'Days\'") {
+      String days = steps[i].substring(steps[i].indexOf(":") + 1);
+      stepWidgets.add(new Text(DemoLocalizations.of(context).vals["History"]
+              ["based"] +
+          days.toString() +
+          DemoLocalizations.of(context).vals["History"]["days"] +
+          DemoLocalizations.of(context).vals["History"]["recomend"]));
+      continue;
+    }
+  }
+  for (int i = 0; i < steps.length; i++) {
+    steps[i].replaceAll("'", "");
+    if (steps[i].substring(0, steps[i].indexOf(":")).trim() == "\'Days\'")
+      continue;
+    stepWidgets.add(new Text(
+      steps[i],
+      textAlign: TextAlign.center,
+    ));
+    stepWidgets.add(
+      new SizedBox(
+        height: 10,
+      ),
+    );
+  }
+  return stepWidgets;
+}
+
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
+  return Future<void>.value();
 }
