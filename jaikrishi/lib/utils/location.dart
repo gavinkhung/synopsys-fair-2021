@@ -236,6 +236,7 @@ class locNotEnabled extends StatefulWidget {
 class _locNotEnabled extends State<locNotEnabled> {
   _locNotEnabled();
   bool switchState = false;
+  PermissionHandler _permissionHandler = PermissionHandler();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -253,9 +254,17 @@ class _locNotEnabled extends State<locNotEnabled> {
             value: switchState,
             activeColor: Color.fromRGBO(24, 165, 123, 1),
             onChanged: (selected) {
-              setState(() {
-                switchState = !switchState;
-              });
+              setState(
+                () {
+                  switchState = !switchState;
+                  _permissionHandler
+                      .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+                      .then((value) => print(value));
+                  print(Provider.of<UserModel>(context, listen: false)
+                      .loc
+                      .toString());
+                },
+              );
             },
           ),
         )
