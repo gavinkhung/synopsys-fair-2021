@@ -129,6 +129,7 @@ Widget buildWeatherCard(BuildContext context, int times) {
                 try {
                   times++;
                   if (value == null) {
+                    print("1");
                     return Column(
                       children: times == 0
                           ? [
@@ -260,6 +261,7 @@ Widget buildWeatherCard(BuildContext context, int times) {
                         ),
                       );
                     } else {
+                      print("2");
                       return Column(
                         children: times == 0
                             ? [
@@ -272,6 +274,7 @@ Widget buildWeatherCard(BuildContext context, int times) {
                       );
                     }
                   } else {
+                    print("3");
                     return Column(
                       children: times == 0
                           ? [
@@ -284,6 +287,7 @@ Widget buildWeatherCard(BuildContext context, int times) {
                     );
                   }
                 } catch (e) {
+                  print("4");
                   print(e.toString());
                   return Column(
                     children: times == 0
@@ -314,6 +318,7 @@ class locNotEnabled extends StatefulWidget {
 class _locNotEnabled extends State<locNotEnabled> {
   _locNotEnabled();
   bool switchState = false;
+  PermissionHandler _permissionHandler = PermissionHandler();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -331,9 +336,17 @@ class _locNotEnabled extends State<locNotEnabled> {
             value: switchState,
             activeColor: Color.fromRGBO(24, 165, 123, 1),
             onChanged: (selected) {
-              setState(() {
-                switchState = !switchState;
-              });
+              setState(
+                () {
+                  switchState = !switchState;
+                  _permissionHandler
+                      .checkPermissionStatus(PermissionGroup.locationWhenInUse)
+                      .then((value) => print(value));
+                  print(Provider.of<UserModel>(context, listen: false)
+                      .loc
+                      .toString());
+                },
+              );
             },
           ),
         )
