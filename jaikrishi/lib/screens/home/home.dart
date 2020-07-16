@@ -124,7 +124,7 @@ class _Home extends State<Home> {
       case "0":
         return MaterialPageRoute(builder: (context) => Upload(null, null));
       case "1":
-        return MaterialPageRoute(builder: (context) => Upload(null, null));
+        return MaterialPageRoute(builder: (context) => History());
       case "2":
         return MaterialPageRoute(builder: (context) => profile());
       default:

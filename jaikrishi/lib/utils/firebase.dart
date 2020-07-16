@@ -19,6 +19,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:share/share.dart';
+
+import 'imageProcessing.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 Firestore _firebaseStore = Firestore.instance;
@@ -378,4 +381,177 @@ addUsername(String uid, String name) async {
       .collection("users")
       .document(uid)
       .updateData({"name": name});
+}
+
+Widget notifBody(DateTime dt, DocumentSnapshot notifs, BuildContext context) {
+  if (notifs["type"] == "date_notif") {
+    String step1 = "";
+    String step2 = "";
+    String step3 = "";
+    String days = "";
+    notifs["steps"][0]["Step 1"] != null && notifs["steps"][0]["Step 1"] != ""
+        ? step1 = "1. " + notifs["steps"][0]["Step 1"]
+        : "";
+    notifs["steps"][0]["Step 2"] != null && notifs["steps"][0]["Step 2"] != ""
+        ? step2 = "2. " + notifs["steps"][0]["Step 2"]
+        : "";
+    notifs["steps"][0]["Step 3"] != null && notifs["steps"][0]["Step 3"] != ""
+        ? step3 = "3. " + notifs["steps"][0]["Step 3"]
+        : "";
+    notifs["steps"][0]["Days"] != null && notifs["steps"][0]["Days"] != ""
+        ? days = notifs["steps"][0]["Days"]
+        : "";
+
+    return Column(children: [
+      Text(DemoLocalizations.of(context).vals["History"]["based"].toString() +
+          days.toString() +
+          DemoLocalizations.of(context).vals["History"]["days"].toString() +
+          DemoLocalizations.of(context).vals["History"]["recomend"].toString()),
+      Text(step1),
+      Text(step2),
+      Text(step3),
+      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Builder(
+          builder: (BuildContext context) {
+            return Center(
+              child: FlatButton.icon(
+                padding: EdgeInsets.zero,
+                icon: Icon(Icons.share),
+                label: Text(DemoLocalizations.of(context)
+                    .vals["DiseaseDetection"]["10"]),
+                onPressed: () {
+                  final RenderBox box = context.findRenderObject();
+                  Share.share(
+                      "JaiKrishi" +
+                          DemoLocalizations.of(context).vals["History"]
+                              ["warningNotif"] +
+                          step1 +
+                          " " +
+                          step2 +
+                          " " +
+                          step3,
+                      sharePositionOrigin:
+                          box.localToGlobal(Offset.zero) & box.size);
+                },
+              ),
+            );
+          },
+        ),
+        Padding(
+            padding: EdgeInsets.all(8),
+            child: Text(
+              dt.day.toString() +
+                  "/" +
+                  dt.month.toString() +
+                  "/" +
+                  dt.year.toString() +
+                  " ",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontWeight: FontWeight.w300),
+            ))
+      ]),
+    ]);
+  }
+
+  String tp = Provider.of<UserModel>(context, listen: false)
+      .data[notifs["type"]]["Disease"];
+  return Column(
+    children: [
+      Center(
+        child: Text(
+            DemoLocalizations.of(context).vals["History"]["highChance"] +
+                tp +
+                DemoLocalizations.of(context).vals["History"]["present"],
+            style: TextStyle(fontSize: 20)),
+      ),
+      imageType(context, notifs['type']),
+      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Builder(
+          builder: (BuildContext context) {
+            return Center(
+              child: FlatButton.icon(
+                padding: EdgeInsets.zero,
+                icon: Icon(Icons.share),
+                label: Text(DemoLocalizations.of(context)
+                    .vals["DiseaseDetection"]["10"]),
+                onPressed: () {
+                  final RenderBox box = context.findRenderObject();
+                  Share.share(
+                      "JaiKrishi" +
+                          DemoLocalizations.of(context).vals["History"]
+                              ["warns"] +
+                          tp +
+                          DemoLocalizations.of(context).vals["History"]
+                              ["warningDisease"],
+                      sharePositionOrigin:
+                          box.localToGlobal(Offset.zero) & box.size);
+                },
+              ),
+            );
+          },
+        ),
+        Text(
+          dt.day.toString() +
+              "/" +
+              dt.month.toString() +
+              "/" +
+              dt.year.toString() +
+              " ",
+          textAlign: TextAlign.left,
+          style: TextStyle(fontWeight: FontWeight.w300),
+        )
+      ])
+    ],
+  );
+}
+
+updateNotify(String uid, String id) {
+  return Firestore.instance
+      .collection("users")
+      .document(uid)
+      .collection("image_diseases")
+      .document(id)
+      .updateData({"status": "checked", "works": "yes"});
+}
+
+FutureBuilder<QuerySnapshot> cardPrevNotifs(String _uid, BuildContext context) {
+  return FutureBuilder<QuerySnapshot>(
+      future: getPrevNotifs(_uid),
+      builder: (context, data) {
+        if (data.hasData) {
+          var notifs = data.data.documents;
+          notifs.sort((a, b) {
+            var aDT = DateTime.parse(a.data["time"].replaceAll("/", "-") + "Z");
+            var bDT = DateTime.parse(b.data["time"].replaceAll("/", "-") + "Z");
+            return bDT.compareTo(aDT);
+          });
+          if (notifs.length == 0) {
+            return Center(
+                child: Text(
+              DemoLocalizations.of(context).vals["History"]["noNotifications"],
+              style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.height > 600 ? 20 : 15),
+            ));
+          } else {
+            DateTime dt = DateTime.parse(notifs[0]["time"] + "Z").toLocal();
+
+            return Column(children: [
+              notifBody(dt, notifs[0], context),
+              GestureDetector(
+                child: Text(
+                    DemoLocalizations.of(context).vals["History"]["seeMore"],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline)),
+                // onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                //     builder: (context) => Notifications(_uid)))
+              )
+            ]);
+          }
+        } else
+          return Center(child: CircularProgressIndicator());
+      });
 }
