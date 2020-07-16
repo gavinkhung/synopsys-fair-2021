@@ -342,7 +342,7 @@ Future<Map> getWeatherData(String uid) async {
   return json.decode(request.body);
 }
 
-FutureBuilder showUsername(String uid, TextEditingController controller{
+FutureBuilder showUsername(String uid, TextEditingController controller) {
   return FutureBuilder<DocumentSnapshot>(
       future: Firestore.instance.collection("users").document(uid).get(),
       builder: (context, data) {
@@ -373,12 +373,9 @@ FutureBuilder showUsername(String uid, TextEditingController controller{
       });
 }
 
-
-
-  addUsername(String uid, String name) async {
-    await Firestore.instance
-        .collection("users")
-        .document(uid)
-        .updateData({"name": name});
-  }
-
+addUsername(String uid, String name) async {
+  await Firestore.instance
+      .collection("users")
+      .document(uid)
+      .updateData({"name": name});
+}
