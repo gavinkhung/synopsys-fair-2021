@@ -1,5 +1,9 @@
 import json
 
+from backend.communicate import Communicate
+
+communicate = Communicate()
+
 def lambda_handler(event, context):
     params = event['multiValueQueryStringParameters']
     lang = params["loc"]

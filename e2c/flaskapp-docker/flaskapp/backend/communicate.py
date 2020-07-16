@@ -4,6 +4,9 @@ from firebase_admin import storage
 from firebase_admin import messaging
 from firebase_admin import firestore
 
+from tempfile import TemporaryFile
+from PIL import Image
+
 from random import randrange
 from datetime import datetime
 
@@ -22,8 +25,12 @@ class Communicate:
         title = self.getTime()
         filename = uid+"/"+title+".png"
         blob = self.bucket.blob(filename)
-        blob.upload_from_string(file.read())
+        f = TemporaryFile()
+        pil_image.save(f, 'JPEG')
+        f.seek(0)
+        blob.upload_from_file(f)
         blob.make_public()
+        f.close()
         return blob.public_url
     
     def get_users(self):
