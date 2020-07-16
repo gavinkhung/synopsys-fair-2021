@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:leaf_problem_detection/models/weather_model.dart';
 import 'package:leaf_problem_detection/screens/authentication/auth.dart';
 import 'package:leaf_problem_detection/screens/home/home.dart';
 import 'package:leaf_problem_detection/utils/files.dart';
@@ -249,7 +251,6 @@ Future<String> getUrl() async {
 }
 
 Future<bool> setVals(BuildContext context, FirebaseUser user) async {
-  print("UID" + user.uid);
   UserModel userModel = Provider.of<UserModel>(context, listen: false);
   userModel.uid = user.uid;
   DocumentSnapshot data = await getData(user.uid);
@@ -278,6 +279,17 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
   userModel.url = url;
 
   userModel.data = await loadJson(url, context, user.uid);
+
+  getWeatherData(user.uid).then((weather) {
+    WeatherModel wData = Provider.of<WeatherModel>(context, listen: false);
+    wData.temp = weather['main']['temp'].round().toString();
+    wData.minTemp = weather['main']['temp_min'].round().toString();
+    wData.maxTemp = weather['main']['temp_max'].round().toString();
+    wData.humidity = weather['main']['humidity'].toString();
+    wData.typeWeather = weather['weather'][0]['main'].toString();
+    wData.day = DateFormat.yMMMEd().format(DateTime.now());
+    wData.id = weather['weather'][0]['icon'].toString();
+  });
   return true;
 }
 
