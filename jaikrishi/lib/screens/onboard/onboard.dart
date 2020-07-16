@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:leaf_problem_detection/screens/home/home.dart';
+import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -472,67 +474,88 @@ class _Onboard extends State<Onboard> {
                     ));
 
                     showCupertinoDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CupertinoActionSheet(
-                              cancelButton: CupertinoActionSheetAction(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Icon(
-                                  Icons.check,
-                                  size: 40,
-                                  color: Color.fromRGBO(24, 165, 123, 1),
-                                ),
-                              ),
-                              title: Text(DemoLocalizations.of(context)
-                                  .vals["VarietyLocation"]["6"]),
-                              message: Container(
-                                child: Column(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(30),
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height -
-                                                200,
-                                        child: GoogleMap(
-                                          markers: _markers,
-                                          onMapCreated: _onMapCreated,
-                                          myLocationEnabled: true,
-                                          initialCameraPosition: CameraPosition(
-                                            target: currLoc != null
-                                                ? currLoc
-                                                : userLoc != null
-                                                    ? userLoc
-                                                    : _center,
-                                            zoom: 5.0,
-                                          ),
-                                          rotateGesturesEnabled: true,
-                                          scrollGesturesEnabled: true,
-                                          tiltGesturesEnabled: true,
-                                          zoomGesturesEnabled: true,
-                                          zoomControlsEnabled: true,
-                                          gestureRecognizers: Set()
-                                            ..add(Factory<PanGestureRecognizer>(
-                                                () => PanGestureRecognizer()))
-                                            ..add(Factory<LongPressGestureRecognizer>(() =>
-                                                LongPressGestureRecognizer()))
-                                            ..add(Factory<ScaleGestureRecognizer>(
-                                                () => ScaleGestureRecognizer()))
-                                            ..add(Factory<TapGestureRecognizer>(
-                                                () => TapGestureRecognizer()))
-                                            ..add(Factory<VerticalDragGestureRecognizer>(() =>
-                                                VerticalDragGestureRecognizer()))
-                                            ..add(Factory<HorizontalDragGestureRecognizer>(
-                                                () => HorizontalDragGestureRecognizer())),
-                                        ),
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CupertinoActionSheet(
+                          cancelButton: CupertinoActionSheetAction(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Icons.check,
+                              size: 40,
+                              color: Color.fromRGBO(24, 165, 123, 1),
+                            ),
+                          ),
+                          title: Text(DemoLocalizations.of(context)
+                              .vals["VarietyLocation"]["6"]),
+                          message: Container(
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height -
+                                        200,
+                                    child: GoogleMap(
+                                      markers: _markers,
+                                      onMapCreated: _onMapCreated,
+                                      myLocationEnabled: true,
+                                      initialCameraPosition: CameraPosition(
+                                        target: currLoc != null
+                                            ? currLoc
+                                            : userLoc != null
+                                                ? userLoc
+                                                : _center,
+                                        zoom: 5.0,
                                       ),
+                                      rotateGesturesEnabled: true,
+                                      scrollGesturesEnabled: true,
+                                      tiltGesturesEnabled: true,
+                                      zoomGesturesEnabled: true,
+                                      zoomControlsEnabled: true,
+                                      gestureRecognizers: Set()
+                                        ..add(
+                                          Factory<PanGestureRecognizer>(
+                                              () => PanGestureRecognizer()),
+                                        )
+                                        ..add(
+                                          Factory<LongPressGestureRecognizer>(
+                                              () =>
+                                                  LongPressGestureRecognizer()),
+                                        )
+                                        ..add(
+                                          Factory<ScaleGestureRecognizer>(
+                                            () => ScaleGestureRecognizer(),
+                                          ),
+                                        )
+                                        ..add(
+                                          Factory<TapGestureRecognizer>(
+                                              () => TapGestureRecognizer()),
+                                        )
+                                        ..add(
+                                          Factory<
+                                              VerticalDragGestureRecognizer>(
+                                            () =>
+                                                VerticalDragGestureRecognizer(),
+                                          ),
+                                        )
+                                        ..add(
+                                          Factory<
+                                              HorizontalDragGestureRecognizer>(
+                                            () =>
+                                                HorizontalDragGestureRecognizer(),
+                                          ),
+                                        ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ));
-                        });
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
                   },
                   padding: EdgeInsets.all(10),
                   color: buttonGreen,
@@ -622,11 +645,30 @@ class _Onboard extends State<Onboard> {
                 'crop': _crop
               });
             }
-            // Navigator.push(
+            getCurrUser().then(
+              (value) {
+                return setVals(context, value);
+              },
+            ).then(
+              (value) {
+                print(
+                  "TEESSSST: " +
+                      Provider.of<UserModel>(context, listen: false)
+                          .phoneNumber
+                          .toString(),
+                );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Home(),
+                  ),
+                );
+              },
+            );
+            // setVals(
             //   context,
-            //   MaterialPageRoute(
-            //       builder: (context) => Home(_username.trim(), _url)),
-            // );
+            // ).then();
+
           }
         },
         onSkip: () {
@@ -654,11 +696,26 @@ class _Onboard extends State<Onboard> {
               'crop': ""
             });
           }
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //       builder: (context) => Home(_username.trim(), _url)),
-          // );
+          getCurrUser().then(
+            (value) {
+              return setVals(context, value);
+            },
+          ).then(
+            (value) {
+              print(
+                "TEESSSST: " +
+                    Provider.of<UserModel>(context, listen: false)
+                        .phoneNumber
+                        .toString(),
+              );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Home(),
+                ),
+              );
+            },
+          );
         },
         done: Text(DemoLocalizations.of(context).vals["VarietyLocation"]["5"],
             style: TextStyle(color: Colors.white, fontSize: 20)),
