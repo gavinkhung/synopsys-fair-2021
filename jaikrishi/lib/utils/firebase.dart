@@ -26,6 +26,7 @@ import 'imageProcessing.dart';
 FirebaseAuth _auth = FirebaseAuth.instance;
 Firestore _firebaseStore = Firestore.instance;
 bool justSignedUp = false;
+int selectedIndex = 0;
 
 final FirebaseAnalytics analytics = FirebaseAnalytics();
 final FirebaseMessaging _fcm = FirebaseMessaging();
@@ -61,6 +62,118 @@ Future<FirebaseUser> getCurrUser() async {
   return await _auth.currentUser();
 }
 
+Future pickLang(BuildContext context) {
+  //create field variable: int selectedIndex = 0;
+  String ans;
+  return showModalBottomSheet(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(100),
+        topRight: Radius.circular(100),
+      ),
+    ),
+    useRootNavigator: true,
+    context: context,
+    builder: (context) {
+      return StatefulBuilder(builder: (context, setState) {
+        return Material(
+          shadowColor: Colors.transparent,
+          type: MaterialType.card,
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+          ),
+          child: IntrinsicHeight(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  AppBar(
+                    title: Text(
+                      "Select your preferred language",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    backgroundColor: Colors.white,
+                    centerTitle: true,
+                    automaticallyImplyLeading: false,
+                    leading: GestureDetector(
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.black,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 30),
+                          onTap: () {
+                            DemoLocalizations.of(context).locale =
+                                new Locale("en");
+                            DemoLocalizations.of(context).setVals();
+                            ans = "en";
+                            setState(() {
+                              selectedIndex = 0;
+                            });
+                          },
+                          leading: Icon(
+                            Icons.favorite,
+                            color:
+                                selectedIndex == 0 ? Colors.red : Colors.grey,
+                          ),
+                          title: Text("English"),
+                          trailing: Icon(
+                            selectedIndex == 0 ? Icons.check : null,
+                          ),
+                        ),
+                        ListTile(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 30),
+                          onTap: () {
+                            DemoLocalizations.of(context).locale =
+                                new Locale("hi");
+                            DemoLocalizations.of(context).setVals();
+
+                            ans = "hi";
+                            setState(() {
+                              selectedIndex = 2;
+                            });
+                          },
+                          leading: Icon(
+                            Icons.star,
+                            color:
+                                selectedIndex == 2 ? Colors.red : Colors.grey,
+                          ),
+                          title: Text("Hindi"),
+                          trailing: Icon(
+                            selectedIndex == 2 ? Icons.check : null,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      });
+    },
+  );
+}
+
 StreamBuilder autoLogin(BuildContext cont) {
   sendAnalyticsEvent(cont);
   return StreamBuilder(
@@ -68,7 +181,11 @@ StreamBuilder autoLogin(BuildContext cont) {
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.active) {
         FirebaseUser user = snapshot.data;
+
         DemoLocalizations.of(cont).setVals();
+        Future.delayed(Duration.zero, () {
+          pickLang(cont);
+        });
         if (user == null) {
           return FutureBuilder<String>(
             future: getUrl(),
@@ -512,46 +629,4 @@ updateNotify(String uid, String id) {
       .collection("image_diseases")
       .document(id)
       .updateData({"status": "checked", "works": "yes"});
-}
-
-FutureBuilder<QuerySnapshot> cardPrevNotifs(String _uid, BuildContext context) {
-  return FutureBuilder<QuerySnapshot>(
-      future: getPrevNotifs(_uid),
-      builder: (context, data) {
-        if (data.hasData) {
-          var notifs = data.data.documents;
-          notifs.sort((a, b) {
-            var aDT = DateTime.parse(a.data["time"].replaceAll("/", "-") + "Z");
-            var bDT = DateTime.parse(b.data["time"].replaceAll("/", "-") + "Z");
-            return bDT.compareTo(aDT);
-          });
-          if (notifs.length == 0) {
-            return Center(
-                child: Text(
-              DemoLocalizations.of(context).vals["History"]["noNotifications"],
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.height > 600 ? 20 : 15),
-            ));
-          } else {
-            DateTime dt = DateTime.parse(notifs[0]["time"] + "Z").toLocal();
-
-            return Column(children: [
-              notifBody(dt, notifs[0], context),
-              GestureDetector(
-                child: Text(
-                    DemoLocalizations.of(context).vals["History"]["seeMore"],
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        decoration: TextDecoration.underline)),
-                // onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (context) => Notifications(_uid)))
-              )
-            ]);
-          }
-        } else
-          return Center(child: CircularProgressIndicator());
-      });
 }

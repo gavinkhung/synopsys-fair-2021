@@ -15,6 +15,7 @@ class DemoLocalizations {
   Map<dynamic, dynamic> vals;
 
   setVals() async {
+    print(locale.languageCode);
     vals = await rootBundle
         .loadString("data/" + locale.languageCode + ".json")
         .then((value) {
