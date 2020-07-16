@@ -14,7 +14,7 @@ import requests
 
 class Communicate:
     def __init__(self):
-        cred = credentials.Certificate('backend/certificate.json')
+        cred = credentials.Certificate('certificate.json')
         firebase_admin.initialize_app(cred, {
             'storageBucket': 'jaikrishi.appspot.com'
         })

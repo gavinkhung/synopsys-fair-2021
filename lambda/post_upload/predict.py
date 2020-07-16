@@ -1,16 +1,17 @@
 import torch
+import torchvision.transforms as T
 from fastai.vision import *
 
 class Prediction:
     def __init__(self):
         defaults.device = torch.device('cpu')
         # use "model/" for aws instance
-        self.learn = load_learner("model/")
+        self.learn = load_learner(".")
         #self.classes = ['BLB', 'Brown Spot', 'Brown Spot Crop', 'False Smut', 'Healthy', 'Healthy Rice', 'Leaf Blast', 'Sheath Blight', 'ZnDf']
         self.classes = self.learn.data.classes
     
-    def predict(self, file, crop):
-        img = open_image(file)
+    def predict(self, pil_image, crop):
+        img = Image(T.ToTensor()(pil_image))
         pred_class, pred_idx, outputs = self.learn.predict(img)
         return str(self.model_output(outputs, 0.5))
     

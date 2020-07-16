@@ -3,11 +3,11 @@ import base64
 from io import BytesIO
 from requests_toolbelt import MultipartDecoder
 from PIL import Image
-from model import predict
-from backend import communicate
+from predict import Prediction
+from communicate import Communicate
 
 communicate = Communicate()
-model = predict.Prediction()
+model = Prediction()
 
 def upload_route(event, context):
     params = event['multiValueQueryStringParameters']

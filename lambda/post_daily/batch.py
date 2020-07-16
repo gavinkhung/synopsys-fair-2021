@@ -3,7 +3,7 @@ from datetime import datetime
 import datetime
 import requests
 
-from backend.communicate import Communicate
+from communicate import Communicate
 
 import time
 import atexit
