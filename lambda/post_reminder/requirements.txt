@@ -1,0 +1,4 @@
+firebase-admin==4.3.0
+Pillow==7.2.0
+requests==2.23.0
+requests_toolbelt==0.9.1
