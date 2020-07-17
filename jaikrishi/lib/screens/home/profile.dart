@@ -64,12 +64,16 @@ class _profile extends State<profile> {
                             DropdownMenuItem(
                               child: IconButton(
                                 icon: Icon(Icons.language),
-                                onPressed: () {
-                                  pickLang(
+                                onPressed: () async {
+                                  await pickLang(
                                       context,
                                       Provider.of<UserModel>(context,
                                               listen: false)
                                           .uid);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => profile()));
                                 },
                               ),
                             ),
