@@ -51,6 +51,8 @@ class _Onboard extends State<Onboard> {
   void initState() {
     super.initState();
 
+    analytics.logTutorialBegin();
+
     // this.requestLocationPermission();
     // getLocation().then((_locationData) {
     //   userLoc = new LatLng(_locationData.latitude, _locationData.longitude);
@@ -630,6 +632,7 @@ class _Onboard extends State<Onboard> {
               },
             ).then(
               (value) {
+                analytics.logTutorialComplete();
                 Navigator.push(
                   context,
                   MaterialPageRoute(

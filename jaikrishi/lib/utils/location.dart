@@ -55,11 +55,12 @@ Future<bool> requestPermission(PermissionGroup permission) async {
 }
 
 Widget showLocData(BuildContext context) {
-  var coords;
+  String address;
   try {
     UserModel user = Provider.of<UserModel>(context, listen: false);
-    coords = new Coordinates(user.loc.latitude, user.loc.longitude);
+    address = user.address;
   } catch (Exception) {
+    analytics.logEvent(name: "loc_data_failed");
     return Row(
       children: [
         Text(
@@ -83,40 +84,29 @@ Widget showLocData(BuildContext context) {
     );
   }
 
-  return FutureBuilder<List<Address>>(
-    future: Geocoder.local.findAddressesFromCoordinates(coords),
-    builder: (context, data) {
-      if (data.hasData) {
-        return Container(
-          child: Wrap(
-            children: [
-              Text(
-                DemoLocalizations.of(context).vals["FirstPage"]["7"],
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w500,
-                  fontSize:
-                      MediaQuery.of(context).size.height < 600 ? 11.3 : 17,
-                ),
-                softWrap: true,
-              ),
-              Text(
-                data.data[0].addressLine,
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize:
-                      MediaQuery.of(context).size.height < 600 ? 11.3 : 17,
-                ),
-                //softWrap: true,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+  return Container(
+    child: Wrap(
+      children: [
+        Text(
+          DemoLocalizations.of(context).vals["FirstPage"]["7"],
+          style: TextStyle(
+            color: Colors.black54,
+            fontWeight: FontWeight.w500,
+            fontSize: MediaQuery.of(context).size.height < 600 ? 11.3 : 17,
           ),
-        );
-      } else {
-        return Center(child: CircularProgressIndicator());
-      }
-    },
+          softWrap: true,
+        ),
+        Text(
+          address,
+          style: TextStyle(
+            color: Colors.black54,
+            fontSize: MediaQuery.of(context).size.height < 600 ? 11.3 : 17,
+          ),
+          //softWrap: true,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
+    ),
   );
 }
 
@@ -139,7 +129,6 @@ Widget buildWeatherCard(BuildContext context) {
 Widget usingWeatherData(BuildContext context) {
   try {
     WeatherModel data = Provider.of<WeatherModel>(context, listen: true);
-    print(data.day);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,6 +236,7 @@ class _locNotEnabled extends State<locNotEnabled> {
   PermissionHandler _permissionHandler = PermissionHandler();
   @override
   Widget build(BuildContext context) {
+    analytics.logEvent(name: "switch_showed_up");
     return Column(
       children: [
         Center(

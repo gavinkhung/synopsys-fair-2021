@@ -13,6 +13,7 @@ class UserModel extends ChangeNotifier {
   int _type;
   LatLng _loc;
   Map _data;
+  String _address;
 
   String get phoneNumber => _phoneNumber;
   String get url => _url;
@@ -23,6 +24,11 @@ class UserModel extends ChangeNotifier {
   int get type => _type;
   LatLng get loc => _loc;
   Map get data => _data;
+  String get address => _address;
+
+  set address(String val) {
+    _address = val;
+  }
 
   set loc(LatLng val) {
     _loc = val;

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:leaf_problem_detection/models/weather_model.dart';
@@ -238,6 +239,7 @@ StreamBuilder autoLogin(BuildContext cont) {
                       }
                     });
               } else {
+                analytics.logEvent(name: "set_vals_failed");
                 return CircularProgressIndicator();
               }
             },
@@ -245,6 +247,7 @@ StreamBuilder autoLogin(BuildContext cont) {
           //return Home();
         }
       } else {
+        analytics.logEvent(name: "snapshot_data_null");
         return Scaffold(
           body: CircularProgressIndicator(),
         );
@@ -328,12 +331,20 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
 
   String url = await getUrl();
   userModel.url = url;
-  if (locData.indexOf(" ") != -1)
+  if (locData.indexOf(" ") != -1) {
+    Coordinates coords = new Coordinates(
+        double.parse(locData.substring(0, locData.indexOf(" "))),
+        double.parse(locData.substring(locData.indexOf(" ") + 1)));
+    Geocoder.local
+        .findAddressesFromCoordinates(coords)
+        .then((value) => userModel.address = value.first.addressLine);
+
     setWeatherData(
         user.uid,
         context,
         locData.substring(0, locData.indexOf(" ")),
         locData.substring(locData.indexOf(" ") + 1));
+  }
   String lang = null;
   try {
     lang = data.data["lang"];
