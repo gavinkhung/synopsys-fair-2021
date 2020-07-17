@@ -127,6 +127,7 @@ Future pickLang(BuildContext cont, String uid) {
                             if (uid != "") {
                               updateUser(uid, {"lang": "en"});
                             }
+                            Navigator.pop(context);
                             setState(() {
                               selectedIndex = 0;
                             });
@@ -153,6 +154,7 @@ Future pickLang(BuildContext cont, String uid) {
                             if (uid != "") {
                               updateUser(uid, {"lang": "hi"});
                             }
+                            Navigator.pop(context);
                             setState(() {
                               selectedIndex = 2;
                             });
@@ -523,7 +525,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
 
 FutureBuilder showUsername(String uid, TextEditingController controller) {
   return FutureBuilder<DocumentSnapshot>(
-      future: Firestore.instance.collection("users").document(uid).get(),
+      future: getData(uid),
       builder: (context, data) {
         if (data.hasData) {
           if (data.data["name"] != null) controller.text = data.data["name"];
