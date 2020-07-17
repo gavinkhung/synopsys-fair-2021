@@ -33,7 +33,7 @@ class _Auth extends State<Auth> {
     if (error) {
       _getThingsOnStartup().then((value) {});
     }
-    getLocation().then((value) {
+    getLocation(false).then((value) {
       Provider.of<UserModel>(context, listen: false).loc =
           LatLng(value.latitude, value.longitude);
     });

@@ -326,9 +326,19 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
 
   String url = await getUrl();
   userModel.url = url;
-  setWeatherData(user.uid, context, locData.substring(0, locData.indexOf(" ")),
-      locData.substring(locData.indexOf(" ") + 1));
-  String lang = data.data["lang"];
+  print(locData);
+  if (locData.indexOf(" ") != -1)
+    setWeatherData(
+        user.uid,
+        context,
+        locData.substring(0, locData.indexOf(" ")),
+        locData.substring(locData.indexOf(" ") + 1));
+  String lang = null;
+  try {
+    lang = data.data["lang"];
+  } catch (e) {
+    print(e.toString());
+  }
 
   userModel.data = await loadJson(url, context, lang != null ? lang : "en");
 

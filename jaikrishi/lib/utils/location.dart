@@ -18,26 +18,28 @@ import 'package:http/http.dart' as http;
 
 final PermissionHandler _permissionHandler = PermissionHandler();
 
-Future<loc.LocationData> getLocation() async {
+Future<loc.LocationData> getLocation(bool check) async {
   requestLocationPermission();
   loc.Location location = new loc.Location();
 
   bool _serviceEnabled;
   loc.PermissionStatus _permissionGranted;
   loc.LocationData _locationData;
-
   _serviceEnabled = await location.serviceEnabled();
   if (!_serviceEnabled) {
     _serviceEnabled = await location.requestService();
     if (!_serviceEnabled) {}
   }
+
   _permissionGranted = await location.hasPermission();
   if (_permissionGranted == PermissionStatus.denied) {
     _permissionGranted = await location.requestPermission();
     if (_permissionGranted != PermissionStatus.granted) {}
   }
 
-  return _locationData = await location.getLocation();
+  if (check) await Future.delayed(Duration(seconds: 5));
+  _locationData = await location.getLocation();
+  return _locationData;
 }
 
 Future<bool> requestLocationPermission() async {
@@ -137,7 +139,7 @@ Widget buildWeatherCard(BuildContext context) {
 Widget usingWeatherData(BuildContext context) {
   try {
     WeatherModel data = Provider.of<WeatherModel>(context, listen: true);
-
+    print(data.day);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,13 +261,22 @@ class _locNotEnabled extends State<locNotEnabled> {
           trailing: CupertinoSwitch(
             value: switchState,
             activeColor: Color.fromRGBO(24, 165, 123, 1),
-            onChanged: (selected) {
+            onChanged: (selected) async {
               setState(
                 () {
                   switchState = !switchState;
-                  _permissionHandler
-                      .checkPermissionStatus(PermissionGroup.locationWhenInUse)
-                      .then((value) => print(value));
+                  getLocation(true).then((value) {
+                    Provider.of<UserModel>(context, listen: false).loc =
+                        LatLng(value.latitude, value.longitude);
+                    setWeatherData(
+                        Provider.of<UserModel>(context, listen: false).uid,
+                        context,
+                        value.latitude.toString(),
+                        value.longitude.toString());
+                    updateUserWeather(
+                        Provider.of<UserModel>(context, listen: false).uid,
+                        value);
+                  });
                 },
               );
             },

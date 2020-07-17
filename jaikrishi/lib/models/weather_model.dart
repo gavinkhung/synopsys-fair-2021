@@ -47,4 +47,8 @@ class WeatherModel extends ChangeNotifier {
     _id = val;
     notifyListeners();
   }
+
+  toString() {
+    return _humidity + " " + _typeWeather;
+  }
 }

@@ -8,10 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:leaf_problem_detection/models/weather_model.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/utils/location.dart';
 import 'package:leaf_problem_detection/widgets/card.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -104,26 +106,41 @@ class _profile extends State<profile> {
                             DropdownMenuItem(
                                 child: IconButton(
                                     icon: Icon(Icons.location_on),
-                                    onPressed: () {
-                                      getLocation().then((value) {
-                                        Provider.of<UserModel>(context,
-                                                    listen: false)
-                                                .loc =
-                                            LatLng(value.latitude,
-                                                value.longitude);
-                                        setWeatherData(
-                                            Provider.of<UserModel>(context,
-                                                    listen: false)
-                                                .uid,
-                                            context,
-                                            value.latitude.toString(),
-                                            value.longitude.toString());
-                                        updateUserWeather(
-                                            Provider.of<UserModel>(context,
-                                                    listen: false)
-                                                .uid,
-                                            value);
-                                      });
+                                    onPressed: () async {
+                                      print("just checking");
+                                      LocationData value = await getLocation(true);
+                                      print(value.toString());
+                                      Provider.of<UserModel>(context,
+                                                  listen: false)
+                                              .loc =
+                                          LatLng(
+                                              value.latitude, value.longitude);
+                                      await setWeatherData(
+                                          Provider.of<UserModel>(context,
+                                                  listen: false)
+                                              .uid,
+                                          context,
+                                          value.latitude.toString(),
+                                          value.longitude.toString());
+                                      await updateUserWeather(
+                                          Provider.of<UserModel>(context,
+                                                  listen: false)
+                                              .uid,
+                                          value);
+                                      print("hello " +
+                                          Provider.of<UserModel>(context,
+                                                  listen: false)
+                                              .loc
+                                              .toString());
+                                      print("hi" +
+                                          Provider.of<WeatherModel>(context,
+                                                  listen: false)
+                                              .day
+                                              .toString());
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => profile()));
                                     }))
                           ],
                           onChanged: (value) {},
