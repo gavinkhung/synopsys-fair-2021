@@ -180,6 +180,16 @@ Future pickLang(BuildContext cont, String uid) {
   );
 }
 
+Future<bool> signOut() async {
+  try {
+    await _auth.signOut();
+    return true;
+  } catch (e) {
+    print(e);
+    return false;
+  }
+}
+
 StreamBuilder autoLogin(BuildContext cont) {
   sendAnalyticsEvent(cont);
   return StreamBuilder(
@@ -194,7 +204,7 @@ StreamBuilder autoLogin(BuildContext cont) {
             future: getUrl(),
             builder: (context, data) {
               if (data.hasData) {
-                return FutureBuilder<LocationData>(
+                return FutureBuilder<LatLng>(
                   future: getLocation(),
                   builder: (context, loc) {
                     if (loc.hasData) {
@@ -263,7 +273,13 @@ Future<String> getUrl() async {
 
 Future<bool> setVals(BuildContext context, FirebaseUser user) async {
   UserModel userModel = Provider.of<UserModel>(context, listen: false);
-  userModel.uid = user.uid;
+  try {
+    userModel.uid = user.uid;
+  } catch (e) {
+    print(e);
+    userModel.uid = "";
+  }
+
   DocumentSnapshot data = await getData(user.uid);
   try {
     userModel.seed = data.data["seed"].toDate();
@@ -286,17 +302,17 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
   try {
     userModel.crop = data.data["crop"];
   } catch (e) {
-    print(e.toString());
     userModel.crop = null;
+
+    print(e.toString());
   }
   try {
     userModel.phoneNumber = data.data["phone"];
   } catch (e) {
-    print(e.toString());
     userModel.phoneNumber = null;
   }
-  String locData = data.data["location"];
 
+  String locData = data.data["location"];
   try {
     LatLng loc = new LatLng(
       double.parse(
@@ -316,6 +332,7 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
     print(e.toString());
     userModel.loc = new LatLng(20, 79);
   }
+
   String url = await getUrl();
   userModel.url = url;
 

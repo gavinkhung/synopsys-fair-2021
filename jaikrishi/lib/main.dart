@@ -59,8 +59,6 @@ class App extends StatefulWidget {
 class _App extends State<App> {
   initState() {}
 
-  final PermissionHandler _permissionHandler = PermissionHandler();
-
   Widget build(BuildContext context) {
     return Scaffold(
       body: autoLogin(context),

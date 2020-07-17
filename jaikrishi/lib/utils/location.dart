@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/models/weather_model.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
@@ -16,7 +18,7 @@ import 'package:http/http.dart' as http;
 
 final PermissionHandler _permissionHandler = PermissionHandler();
 
-Future<loc.LocationData> getLocation() async {
+Future<LatLng> getLocation() async {
   requestLocationPermission();
   loc.Location location = new loc.Location();
 
@@ -27,15 +29,17 @@ Future<loc.LocationData> getLocation() async {
   _serviceEnabled = await location.serviceEnabled();
   if (!_serviceEnabled) {
     _serviceEnabled = await location.requestService();
-    if (!_serviceEnabled) {}
+    if (!_serviceEnabled) {
+      return LatLng(20, 79);
+    }
   }
   _permissionGranted = await location.hasPermission();
-  if (_permissionGranted == PermissionStatus.denied) {
-    _permissionGranted = await location.requestPermission();
-    if (_permissionGranted != PermissionStatus.granted) {}
+  if (_permissionGranted != PermissionStatus.granted) {
+    return LatLng(20, 79);
+  } else {
+    _locationData = await location.getLocation();
+    return LatLng(_locationData.latitude, _locationData.longitude);
   }
-
-  return _locationData = await location.getLocation();
 }
 
 Future<bool> requestLocationPermission() async {
@@ -135,6 +139,13 @@ Widget buildWeatherCard(BuildContext context) {
 Widget usingWeatherData(BuildContext context) {
   try {
     WeatherModel data = Provider.of<WeatherModel>(context, listen: true);
+    print(data.day);
+    print(data.humidity);
+    print(data.id);
+    print(data.maxTemp);
+    print(data.minTemp);
+    print(data.temp);
+    print(data.typeWeather);
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,8 +235,8 @@ Widget usingWeatherData(BuildContext context) {
       ),
     );
   } catch (e) {
-    print(e.toString());
-    return Container();
+    print("error: " + e.toString());
+    return locNotEnabled();
   }
 }
 
