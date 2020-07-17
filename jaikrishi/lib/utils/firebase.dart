@@ -60,7 +60,7 @@ Future<FirebaseUser> getCurrUser() async {
   return await _auth.currentUser();
 }
 
-Future pickLang(BuildContext cont) {
+Future pickLang(BuildContext cont, String uid) {
   //create field variable: int selectedIndex = 0;
   return showModalBottomSheet(
     shape: RoundedRectangleBorder(
@@ -121,12 +121,12 @@ Future pickLang(BuildContext cont) {
                             DemoLocalizations.of(context).locale =
                                 new Locale("en");
                             DemoLocalizations.of(context).setVals();
+                            String url = await getUrl();
                             Provider.of<UserModel>(cont, listen: false).data =
-                                await loadJson(
-                                    Provider.of<UserModel>(cont, listen: false)
-                                        .url,
-                                    cont,
-                                    "en");
+                                await loadJson(url, cont, "en");
+                            if (uid != "") {
+                              updateUser(uid, {"lang": "en"});
+                            }
                             setState(() {
                               selectedIndex = 0;
                             });
@@ -147,12 +147,12 @@ Future pickLang(BuildContext cont) {
                             DemoLocalizations.of(context).locale =
                                 new Locale("hi");
                             DemoLocalizations.of(context).setVals();
+                            String url = await getUrl();
                             Provider.of<UserModel>(cont, listen: false).data =
-                                await loadJson(
-                                    Provider.of<UserModel>(cont, listen: false)
-                                        .url,
-                                    cont,
-                                    "hi");
+                                await loadJson(url, cont, "hi");
+                            if (uid != "") {
+                              updateUser(uid, {"lang": "hi"});
+                            }
                             setState(() {
                               selectedIndex = 2;
                             });
@@ -188,9 +188,7 @@ StreamBuilder autoLogin(BuildContext cont) {
       if (snapshot.connectionState == ConnectionState.active) {
         FirebaseUser user = snapshot.data;
         DemoLocalizations.of(cont).setVals();
-        Future.delayed(Duration.zero, () {
-          pickLang(cont);
-        });
+
         if (user == null) {
           return FutureBuilder<String>(
             future: getUrl(),
@@ -226,7 +224,17 @@ StreamBuilder autoLogin(BuildContext cont) {
             future: setVals(cont, user),
             builder: (context, data) {
               if (data.hasData) {
-                return Home();
+                return FutureBuilder(
+                    future: getData(user.uid),
+                    builder: (context, data) {
+                      if (data.hasData) {
+                        DemoLocalizations.of(cont).locale =
+                            new Locale(data.data["lang"]);
+                        return Home();
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    });
               } else {
                 return CircularProgressIndicator();
               }
@@ -250,41 +258,70 @@ Future<DocumentSnapshot> getData(String uid) {
 Future<String> getUrl() async {
   var ref =
       await Firestore.instance.collection("data").document("backend").get();
-  return "http://10.0.2.2:5000";
+  return "http://54.183.188.209";
 }
 
 Future<bool> setVals(BuildContext context, FirebaseUser user) async {
   UserModel userModel = Provider.of<UserModel>(context, listen: false);
   userModel.uid = user.uid;
   DocumentSnapshot data = await getData(user.uid);
-  userModel.seed = data.data["seed"].toDate();
-  userModel.trans = data.data["trans"].toDate();
-  userModel.type = data.data["type"];
-  userModel.crop = data.data["crop"];
-  userModel.phoneNumber = data.data["phone"];
+  try {
+    userModel.seed = data.data["seed"].toDate();
+  } catch (e) {
+    print(e.toString());
+    userModel.seed = null;
+  }
+  try {
+    userModel.trans = data.data["trans"].toDate();
+  } catch (e) {
+    print(e.toString());
+    userModel.trans = null;
+  }
+  try {
+    userModel.type = data.data["type"];
+  } catch (e) {
+    print(e.toString());
+    userModel.type = null;
+  }
+  try {
+    userModel.crop = data.data["crop"];
+  } catch (e) {
+    print(e.toString());
+    userModel.crop = null;
+  }
+  try {
+    userModel.phoneNumber = data.data["phone"];
+  } catch (e) {
+    print(e.toString());
+    userModel.phoneNumber = null;
+  }
   String locData = data.data["location"];
 
-  LatLng loc = new LatLng(
-    double.parse(
-      locData.substring(
-        0,
-        locData.indexOf(" "),
+  try {
+    LatLng loc = new LatLng(
+      double.parse(
+        locData.substring(
+          0,
+          locData.indexOf(" "),
+        ),
       ),
-    ),
-    double.parse(
-      locData.substring(
-        locData.indexOf(" "),
+      double.parse(
+        locData.substring(
+          locData.indexOf(" "),
+        ),
       ),
-    ),
-  );
-  userModel.loc = loc;
+    );
+    userModel.loc = loc;
+  } catch (e) {
+    print(e.toString());
+    userModel.loc = new LatLng(20, 79);
+  }
   String url = await getUrl();
   userModel.url = url;
 
   String lang = data.data["lang"];
 
   userModel.data = await loadJson(url, context, lang != null ? lang : "en");
-
   getWeatherData(
       user.uid,
       locData.substring(
@@ -308,7 +345,7 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
 }
 
 Future<QuerySnapshot> getPrevNotifs(String _uid) {
-  return Firestore.instance
+  return _firebaseStore
       .collection("users")
       .document(_uid)
       .collection("daily_diseases")
@@ -316,7 +353,7 @@ Future<QuerySnapshot> getPrevNotifs(String _uid) {
 }
 
 Future<QuerySnapshot> getPrevDisease(String _uid) {
-  return Firestore.instance
+  return _firebaseStore
       .collection("users")
       .document(_uid)
       .collection("image_diseases")
@@ -628,10 +665,14 @@ Widget notifBody(DateTime dt, DocumentSnapshot notifs, BuildContext context) {
 }
 
 updateNotify(String uid, String id) {
-  return Firestore.instance
+  return _firebaseStore
       .collection("users")
       .document(uid)
       .collection("image_diseases")
       .document(id)
       .updateData({"status": "checked", "works": "yes"});
+}
+
+updateUser(String uid, Map data) {
+  return _firebaseStore.collection("users").document(uid).updateData(data);
 }

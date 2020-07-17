@@ -32,6 +32,9 @@ class _Auth extends State<Auth> {
       _getThingsOnStartup().then((value) {});
     }
     super.initState();
+    Future.delayed(Duration.zero, () {
+      pickLang(context, "");
+    });
   }
 
   @override
@@ -404,6 +407,7 @@ class _Auth extends State<Auth> {
     } else {
       Map<String, dynamic> map = {
         'phone': this.phoneController.text,
+        'lang': DemoLocalizations.of(context).locale.languageCode
       };
       Provider.of<UserModel>(context, listen: false).uid = uid;
       setData(map, 0, context);
