@@ -11,6 +11,7 @@ import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/utils/location.dart';
+import 'package:leaf_problem_detection/widgets/card.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
@@ -83,7 +84,48 @@ class _profile extends State<profile> {
                       return Center(
                         child: DropdownButton(
                           icon: Icon(Icons.more, color: myGreen),
-                          items: [DropdownMenuItem(child: Text(""))],
+                          items: [
+                            DropdownMenuItem(
+                              child: IconButton(
+                                icon: Icon(Icons.language),
+                                onPressed: () async {
+                                  await pickLang(
+                                      context,
+                                      Provider.of<UserModel>(context,
+                                              listen: false)
+                                          .uid);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => profile()));
+                                },
+                              ),
+                            ),
+                            DropdownMenuItem(
+                                child: IconButton(
+                                    icon: Icon(Icons.location_on),
+                                    onPressed: () {
+                                      getLocation().then((value) {
+                                        Provider.of<UserModel>(context,
+                                                    listen: false)
+                                                .loc =
+                                            LatLng(value.latitude,
+                                                value.longitude);
+                                        setWeatherData(
+                                            Provider.of<UserModel>(context,
+                                                    listen: false)
+                                                .uid,
+                                            context,
+                                            value.latitude.toString(),
+                                            value.longitude.toString());
+                                        updateUserWeather(
+                                            Provider.of<UserModel>(context,
+                                                    listen: false)
+                                                .uid,
+                                            value);
+                                      });
+                                    }))
+                          ],
                           onChanged: (value) {},
                         ),
                       );
@@ -158,25 +200,11 @@ class _profile extends State<profile> {
                       ],
                     ),
                     buildWeatherCard(context),
-                    cropInfoCard(),
+                    card(context, getUserData()),
                   ],
                 ))
           ])),
         ),
-      ),
-    );
-  }
-
-  Widget cropInfoCard() {
-    return Container(
-      padding: EdgeInsets.all(20),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            color: Color.fromRGBO(196, 243, 220, 1),
-            borderRadius: BorderRadius.circular(20)),
-        padding: EdgeInsets.all(20),
-        child: IntrinsicHeight(child: getUserData()),
       ),
     );
   }

@@ -125,8 +125,10 @@ Future pickLang(BuildContext cont, String uid) {
                             Provider.of<UserModel>(cont, listen: false).data =
                                 await loadJson(url, cont, "en");
                             if (uid != "") {
-                              updateUser(uid, {"lang": "en"});
+                              Map<String, dynamic> temp = {"lang": "en"};
+                              updateUser(uid, temp);
                             }
+                            Navigator.pop(context);
                             setState(() {
                               selectedIndex = 0;
                             });
@@ -151,8 +153,10 @@ Future pickLang(BuildContext cont, String uid) {
                             Provider.of<UserModel>(cont, listen: false).data =
                                 await loadJson(url, cont, "hi");
                             if (uid != "") {
-                              updateUser(uid, {"lang": "hi"});
+                              Map<String, dynamic> temp = {"lang": "hi"};
+                              updateUser(uid, temp);
                             }
+                            Navigator.pop(context);
                             setState(() {
                               selectedIndex = 2;
                             });
@@ -204,27 +208,10 @@ StreamBuilder autoLogin(BuildContext cont) {
             future: getUrl(),
             builder: (context, data) {
               if (data.hasData) {
-                // return FutureBuilder<LatLng>(
-                //   future: getLocation(),
-                //   builder: (context, loc) {
-                //     if (loc.hasData) {
-                //       // Provider.of<UserModel>(context, listen: false).url =
-                //       //     data.data;
-                //       // Provider.of<UserModel>(context, listen: false).loc =
-                //       //     LatLng(loc.data.latitude, loc.data.longitude);
-                //       justSignedUp = true;
-                //       return Auth(false);
-                //     } else {
-                //       print("loc");
-                //       return CircularProgressIndicator();
-                //     }
-                //   },
-                // );
                 Provider.of<UserModel>(context, listen: false).url = data.data;
                 justSignedUp = true;
                 return Auth(false);
               } else {
-                print("url");
                 return CircularProgressIndicator();
               }
             },
@@ -338,20 +325,17 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
 
   String url = await getUrl();
   userModel.url = url;
-
+  setWeatherData(user.uid, context, locData.substring(0, locData.indexOf(" ")),
+      locData.substring(locData.indexOf(" ") + 1));
   String lang = data.data["lang"];
 
   userModel.data = await loadJson(url, context, lang != null ? lang : "en");
-  getWeatherData(
-      user.uid,
-      locData.substring(
-        0,
-        locData.indexOf(" "),
-      ),
-      locData.substring(
-        locData.indexOf(" "),
-      )).then((weather) {
-    print("hello" + weather.toString());
+
+  return true;
+}
+
+setWeatherData(String uid, BuildContext context, String lat, String long) {
+  getWeatherData(uid, lat, long).then((weather) {
     WeatherModel wData = Provider.of<WeatherModel>(context, listen: false);
     wData.temp = weather['main']['temp'].round().toString();
     wData.minTemp = weather['main']['temp_min'].round().toString();
@@ -361,7 +345,6 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
     wData.day = DateFormat.yMMMEd().format(DateTime.now());
     wData.id = weather['weather'][0]['icon'].toString();
   });
-  return true;
 }
 
 Future<QuerySnapshot> getPrevNotifs(String _uid) {
@@ -526,7 +509,7 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
 
 FutureBuilder showUsername(String uid, TextEditingController controller) {
   return FutureBuilder<DocumentSnapshot>(
-      future: Firestore.instance.collection("users").document(uid).get(),
+      future: getData(uid),
       builder: (context, data) {
         if (data.hasData) {
           if (data.data["name"] != null) controller.text = data.data["name"];
@@ -693,6 +676,13 @@ updateNotify(String uid, String id) {
       .updateData({"status": "checked", "works": "yes"});
 }
 
-updateUser(String uid, Map data) {
+updateUser(String uid, Map<String, dynamic> data) {
   return _firebaseStore.collection("users").document(uid).updateData(data);
+}
+
+updateUserWeather(String uid, LocationData loc) {
+  Map<String, dynamic> data = {
+    "location": loc.latitude.toString() + " " + loc.longitude.toString()
+  };
+  updateUser(uid, data);
 }

@@ -34,7 +34,6 @@ class _Auth extends State<Auth> {
       _getThingsOnStartup().then((value) {});
     }
     getLocation().then((value) {
-      print("location " + value.toString());
       Provider.of<UserModel>(context, listen: false).loc =
           LatLng(value.latitude, value.longitude);
     });

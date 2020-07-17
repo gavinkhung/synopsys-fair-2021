@@ -13,7 +13,6 @@ import '../uploader.dart';
 Widget diseaseText(BuildContext context, String _response) {
   if (_response == "Healthy Crop") _response = "Healthy";
   Map data = Provider.of<UserModel>(context, listen: false).data[_response];
-  print("d: " + data.toString());
   return Expanded(
       child: Center(
           child: Column(

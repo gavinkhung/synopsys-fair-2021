@@ -88,9 +88,6 @@ class _Onboard extends State<Onboard> {
       this._username, this._firstTime, this._phone, this._url, this.userLoc);
 
   Widget build(BuildContext context) {
-    print("Internal: " + _username);
-    print("Provider: " + Provider.of<UserModel>(context, listen: false).uid);
-
     final introScreens = [
       PageViewModel(
         decoration: PageDecoration(
@@ -629,12 +626,6 @@ class _Onboard extends State<Onboard> {
               },
             ).then(
               (value) {
-                print(
-                  "TEESSSST: " +
-                      Provider.of<UserModel>(context, listen: false)
-                          .phoneNumber
-                          .toString(),
-                );
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -680,12 +671,6 @@ class _Onboard extends State<Onboard> {
             },
           ).then(
             (value) {
-              print(
-                "TEESSSST: " +
-                    Provider.of<UserModel>(context, listen: false)
-                        .phoneNumber
-                        .toString(),
-              );
               Navigator.push(
                 context,
                 MaterialPageRoute(
