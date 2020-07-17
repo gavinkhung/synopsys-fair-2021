@@ -18,7 +18,7 @@ import 'package:http/http.dart' as http;
 
 final PermissionHandler _permissionHandler = PermissionHandler();
 
-Future<LatLng> getLocation() async {
+Future<loc.LocationData> getLocation() async {
   requestLocationPermission();
   loc.Location location = new loc.Location();
 
@@ -29,17 +29,15 @@ Future<LatLng> getLocation() async {
   _serviceEnabled = await location.serviceEnabled();
   if (!_serviceEnabled) {
     _serviceEnabled = await location.requestService();
-    if (!_serviceEnabled) {
-      return LatLng(20, 79);
-    }
+    if (!_serviceEnabled) {}
   }
   _permissionGranted = await location.hasPermission();
-  if (_permissionGranted != PermissionStatus.granted) {
-    return LatLng(20, 79);
-  } else {
-    _locationData = await location.getLocation();
-    return LatLng(_locationData.latitude, _locationData.longitude);
+  if (_permissionGranted == PermissionStatus.denied) {
+    _permissionGranted = await location.requestPermission();
+    if (_permissionGranted != PermissionStatus.granted) {}
   }
+
+  return _locationData = await location.getLocation();
 }
 
 Future<bool> requestLocationPermission() async {
