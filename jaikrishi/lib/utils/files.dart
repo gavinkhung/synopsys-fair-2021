@@ -41,6 +41,12 @@ Future<Map> loadJson(String url, BuildContext context, String lang) async {
       data = await tempJson(url, context);
     }
   } catch (e) {
+    analytics.logEvent(
+      name: 'load_json_broke',
+      parameters: <String, dynamic>{
+        'string': data.toString(),
+      },
+    );
     print(e.toString());
     data = await tempJson(url, context);
   }
