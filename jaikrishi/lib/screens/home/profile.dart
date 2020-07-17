@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +23,6 @@ class _profile extends State<profile> {
   void initState() {
     super.initState();
     _username = Provider.of<UserModel>(context, listen: false).uid;
-    signOut();
   }
 
   String getVariety(String type, BuildContext context) {
@@ -162,11 +160,9 @@ class _profile extends State<profile> {
     UserModel user = Provider.of<UserModel>(context, listen: false);
     String crop = user.crop;
     DateTime seed;
-    try {
-      seed = user.seed;
-    } catch (e) {
-      print(e);
-    }
+
+    seed = user.seed;
+
     DateTime trans;
     try {
       trans = user.trans;
