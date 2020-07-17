@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
@@ -76,7 +77,20 @@ class _profile extends State<profile> {
                                 child: IconButton(
                                     icon: Icon(Icons.location_on),
                                     onPressed: () {
-                                      getLocation().then((value) {});
+                                      getLocation().then((value) {
+                                        Provider.of<UserModel>(context,
+                                                    listen: false)
+                                                .loc =
+                                            LatLng(value.latitude,
+                                                value.longitude);
+                                        setWeatherData(
+                                            Provider.of<UserModel>(context,
+                                                    listen: false)
+                                                .uid,
+                                            context,
+                                            value.latitude.toString(),
+                                            value.longitude.toString());
+                                      });
                                     }))
                           ],
                           onChanged: (value) {},

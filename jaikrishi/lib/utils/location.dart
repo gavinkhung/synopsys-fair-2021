@@ -137,13 +137,7 @@ Widget buildWeatherCard(BuildContext context) {
 Widget usingWeatherData(BuildContext context) {
   try {
     WeatherModel data = Provider.of<WeatherModel>(context, listen: true);
-    print(data.day);
-    print(data.humidity);
-    print(data.id);
-    print(data.maxTemp);
-    print(data.minTemp);
-    print(data.temp);
-    print(data.typeWeather);
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

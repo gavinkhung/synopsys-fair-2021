@@ -125,7 +125,8 @@ Future pickLang(BuildContext cont, String uid) {
                             Provider.of<UserModel>(cont, listen: false).data =
                                 await loadJson(url, cont, "en");
                             if (uid != "") {
-                              updateUser(uid, {"lang": "en"});
+                              Map<String, dynamic> temp = {"lang": "en"};
+                              updateUser(uid, temp);
                             }
                             Navigator.pop(context);
                             setState(() {
@@ -152,7 +153,8 @@ Future pickLang(BuildContext cont, String uid) {
                             Provider.of<UserModel>(cont, listen: false).data =
                                 await loadJson(url, cont, "hi");
                             if (uid != "") {
-                              updateUser(uid, {"lang": "hi"});
+                              Map<String, dynamic> temp = {"lang": "hi"};
+                              updateUser(uid, temp);
                             }
                             Navigator.pop(context);
                             setState(() {
@@ -340,19 +342,17 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
 
   String url = await getUrl();
   userModel.url = url;
-
+  setWeatherData(user.uid, context, locData.substring(0, locData.indexOf(" ")),
+      locData.substring(locData.indexOf(" ") + 1));
   String lang = data.data["lang"];
 
   userModel.data = await loadJson(url, context, lang != null ? lang : "en");
-  getWeatherData(
-      user.uid,
-      locData.substring(
-        0,
-        locData.indexOf(" "),
-      ),
-      locData.substring(
-        locData.indexOf(" "),
-      )).then((weather) {
+
+  return true;
+}
+
+setWeatherData(String uid, BuildContext context, String lat, String long) {
+  getWeatherData(uid, lat, long).then((weather) {
     print("hello" + weather.toString());
     WeatherModel wData = Provider.of<WeatherModel>(context, listen: false);
     wData.temp = weather['main']['temp'].round().toString();
@@ -363,7 +363,6 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
     wData.day = DateFormat.yMMMEd().format(DateTime.now());
     wData.id = weather['weather'][0]['icon'].toString();
   });
-  return true;
 }
 
 Future<QuerySnapshot> getPrevNotifs(String _uid) {
@@ -695,6 +694,6 @@ updateNotify(String uid, String id) {
       .updateData({"status": "checked", "works": "yes"});
 }
 
-updateUser(String uid, Map data) {
+updateUser(String uid, Map<String, dynamic> data) {
   return _firebaseStore.collection("users").document(uid).updateData(data);
 }
