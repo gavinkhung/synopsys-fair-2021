@@ -1,5 +1,7 @@
 import json
 
+from communicate import Communicate
+
 communicate = Communicate()
 
 def lambda_handler(event, context):
@@ -25,5 +27,3 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps('Sent')
     }
-
-lambda_handler()

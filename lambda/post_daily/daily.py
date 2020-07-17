@@ -1,6 +1,6 @@
 import json
 
-from backend.communicate import Communicate
+from communicate import Communicate
 from batch import *
 
 communicate = Communicate()
