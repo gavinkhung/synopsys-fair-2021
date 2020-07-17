@@ -176,6 +176,16 @@ Future pickLang(BuildContext context) {
   );
 }
 
+Future<bool> signOut() async {
+  try {
+    await _auth.signOut();
+    return true;
+  } catch (e) {
+    print(e);
+    return false;
+  }
+}
+
 StreamBuilder autoLogin(BuildContext cont) {
   sendAnalyticsEvent(cont);
   return StreamBuilder(
@@ -193,7 +203,7 @@ StreamBuilder autoLogin(BuildContext cont) {
             future: getUrl(),
             builder: (context, data) {
               if (data.hasData) {
-                return FutureBuilder<LocationData>(
+                return FutureBuilder<LatLng>(
                   future: getLocation(),
                   builder: (context, loc) {
                     if (loc.hasData) {
@@ -252,44 +262,90 @@ Future<String> getUrl() async {
 
 Future<bool> setVals(BuildContext context, FirebaseUser user) async {
   UserModel userModel = Provider.of<UserModel>(context, listen: false);
-  userModel.uid = user.uid;
+  try {
+    userModel.uid = user.uid;
+  } catch (e) {
+    print(e);
+    userModel.uid = "";
+  }
+
   DocumentSnapshot data = await getData(user.uid);
-  userModel.seed = data.data["seed"].toDate();
-  userModel.trans = data.data["trans"].toDate();
-  userModel.type = data.data["type"];
-  userModel.crop = data.data["crop"];
-  userModel.phoneNumber = data.data["phone"];
-  String locData = data.data["location"];
-
-  LatLng loc = new LatLng(
-    double.parse(
-      locData.substring(
-        0,
-        locData.indexOf(" "),
+  try {
+    userModel.seed = data.data["seed"].toDate();
+  } catch (e) {
+    print(e);
+    userModel.seed = null;
+  }
+  try {
+    userModel.trans = data.data["trans"].toDate();
+  } catch (e) {
+    // TODO
+    userModel.trans = null;
+  }
+  try {
+    userModel.type = data.data["type"];
+  } catch (e) {
+    // TODO
+    userModel.type = -1;
+  }
+  try {
+    userModel.crop = data.data["crop"];
+  } catch (e) {
+    // TODO
+    userModel.crop = "";
+  }
+  try {
+    userModel.phoneNumber = data.data["phone"];
+  } catch (e) {
+    // TODO
+    userModel.phoneNumber = "";
+  }
+  try {
+    String locData = data.data["location"];
+    LatLng loc = new LatLng(
+      double.parse(
+        locData.substring(
+          0,
+          locData.indexOf(" "),
+        ),
       ),
-    ),
-    double.parse(
-      locData.substring(
-        locData.indexOf(" "),
+      double.parse(
+        locData.substring(
+          locData.indexOf(" "),
+        ),
       ),
-    ),
-  );
-  userModel.loc = loc;
-  String url = await getUrl();
-  userModel.url = url;
+    );
+    userModel.loc = loc;
+  } catch (e) {
+    userModel.loc = LatLng(20, 79);
+    print(e.toString());
+  }
 
-  userModel.data = await loadJson(url, context, user.uid);
+  try {
+    String url = await getUrl();
+    userModel.url = url;
+    userModel.data = await loadJson(url, context, user.uid);
+  } catch (e) {
+    userModel.url = "";
+  }
 
-  getWeatherData(user.uid).then((weather) {
-    WeatherModel wData = Provider.of<WeatherModel>(context, listen: false);
-    wData.temp = weather['main']['temp'].round().toString();
-    wData.minTemp = weather['main']['temp_min'].round().toString();
-    wData.maxTemp = weather['main']['temp_max'].round().toString();
-    wData.humidity = weather['main']['humidity'].toString();
-    wData.typeWeather = weather['weather'][0]['main'].toString();
-    wData.day = DateFormat.yMMMEd().format(DateTime.now());
-    wData.id = weather['weather'][0]['icon'].toString();
-  });
+  try {
+    getWeatherData(user.uid).then(
+      (weather) {
+        WeatherModel wData = Provider.of<WeatherModel>(context, listen: false);
+        wData.temp = weather['main']['temp'].round().toString();
+        wData.minTemp = weather['main']['temp_min'].round().toString();
+        wData.maxTemp = weather['main']['temp_max'].round().toString();
+        wData.humidity = weather['main']['humidity'].toString();
+        wData.typeWeather = weather['weather'][0]['main'].toString();
+        wData.day = DateFormat.yMMMEd().format(DateTime.now());
+        wData.id = weather['weather'][0]['icon'].toString();
+      },
+    );
+  } catch (e) {
+    // TODO
+  }
+
   return true;
 }
 
@@ -461,6 +517,7 @@ Future<Map> getWeatherData(String uid) async {
   lat = location[0];
   long = location[1];
   String apiKey = await rootBundle.loadString("data/keys.json");
+  print(" api ");
   String weatherKey = jsonDecode(apiKey)["weather"];
   String path = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
       lat.toString() +

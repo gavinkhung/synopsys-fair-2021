@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
@@ -31,7 +32,7 @@ class _profile extends State<profile> {
     times = 0;
     super.initState();
     _username = Provider.of<UserModel>(context, listen: false).uid;
-    //_signOut();
+    signOut();
   }
 
   String getVariety(String type, BuildContext context) {
@@ -147,7 +148,7 @@ class _profile extends State<profile> {
                         ),
                       ],
                     ),
-                    buildWeatherCard(context, times),
+                    buildWeatherCard(context),
                     cropInfoCard(),
                   ],
                 ))
