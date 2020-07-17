@@ -228,8 +228,10 @@ StreamBuilder autoLogin(BuildContext cont) {
                     future: getData(user.uid),
                     builder: (context, data) {
                       if (data.hasData) {
-                        DemoLocalizations.of(cont).locale =
-                            new Locale(data.data["lang"]);
+                        DemoLocalizations.of(cont).locale = new Locale(
+                            data.data["lang"] != null
+                                ? data.data["lang"]
+                                : "hi");
                         return Home();
                       } else {
                         return CircularProgressIndicator();

@@ -107,9 +107,8 @@ class _profile extends State<profile> {
                                 child: IconButton(
                                     icon: Icon(Icons.location_on),
                                     onPressed: () async {
-                                      print("just checking");
-                                      LocationData value = await getLocation(true);
-                                      print(value.toString());
+                                      LocationData value =
+                                          await getLocation(true);
                                       Provider.of<UserModel>(context,
                                                   listen: false)
                                               .loc =
@@ -127,20 +126,6 @@ class _profile extends State<profile> {
                                                   listen: false)
                                               .uid,
                                           value);
-                                      print("hello " +
-                                          Provider.of<UserModel>(context,
-                                                  listen: false)
-                                              .loc
-                                              .toString());
-                                      print("hi" +
-                                          Provider.of<WeatherModel>(context,
-                                                  listen: false)
-                                              .day
-                                              .toString());
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => profile()));
                                     }))
                           ],
                           onChanged: (value) {},
