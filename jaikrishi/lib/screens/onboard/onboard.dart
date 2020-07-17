@@ -613,9 +613,11 @@ class _Onboard extends State<Onboard> {
                 'numFollowing': 0,
                 'numPosts': 0,
                 'location': currLoc == null
-                    ? userLoc.latitude.toString() +
-                        " " +
-                        userLoc.longitude.toString()
+                    ? userLoc != null
+                        ? userLoc.latitude.toString() +
+                            " " +
+                            userLoc.longitude.toString()
+                        : 20.toString() + " " + 79.toString()
                     : currLoc.latitude.toString() +
                         " " +
                         currLoc.longitude.toString(),
@@ -630,9 +632,11 @@ class _Onboard extends State<Onboard> {
                   .document(_username)
                   .updateData({
                 'location': currLoc == null
-                    ? userLoc.latitude.toString() +
-                        " " +
-                        userLoc.longitude.toString()
+                    ? userLoc != null
+                        ? userLoc.latitude.toString() +
+                            " " +
+                            userLoc.longitude.toString()
+                        : 20.toString() + " " + 79.toString()
                     : currLoc.latitude.toString() +
                         " " +
                         currLoc.longitude.toString(),
