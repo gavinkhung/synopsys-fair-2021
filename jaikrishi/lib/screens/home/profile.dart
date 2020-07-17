@@ -1,16 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/utils/location.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import 'package:intl/intl.dart';
 
 class profile extends StatefulWidget {
   _profile createState() => _profile();
@@ -19,19 +16,13 @@ class profile extends StatefulWidget {
 class _profile extends State<profile> {
   String _username = "";
   Color myGreen = Color.fromRGBO(24, 165, 123, 1);
-  int following = 0, followers = 0, posts = 0;
-  String strLocation = "", length = "";
-  DateTime seed, trans;
-  LatLng location;
+
   final controller = TextEditingController();
-  int times;
 
   @override
   void initState() {
-    times = 0;
     super.initState();
     _username = Provider.of<UserModel>(context, listen: false).uid;
-    //_signOut();
   }
 
   String getVariety(String type, BuildContext context) {
@@ -65,16 +56,10 @@ class _profile extends State<profile> {
                   Builder(
                     builder: (BuildContext context) {
                       return Center(
-                        child: FlatButton.icon(
-                          padding: EdgeInsets.zero,
-                          icon: Icon(Icons.share,
-                              color: Color.fromRGBO(196, 243, 220, 1)),
-                          label: Text(
-                            DemoLocalizations.of(context)
-                                .vals["DiseaseDetection"]["10"],
-                            style: TextStyle(
-                                color: Color.fromRGBO(196, 243, 220, 1)),
-                          ),
+                        child: DropdownButton(
+                          icon: Icon(Icons.more, color: myGreen),
+                          items: [DropdownMenuItem(child: Text(""))],
+                          onChanged: (value) {},
                         ),
                       );
                     },
@@ -147,7 +132,7 @@ class _profile extends State<profile> {
                         ),
                       ],
                     ),
-                    buildWeatherCard(context, times),
+                    buildWeatherCard(context),
                     cropInfoCard(),
                   ],
                 ))

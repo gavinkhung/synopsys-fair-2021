@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:leaf_problem_detection/models/weather_model.dart';
@@ -20,7 +17,6 @@ import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
 
 import 'imageProcessing.dart';
@@ -64,9 +60,8 @@ Future<FirebaseUser> getCurrUser() async {
   return await _auth.currentUser();
 }
 
-Future pickLang(BuildContext context) {
+Future pickLang(BuildContext cont) {
   //create field variable: int selectedIndex = 0;
-  String ans;
   return showModalBottomSheet(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -75,7 +70,7 @@ Future pickLang(BuildContext context) {
       ),
     ),
     useRootNavigator: true,
-    context: context,
+    context: cont,
     builder: (context) {
       return StatefulBuilder(builder: (context, setState) {
         return Material(
@@ -122,11 +117,16 @@ Future pickLang(BuildContext context) {
                       children: [
                         ListTile(
                           contentPadding: EdgeInsets.symmetric(horizontal: 30),
-                          onTap: () {
+                          onTap: () async {
                             DemoLocalizations.of(context).locale =
                                 new Locale("en");
                             DemoLocalizations.of(context).setVals();
-                            ans = "en";
+                            Provider.of<UserModel>(cont, listen: false).data =
+                                await loadJson(
+                                    Provider.of<UserModel>(cont, listen: false)
+                                        .url,
+                                    cont,
+                                    "en");
                             setState(() {
                               selectedIndex = 0;
                             });
@@ -143,12 +143,16 @@ Future pickLang(BuildContext context) {
                         ),
                         ListTile(
                           contentPadding: EdgeInsets.symmetric(horizontal: 30),
-                          onTap: () {
+                          onTap: () async {
                             DemoLocalizations.of(context).locale =
                                 new Locale("hi");
                             DemoLocalizations.of(context).setVals();
-
-                            ans = "hi";
+                            Provider.of<UserModel>(cont, listen: false).data =
+                                await loadJson(
+                                    Provider.of<UserModel>(cont, listen: false)
+                                        .url,
+                                    cont,
+                                    "hi");
                             setState(() {
                               selectedIndex = 2;
                             });
@@ -183,7 +187,6 @@ StreamBuilder autoLogin(BuildContext cont) {
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.active) {
         FirebaseUser user = snapshot.data;
-
         DemoLocalizations.of(cont).setVals();
         Future.delayed(Duration.zero, () {
           pickLang(cont);
@@ -247,7 +250,7 @@ Future<DocumentSnapshot> getData(String uid) {
 Future<String> getUrl() async {
   var ref =
       await Firestore.instance.collection("data").document("backend").get();
-  return ref["ip"];
+  return "http://10.0.2.2:5000";
 }
 
 Future<bool> setVals(BuildContext context, FirebaseUser user) async {
@@ -278,9 +281,20 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
   String url = await getUrl();
   userModel.url = url;
 
-  userModel.data = await loadJson(url, context, user.uid);
+  String lang = data.data["lang"];
 
-  getWeatherData(user.uid).then((weather) {
+  userModel.data = await loadJson(url, context, lang != null ? lang : "en");
+
+  getWeatherData(
+      user.uid,
+      locData.substring(
+        0,
+        locData.indexOf(" "),
+      ),
+      locData.substring(
+        locData.indexOf(" "),
+      )).then((weather) {
+    print("hello" + weather.toString());
     WeatherModel wData = Provider.of<WeatherModel>(context, listen: false);
     wData.temp = weather['main']['temp'].round().toString();
     wData.minTemp = weather['main']['temp_min'].round().toString();
@@ -451,27 +465,6 @@ List<Widget> getText(BuildContext context, String text) {
 
 Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
   return Future<void>.value();
-}
-
-Future<Map> getWeatherData(String uid) async {
-  DocumentSnapshot fb =
-      await Firestore.instance.collection("users").document(uid).get();
-  String lat = "20", long = "79";
-  List<String> location = fb.data['location'].toString().split(" ");
-  lat = location[0];
-  long = location[1];
-  String apiKey = await rootBundle.loadString("data/keys.json");
-  String weatherKey = jsonDecode(apiKey)["weather"];
-  String path = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
-      lat.toString() +
-      '&lon=' +
-      long.toString() +
-      '&appid=' +
-      weatherKey +
-      '&units=metric';
-
-  var request = await http.get(path);
-  return json.decode(request.body);
 }
 
 FutureBuilder showUsername(String uid, TextEditingController controller) {

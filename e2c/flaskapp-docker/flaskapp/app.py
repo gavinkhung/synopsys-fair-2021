@@ -65,15 +65,8 @@ def reminder():
 
 @app.route("/diseases", methods=["POST"])
 def diseases():
-    lang = request.args["loc"]
-    uid = request.args['uid']
-    if uid != "":
-        user = communicate.get_user(uid)
-        communicate.update_document(user, {
-            "lang": lang
-        })
-    if lang == "hi":
-        return {
+    return {"hi" : 
+            {
             "Leaf Blast": {
                 "Disease": "लीफ ब्लास्ट (झौंका)",
                 "Step 1": " ट्राईसाइक्लाज़ोल @ 6ग्राम / 10 ली0  पानी की दर से छिड़काव करे।",
@@ -148,9 +141,9 @@ def diseases():
             "Healthy": {
                 "Disease": "स्वस्थ धान का पौधा!"
             }
-        }
-    elif lang == "en":
-        return {
+        },
+    
+        "en": {
             "Leaf Blast": {
                 "Disease": "Leaf Blast",
                 "Step 1": "Apply Tricyclazole @ 6gm/10L water",
@@ -222,6 +215,7 @@ def diseases():
                 "Disease": "Healthy Rice Plant!"
             }
         }
+    }
 
 
 if __name__ == "__main__":
