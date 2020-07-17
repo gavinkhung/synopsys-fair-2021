@@ -679,3 +679,10 @@ updateNotify(String uid, String id) {
 updateUser(String uid, Map<String, dynamic> data) {
   return _firebaseStore.collection("users").document(uid).updateData(data);
 }
+
+updateUserWeather(String uid, LocationData loc) {
+  Map<String, dynamic> data = {
+    "location": loc.latitude.toString() + " " + loc.longitude.toString()
+  };
+  updateUser(uid, data);
+}

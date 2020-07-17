@@ -90,6 +90,11 @@ class _profile extends State<profile> {
                                             context,
                                             value.latitude.toString(),
                                             value.longitude.toString());
+                                        updateUserWeather(
+                                            Provider.of<UserModel>(context,
+                                                    listen: false)
+                                                .uid,
+                                            value);
                                       });
                                     }))
                           ],
