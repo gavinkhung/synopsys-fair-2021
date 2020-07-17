@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +14,7 @@ import 'package:leaf_problem_detection/widgets/card.dart';
 import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 final PermissionHandler _permissionHandler = PermissionHandler();
 
@@ -281,4 +285,21 @@ class _locNotEnabled extends State<locNotEnabled> {
       ],
     );
   }
+}
+
+Future<Map> getWeatherData(String uid, String lat, String long) async {
+  print("Lat = " + lat);
+  print("Long =  " + long);
+  String apiKey = await rootBundle.loadString("data/keys.json");
+  String weatherKey = jsonDecode(apiKey)["weather"];
+  String path = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
+      lat.toString().trim() +
+      '&lon=' +
+      long.toString().trim() +
+      '&appid=' +
+      weatherKey +
+      '&units=metric';
+
+  var request = await http.get(path);
+  return json.decode(request.body);
 }

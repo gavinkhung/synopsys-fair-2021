@@ -11,33 +11,28 @@ Future<String> localPath() async {
   return directory.path;
 }
 
-Future<void> setupLocalData(String url, String local, String uid) async {
+Future<void> setupLocalData(String url) async {
   var temp2 = localPath();
   String path = await temp2;
   File data = File('$path/data.json');
-  String json = await getData(url, local, uid);
+  String json = await getData(url);
   data.writeAsString(json);
 }
 
-Future<String> getData(String url, String local, String uid) async {
-  String path = url.toString() +
-      "/diseases?loc=" +
-      local.toString() +
-      "&uid=" +
-      uid.toString();
+Future<String> getData(String url) async {
+  String path = url.toString() + "/diseases";
   var request = await http.post(path);
   return request.body;
 }
 
-Future<Map> loadJson(String url, BuildContext context, String uid) async {
-  await setupLocalData(url, "en", uid);
+Future<Map> loadJson(String url, BuildContext context, String lang) async {
+  await setupLocalData(url);
   final directory = await getApplicationDocumentsDirectory();
   final file = File(directory.path + '/data.json');
   String data = file.readAsStringSync();
-  print(data);
   Map temp = jsonDecode(data);
-  print("Load: " + data);
-  return temp;
+  print("Load: " + temp[lang].toString());
+  return temp[lang];
 }
 
 Future<String> startUploadToAPI(String uid, String path, String url) async {
