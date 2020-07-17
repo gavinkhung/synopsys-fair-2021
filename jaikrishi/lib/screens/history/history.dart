@@ -66,15 +66,22 @@ class _History extends State<History> {
                           child: Column(
                             children: [
                               Container(
-                                  child: Center(
-                                child: Text(
-                                  DemoLocalizations.of(context)
-                                      .vals["CropStatus"]["1"],
-                                  maxLines: 1,
-                                  style:
-                                      TextStyle(color: myGreen, fontSize: 100),
+                                child: Center(
+                                  child: Text(
+                                    DemoLocalizations.of(context)
+                                        .vals["CropStatus"]["1"],
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      color: myGreen,
+                                      fontSize:
+                                          MediaQuery.of(context).size.height >
+                                                  600
+                                              ? 25
+                                              : 20,
+                                    ),
+                                  ),
                                 ),
-                              )),
+                              ),
                             ],
                           ),
                         ),

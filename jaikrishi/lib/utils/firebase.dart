@@ -1,12 +1,11 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:leaf_problem_detection/models/weather_model.dart';
 import 'package:leaf_problem_detection/screens/authentication/auth.dart';
 import 'package:leaf_problem_detection/screens/home/home.dart';
 import 'package:leaf_problem_detection/utils/files.dart';
@@ -18,7 +17,6 @@ import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:share/share.dart';
 
 import 'imageProcessing.dart';
@@ -26,6 +24,7 @@ import 'imageProcessing.dart';
 FirebaseAuth _auth = FirebaseAuth.instance;
 Firestore _firebaseStore = Firestore.instance;
 bool justSignedUp = false;
+int selectedIndex = 0;
 
 final FirebaseAnalytics analytics = FirebaseAnalytics();
 final FirebaseMessaging _fcm = FirebaseMessaging();
@@ -61,6 +60,140 @@ Future<FirebaseUser> getCurrUser() async {
   return await _auth.currentUser();
 }
 
+Future pickLang(BuildContext cont, String uid) {
+  //create field variable: int selectedIndex = 0;
+  return showModalBottomSheet(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(100),
+        topRight: Radius.circular(100),
+      ),
+    ),
+    useRootNavigator: true,
+    context: cont,
+    builder: (context) {
+      return StatefulBuilder(builder: (context, setState) {
+        return Material(
+          shadowColor: Colors.transparent,
+          type: MaterialType.card,
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+            ),
+          ),
+          child: IntrinsicHeight(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  AppBar(
+                    title: Text(
+                      "Select your preferred language",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    backgroundColor: Colors.white,
+                    centerTitle: true,
+                    automaticallyImplyLeading: false,
+                    leading: GestureDetector(
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.black,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 30),
+                          onTap: () async {
+                            DemoLocalizations.of(context).locale =
+                                new Locale("en");
+                            DemoLocalizations.of(context).setVals();
+                            String url = await getUrl();
+                            Provider.of<UserModel>(cont, listen: false).data =
+                                await loadJson(url, cont, "en");
+                            if (uid != "") {
+                              Map<String, dynamic> temp = {"lang": "en"};
+                              updateUser(uid, temp);
+                            }
+                            Navigator.pop(context);
+                            setState(() {
+                              selectedIndex = 0;
+                            });
+                          },
+                          leading: Icon(
+                            Icons.favorite,
+                            color:
+                                selectedIndex == 0 ? Colors.red : Colors.grey,
+                          ),
+                          title: Text("English"),
+                          trailing: Icon(
+                            selectedIndex == 0 ? Icons.check : null,
+                          ),
+                        ),
+                        ListTile(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 30),
+                          onTap: () async {
+                            DemoLocalizations.of(context).locale =
+                                new Locale("hi");
+                            DemoLocalizations.of(context).setVals();
+                            String url = await getUrl();
+                            Provider.of<UserModel>(cont, listen: false).data =
+                                await loadJson(url, cont, "hi");
+                            if (uid != "") {
+                              Map<String, dynamic> temp = {"lang": "hi"};
+                              updateUser(uid, temp);
+                            }
+                            Navigator.pop(context);
+                            setState(() {
+                              selectedIndex = 2;
+                            });
+                          },
+                          leading: Icon(
+                            Icons.star,
+                            color:
+                                selectedIndex == 2 ? Colors.red : Colors.grey,
+                          ),
+                          title: Text("Hindi"),
+                          trailing: Icon(
+                            selectedIndex == 2 ? Icons.check : null,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      });
+    },
+  );
+}
+
+Future<bool> signOut() async {
+  try {
+    await _auth.signOut();
+    return true;
+  } catch (e) {
+    print(e);
+    return false;
+  }
+}
+
 StreamBuilder autoLogin(BuildContext cont) {
   sendAnalyticsEvent(cont);
   return StreamBuilder(
@@ -69,29 +202,16 @@ StreamBuilder autoLogin(BuildContext cont) {
       if (snapshot.connectionState == ConnectionState.active) {
         FirebaseUser user = snapshot.data;
         DemoLocalizations.of(cont).setVals();
+
         if (user == null) {
           return FutureBuilder<String>(
             future: getUrl(),
             builder: (context, data) {
               if (data.hasData) {
-                return FutureBuilder<LocationData>(
-                  future: getLocation(),
-                  builder: (context, loc) {
-                    if (loc.hasData) {
-                      Provider.of<UserModel>(context, listen: false).url =
-                          data.data;
-                      Provider.of<UserModel>(context, listen: false).loc =
-                          LatLng(loc.data.latitude, loc.data.longitude);
-                      justSignedUp = true;
-                      return Auth(false);
-                    } else {
-                      print("loc");
-                      return CircularProgressIndicator();
-                    }
-                  },
-                );
+                Provider.of<UserModel>(context, listen: false).url = data.data;
+                justSignedUp = true;
+                return Auth(false);
               } else {
-                print("url");
                 return CircularProgressIndicator();
               }
             },
@@ -104,7 +224,19 @@ StreamBuilder autoLogin(BuildContext cont) {
             future: setVals(cont, user),
             builder: (context, data) {
               if (data.hasData) {
-                return Home();
+                return FutureBuilder(
+                    future: getData(user.uid),
+                    builder: (context, data) {
+                      if (data.hasData) {
+                        DemoLocalizations.of(cont).locale = new Locale(
+                            data.data["lang"] != null
+                                ? data.data["lang"]
+                                : "hi");
+                        return Home();
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    });
               } else {
                 return CircularProgressIndicator();
               }
@@ -128,44 +260,107 @@ Future<DocumentSnapshot> getData(String uid) {
 Future<String> getUrl() async {
   var ref =
       await Firestore.instance.collection("data").document("backend").get();
-  return ref["ip"];
+  return "http://54.183.188.209";
 }
 
 Future<bool> setVals(BuildContext context, FirebaseUser user) async {
-  print("UID" + user.uid);
   UserModel userModel = Provider.of<UserModel>(context, listen: false);
-  userModel.uid = user.uid;
-  DocumentSnapshot data = await getData(user.uid);
-  userModel.seed = data.data["seed"].toDate();
-  userModel.trans = data.data["trans"].toDate();
-  userModel.type = data.data["type"];
-  userModel.crop = data.data["crop"];
-  userModel.phoneNumber = data.data["phone"];
-  String locData = data.data["location"];
+  try {
+    userModel.uid = user.uid;
+  } catch (e) {
+    print(e);
+    userModel.uid = "";
+  }
 
-  LatLng loc = new LatLng(
-    double.parse(
-      locData.substring(
-        0,
-        locData.indexOf(" "),
+  DocumentSnapshot data = await getData(user.uid);
+  try {
+    userModel.seed = data.data["seed"].toDate();
+  } catch (e) {
+    print(e.toString());
+    userModel.seed = null;
+  }
+  try {
+    userModel.trans = data.data["trans"].toDate();
+  } catch (e) {
+    print(e.toString());
+    userModel.trans = null;
+  }
+  try {
+    userModel.type = data.data["type"];
+  } catch (e) {
+    print(e.toString());
+    userModel.type = null;
+  }
+  try {
+    userModel.crop = data.data["crop"];
+  } catch (e) {
+    userModel.crop = null;
+
+    print(e.toString());
+  }
+  try {
+    userModel.phoneNumber = data.data["phone"];
+  } catch (e) {
+    userModel.phoneNumber = null;
+  }
+
+  String locData = "21 80";
+  try {
+    locData = data.data["location"];
+    LatLng loc = new LatLng(
+      double.parse(
+        locData.substring(
+          0,
+          locData.indexOf(" "),
+        ),
       ),
-    ),
-    double.parse(
-      locData.substring(
-        locData.indexOf(" "),
+      double.parse(
+        locData.substring(
+          locData.indexOf(" "),
+        ),
       ),
-    ),
-  );
-  userModel.loc = loc;
+    );
+    userModel.loc = loc;
+  } catch (e) {
+    print(e.toString());
+    userModel.loc = new LatLng(20, 79);
+  }
+
   String url = await getUrl();
   userModel.url = url;
+  if (locData.indexOf(" ") != -1)
+    setWeatherData(
+        user.uid,
+        context,
+        locData.substring(0, locData.indexOf(" ")),
+        locData.substring(locData.indexOf(" ") + 1));
+  String lang = null;
+  try {
+    lang = data.data["lang"];
+  } catch (e) {
+    print(e.toString());
+  }
 
-  userModel.data = await loadJson(url, context, user.uid);
+  userModel.data = await loadJson(url, context, lang != null ? lang : "en");
+
   return true;
 }
 
+setWeatherData(String uid, BuildContext context, String lat, String long) {
+  getWeatherData(uid, lat, long).then((weather) {
+    WeatherModel wData = Provider.of<WeatherModel>(context, listen: false);
+    wData.temp = weather['main']['temp'].round().toString();
+    wData.minTemp = weather['main']['temp_min'].round().toString();
+    wData.maxTemp = weather['main']['temp_max'].round().toString();
+    wData.humidity = weather['main']['humidity'].toString();
+    wData.typeWeather = weather['weather'][0]['main'].toString();
+    wData.day = DateFormat.yMMMEd().format(DateTime.now());
+    wData.id = weather['weather'][0]['icon'].toString();
+  });
+}
+
 Future<QuerySnapshot> getPrevNotifs(String _uid) {
-  return Firestore.instance
+  return _firebaseStore
       .collection("users")
       .document(_uid)
       .collection("daily_diseases")
@@ -173,7 +368,7 @@ Future<QuerySnapshot> getPrevNotifs(String _uid) {
 }
 
 Future<QuerySnapshot> getPrevDisease(String _uid) {
-  return Firestore.instance
+  return _firebaseStore
       .collection("users")
       .document(_uid)
       .collection("image_diseases")
@@ -324,30 +519,9 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
   return Future<void>.value();
 }
 
-Future<Map> getWeatherData(String uid) async {
-  DocumentSnapshot fb =
-      await Firestore.instance.collection("users").document(uid).get();
-  String lat = "20", long = "79";
-  List<String> location = fb.data['location'].toString().split(" ");
-  lat = location[0];
-  long = location[1];
-  String apiKey = await rootBundle.loadString("data/keys.json");
-  String weatherKey = jsonDecode(apiKey)["weather"];
-  String path = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
-      lat.toString() +
-      '&lon=' +
-      long.toString() +
-      '&appid=' +
-      weatherKey +
-      '&units=metric';
-
-  var request = await http.get(path);
-  return json.decode(request.body);
-}
-
 FutureBuilder showUsername(String uid, TextEditingController controller) {
   return FutureBuilder<DocumentSnapshot>(
-      future: Firestore.instance.collection("users").document(uid).get(),
+      future: getData(uid),
       builder: (context, data) {
         if (data.hasData) {
           if (data.data["name"] != null) controller.text = data.data["name"];
@@ -506,7 +680,7 @@ Widget notifBody(DateTime dt, DocumentSnapshot notifs, BuildContext context) {
 }
 
 updateNotify(String uid, String id) {
-  return Firestore.instance
+  return _firebaseStore
       .collection("users")
       .document(uid)
       .collection("image_diseases")
@@ -514,44 +688,13 @@ updateNotify(String uid, String id) {
       .updateData({"status": "checked", "works": "yes"});
 }
 
-FutureBuilder<QuerySnapshot> cardPrevNotifs(String _uid, BuildContext context) {
-  return FutureBuilder<QuerySnapshot>(
-      future: getPrevNotifs(_uid),
-      builder: (context, data) {
-        if (data.hasData) {
-          var notifs = data.data.documents;
-          notifs.sort((a, b) {
-            var aDT = DateTime.parse(a.data["time"].replaceAll("/", "-") + "Z");
-            var bDT = DateTime.parse(b.data["time"].replaceAll("/", "-") + "Z");
-            return bDT.compareTo(aDT);
-          });
-          if (notifs.length == 0) {
-            return Center(
-                child: Text(
-              DemoLocalizations.of(context).vals["History"]["noNotifications"],
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.height > 600 ? 20 : 15),
-            ));
-          } else {
-            DateTime dt = DateTime.parse(notifs[0]["time"] + "Z").toLocal();
+updateUser(String uid, Map<String, dynamic> data) {
+  return _firebaseStore.collection("users").document(uid).updateData(data);
+}
 
-            return Column(children: [
-              notifBody(dt, notifs[0], context),
-              GestureDetector(
-                child: Text(
-                    DemoLocalizations.of(context).vals["History"]["seeMore"],
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        decoration: TextDecoration.underline)),
-                // onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (context) => Notifications(_uid)))
-              )
-            ]);
-          }
-        } else
-          return Center(child: CircularProgressIndicator());
-      });
+updateUserWeather(String uid, LocationData loc) {
+  Map<String, dynamic> data = {
+    "location": loc.latitude.toString() + " " + loc.longitude.toString()
+  };
+  updateUser(uid, data);
 }

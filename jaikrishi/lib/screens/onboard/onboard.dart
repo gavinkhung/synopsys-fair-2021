@@ -57,28 +57,6 @@ class _Onboard extends State<Onboard> {
     // });
   }
 
-  Future<loc.LocationData> getLocation() async {
-    loc.Location location = new loc.Location();
-
-    bool _serviceEnabled;
-    loc.PermissionStatus _permissionGranted;
-    loc.LocationData _locationData;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {}
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {}
-    }
-
-    return _locationData = await location.getLocation();
-  }
-
   Completer<GoogleMapController> _controller = Completer();
 
   static LatLng _center = LatLng(20.0, 79.0);
@@ -110,9 +88,6 @@ class _Onboard extends State<Onboard> {
       this._username, this._firstTime, this._phone, this._url, this.userLoc);
 
   Widget build(BuildContext context) {
-    print("Internal: " + _username);
-    print("Provider: " + Provider.of<UserModel>(context, listen: false).uid);
-
     final introScreens = [
       PageViewModel(
         decoration: PageDecoration(
@@ -616,9 +591,11 @@ class _Onboard extends State<Onboard> {
                 'numFollowing': 0,
                 'numPosts': 0,
                 'location': currLoc == null
-                    ? userLoc.latitude.toString() +
-                        " " +
-                        userLoc.longitude.toString()
+                    ? userLoc != null
+                        ? userLoc.latitude.toString() +
+                            " " +
+                            userLoc.longitude.toString()
+                        : 20.toString() + " " + 79.toString()
                     : currLoc.latitude.toString() +
                         " " +
                         currLoc.longitude.toString(),
@@ -633,9 +610,11 @@ class _Onboard extends State<Onboard> {
                   .document(_username)
                   .updateData({
                 'location': currLoc == null
-                    ? userLoc.latitude.toString() +
-                        " " +
-                        userLoc.longitude.toString()
+                    ? userLoc != null
+                        ? userLoc.latitude.toString() +
+                            " " +
+                            userLoc.longitude.toString()
+                        : 20.toString() + " " + 79.toString()
                     : currLoc.latitude.toString() +
                         " " +
                         currLoc.longitude.toString(),
@@ -651,12 +630,6 @@ class _Onboard extends State<Onboard> {
               },
             ).then(
               (value) {
-                print(
-                  "TEESSSST: " +
-                      Provider.of<UserModel>(context, listen: false)
-                          .phoneNumber
-                          .toString(),
-                );
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -702,12 +675,6 @@ class _Onboard extends State<Onboard> {
             },
           ).then(
             (value) {
-              print(
-                "TEESSSST: " +
-                    Provider.of<UserModel>(context, listen: false)
-                        .phoneNumber
-                        .toString(),
-              );
               Navigator.push(
                 context,
                 MaterialPageRoute(

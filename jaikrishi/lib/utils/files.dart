@@ -6,38 +6,51 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+Map<String, dynamic> data = null;
 Future<String> localPath() async {
   final directory = await getApplicationDocumentsDirectory();
   return directory.path;
 }
 
-Future<void> setupLocalData(String url, String local, String uid) async {
+Future<void> setupLocalData(String url) async {
   var temp2 = localPath();
   String path = await temp2;
   File data = File('$path/data.json');
-  String json = await getData(url, local, uid);
+  String json = await getData(url);
   data.writeAsString(json);
 }
 
-Future<String> getData(String url, String local, String uid) async {
-  String path = url.toString() +
-      "/diseases?loc=" +
-      local.toString() +
-      "&uid=" +
-      uid.toString();
+Future<String> getData(String url) async {
+  String path = url.toString() + "/diseases";
   var request = await http.post(path);
   return request.body;
 }
 
-Future<Map> loadJson(String url, BuildContext context, String uid) async {
-  await setupLocalData(url, "en", uid);
+Future<Map> tempJson(String url, BuildContext context) async {
+  await setupLocalData(url);
   final directory = await getApplicationDocumentsDirectory();
   final file = File(directory.path + '/data.json');
   String data = file.readAsStringSync();
-  print(data);
   Map temp = jsonDecode(data);
-  print("Load: " + data);
   return temp;
+}
+
+Future<Map> loadJson(String url, BuildContext context, String lang) async {
+  try {
+    if (data == null) {
+      data = await tempJson(url, context);
+    }
+  } catch (e) {
+    analytics.logEvent(
+      name: 'load_json_broke',
+      parameters: <String, dynamic>{
+        'string': data.toString(),
+      },
+    );
+    print(e.toString());
+    data = await tempJson(url, context);
+  }
+  return data[lang];
 }
 
 Future<String> startUploadToAPI(String uid, String path, String url) async {

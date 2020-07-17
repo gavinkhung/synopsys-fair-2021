@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:leaf_problem_detection/models/weather_model.dart';
 import 'package:leaf_problem_detection/screens/upload/upload.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'models/image_model.dart';
+import 'models/weather_model.dart';
 import 'models/user_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:location/location.dart' as loc;
@@ -18,7 +19,7 @@ void main() {
           create: (context) => UserModel(),
         ),
         ChangeNotifierProvider(
-          create: (context) => ImageModel(),
+          create: (context) => WeatherModel(),
         ),
         getAnalytics(),
         getAnalyticsProvider(),
@@ -56,7 +57,7 @@ class App extends StatefulWidget {
 }
 
 class _App extends State<App> {
-  final PermissionHandler _permissionHandler = PermissionHandler();
+  initState() {}
 
   Widget build(BuildContext context) {
     return Scaffold(
