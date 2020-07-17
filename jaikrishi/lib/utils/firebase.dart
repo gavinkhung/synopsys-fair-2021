@@ -328,7 +328,6 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
 
   String url = await getUrl();
   userModel.url = url;
-  print(locData);
   if (locData.indexOf(" ") != -1)
     setWeatherData(
         user.uid,

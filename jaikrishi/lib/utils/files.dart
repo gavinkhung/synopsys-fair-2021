@@ -36,7 +36,12 @@ Future<Map> tempJson(String url, BuildContext context) async {
 }
 
 Future<Map> loadJson(String url, BuildContext context, String lang) async {
-  if (data == null) {
+  try {
+    if (data == null) {
+      data = await tempJson(url, context);
+    }
+  } catch (e) {
+    print(e.toString());
     data = await tempJson(url, context);
   }
   return data[lang];
