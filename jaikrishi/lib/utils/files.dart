@@ -30,9 +30,7 @@ Future<Map> loadJson(String url, BuildContext context, String lang) async {
   final directory = await getApplicationDocumentsDirectory();
   final file = File(directory.path + '/data.json');
   String data = file.readAsStringSync();
-  print("LOOOK: " + data);
   Map temp = jsonDecode(data);
-  print("Load: " + temp[lang].toString());
   return temp[lang];
 }
 

@@ -266,9 +266,6 @@ class _locNotEnabled extends State<locNotEnabled> {
                   _permissionHandler
                       .checkPermissionStatus(PermissionGroup.locationWhenInUse)
                       .then((value) => print(value));
-                  print(Provider.of<UserModel>(context, listen: false)
-                      .loc
-                      .toString());
                 },
               );
             },
@@ -280,8 +277,6 @@ class _locNotEnabled extends State<locNotEnabled> {
 }
 
 Future<Map> getWeatherData(String uid, String lat, String long) async {
-  print("Lat = " + lat);
-  print("Long =  " + long);
   String apiKey = await rootBundle.loadString("data/keys.json");
   String weatherKey = jsonDecode(apiKey)["weather"];
   String path = 'http://api.openweathermap.org/data/2.5/weather?lat=' +

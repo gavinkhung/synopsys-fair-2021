@@ -208,27 +208,10 @@ StreamBuilder autoLogin(BuildContext cont) {
             future: getUrl(),
             builder: (context, data) {
               if (data.hasData) {
-                // return FutureBuilder<LatLng>(
-                //   future: getLocation(),
-                //   builder: (context, loc) {
-                //     if (loc.hasData) {
-                //       // Provider.of<UserModel>(context, listen: false).url =
-                //       //     data.data;
-                //       // Provider.of<UserModel>(context, listen: false).loc =
-                //       //     LatLng(loc.data.latitude, loc.data.longitude);
-                //       justSignedUp = true;
-                //       return Auth(false);
-                //     } else {
-                //       print("loc");
-                //       return CircularProgressIndicator();
-                //     }
-                //   },
-                // );
                 Provider.of<UserModel>(context, listen: false).url = data.data;
                 justSignedUp = true;
                 return Auth(false);
               } else {
-                print("url");
                 return CircularProgressIndicator();
               }
             },
@@ -353,7 +336,6 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
 
 setWeatherData(String uid, BuildContext context, String lat, String long) {
   getWeatherData(uid, lat, long).then((weather) {
-    print("hello" + weather.toString());
     WeatherModel wData = Provider.of<WeatherModel>(context, listen: false);
     wData.temp = weather['main']['temp'].round().toString();
     wData.minTemp = weather['main']['temp_min'].round().toString();
