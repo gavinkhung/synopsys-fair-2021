@@ -88,8 +88,10 @@ class _profile extends State<profile> {
                           icon: Icon(Icons.more, color: myGreen),
                           items: [
                             DropdownMenuItem(
+                              value: 1,
                               child: IconButton(
                                 icon: Icon(Icons.language),
+                                tooltip: "Language",
                                 onPressed: () async {
                                   await pickLang(
                                       context,
@@ -104,6 +106,7 @@ class _profile extends State<profile> {
                               ),
                             ),
                             DropdownMenuItem(
+                                value: 2,
                                 child: IconButton(
                                     icon: Icon(Icons.location_on),
                                     onPressed: () async {
@@ -126,6 +129,11 @@ class _profile extends State<profile> {
                                                   listen: false)
                                               .uid,
                                           value);
+
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => profile()));
                                     }))
                           ],
                           onChanged: (value) {},
