@@ -206,22 +206,25 @@ StreamBuilder autoLogin(BuildContext cont) {
             future: getUrl(),
             builder: (context, data) {
               if (data.hasData) {
-                return FutureBuilder<LatLng>(
-                  future: getLocation(),
-                  builder: (context, loc) {
-                    if (loc.hasData) {
-                      Provider.of<UserModel>(context, listen: false).url =
-                          data.data;
-                      Provider.of<UserModel>(context, listen: false).loc =
-                          LatLng(loc.data.latitude, loc.data.longitude);
-                      justSignedUp = true;
-                      return Auth(false);
-                    } else {
-                      print("loc");
-                      return CircularProgressIndicator();
-                    }
-                  },
-                );
+                // return FutureBuilder<LatLng>(
+                //   future: getLocation(),
+                //   builder: (context, loc) {
+                //     if (loc.hasData) {
+                //       // Provider.of<UserModel>(context, listen: false).url =
+                //       //     data.data;
+                //       // Provider.of<UserModel>(context, listen: false).loc =
+                //       //     LatLng(loc.data.latitude, loc.data.longitude);
+                //       justSignedUp = true;
+                //       return Auth(false);
+                //     } else {
+                //       print("loc");
+                //       return CircularProgressIndicator();
+                //     }
+                //   },
+                // );
+                Provider.of<UserModel>(context, listen: false).url = data.data;
+                justSignedUp = true;
+                return Auth(false);
               } else {
                 print("url");
                 return CircularProgressIndicator();
