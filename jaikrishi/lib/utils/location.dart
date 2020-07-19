@@ -7,10 +7,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/models/weather_model.dart';
+import 'package:leaf_problem_detection/screens/home/profile.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/widgets/card.dart';
 import 'package:location/location.dart' as loc;
+import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -254,20 +256,40 @@ class _locNotEnabled extends State<locNotEnabled> {
               setState(
                 () {
                   switchState = !switchState;
-                  getLocation(true).then((value) {
-                    Provider.of<UserModel>(context, listen: false).loc =
-                        LatLng(value.latitude, value.longitude);
-                    setWeatherData(
-                        Provider.of<UserModel>(context, listen: false).uid,
-                        context,
-                        value.latitude.toString(),
-                        value.longitude.toString());
-                    updateUserWeather(
-                        Provider.of<UserModel>(context, listen: false).uid,
-                        value);
-                  });
+                  // getLocation(true).then((value) {
+                  //   Provider.of<UserModel>(context, listen: false).loc =
+                  //       LatLng(value.latitude, value.longitude);
+                  //   setWeatherData(
+                  //       Provider.of<UserModel>(context, listen: false).uid,
+                  //       context,
+                  //       value.latitude.toString(),
+                  //       value.longitude.toString());
+                  //   updateUserWeather(
+                  //       Provider.of<UserModel>(context, listen: false).uid,
+                  //       value);
+                  // });
                 },
               );
+              LocationData value = await getLocation(true);
+              Provider.of<UserModel>(context, listen: false).loc =
+                  LatLng(value.latitude, value.longitude);
+              await setWeatherData(
+                  Provider.of<UserModel>(context, listen: false).uid,
+                  context,
+                  value.latitude.toString(),
+                  value.longitude.toString());
+              await updateUserWeather(
+                  Provider.of<UserModel>(context, listen: false).uid, value);
+
+              Coordinates coords =
+                  new Coordinates(value.latitude, value.longitude);
+              List<Address> temp =
+                  await Geocoder.local.findAddressesFromCoordinates(coords);
+              Provider.of<UserModel>(context, listen: false).address =
+                  temp.first.addressLine;
+
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => profile()));
             },
           ),
         )
