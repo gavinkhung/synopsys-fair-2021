@@ -49,8 +49,11 @@ class _profile extends State<profile> {
   @override
   void initState() {
     super.initState();
+    print(Provider.of<UserModel>(context, listen: false).crop);
     _username = Provider.of<UserModel>(context, listen: false).uid;
     userLoc = Provider.of<UserModel>(context, listen: false).loc;
+    print(Provider.of<UserModel>(context, listen: false).crop);
+    //signOut();
   }
 
   String getVariety(String type, BuildContext context) {
@@ -66,163 +69,171 @@ class _profile extends State<profile> {
   @override
   Widget build(BuildContext context) {
     mainContext = context;
-    return Container(
-      color: myGreen,
-      child: SafeArea(
-        child: Container(
-          color: Color.fromRGBO(196, 243, 220, 1),
-          child: CupertinoScrollbar(
-              child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-            Container(
-              decoration:
-                  BoxDecoration(color: Color.fromRGBO(196, 243, 220, 1)),
-              //height: MediaQuery.of(context).size.width / 5,
-              padding: EdgeInsets.only(left: 0, right: 0, top: 5, bottom: 5),
-              child: Row(
-                //crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Builder(
-                    builder: (BuildContext context) {
-                      return Center(
-                        child: DropdownButton(
-                          icon: Icon(Icons.more, color: myGreen),
-                          items: [
-                            DropdownMenuItem(
-                              value: 1,
-                              child: IconButton(
-                                icon: Icon(Icons.language),
-                                tooltip: "Language",
-                                onPressed: () async {
-                                  await pickLang(
-                                      context,
-                                      Provider.of<UserModel>(context,
-                                              listen: false)
-                                          .uid);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => profile()));
-                                },
-                              ),
-                            ),
-                            DropdownMenuItem(
-                                value: 2,
-                                child: IconButton(
-                                    icon: Icon(Icons.location_on),
+    return Scaffold(
+      body: Container(
+        color: myGreen,
+        child: SafeArea(
+          child: Container(
+            color: Color.fromRGBO(196, 243, 220, 1),
+            child: CupertinoScrollbar(
+                child: ListView(padding: EdgeInsets.zero, children: <Widget>[
+              Container(
+                decoration:
+                    BoxDecoration(color: Color.fromRGBO(196, 243, 220, 1)),
+                //height: MediaQuery.of(context).size.width / 5,
+                padding: EdgeInsets.only(left: 0, right: 0, top: 5, bottom: 5),
+                child: Row(
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Builder(
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: Material(
+                            child: DropdownButton(
+                              icon: Icon(Icons.more, color: myGreen),
+                              items: [
+                                DropdownMenuItem(
+                                  value: 1,
+                                  child: IconButton(
+                                    icon: Icon(Icons.language),
+                                    tooltip: "Language",
                                     onPressed: () async {
-                                      LocationData value =
-                                          await getLocation(true);
-                                      Provider.of<UserModel>(context,
-                                                  listen: false)
-                                              .loc =
-                                          LatLng(
-                                              value.latitude, value.longitude);
-                                      await setWeatherData(
-                                          Provider.of<UserModel>(context,
-                                                  listen: false)
-                                              .uid,
+                                      await pickLang(
                                           context,
-                                          value.latitude.toString(),
-                                          value.longitude.toString());
-                                      await updateUserWeather(
                                           Provider.of<UserModel>(context,
                                                   listen: false)
-                                              .uid,
-                                          value);
-
-                                      Coordinates coords = new Coordinates(
-                                          value.latitude, value.longitude);
-                                      List<Address> temp = await Geocoder.local
-                                          .findAddressesFromCoordinates(coords);
-                                      Provider.of<UserModel>(context,
-                                              listen: false)
-                                          .address = temp.first.addressLine;
-
+                                              .uid);
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => profile()));
-                                    }))
-                          ],
-                          onChanged: (value) {},
-                        ),
-                      );
-                    },
-                  ),
-                  Center(
-                    child: Container(
-                        child: Center(
-                      child: AutoSizeText(
-                        DemoLocalizations.of(context).vals["FirstPage"]["10"],
-                        maxLines: 1,
-                        maxFontSize: 25,
-                        style: TextStyle(color: myGreen, fontSize: 100),
-                      ),
-                    )),
-                  ),
-                  Builder(
-                    builder: (BuildContext context) {
-                      return Center(
-                        child: FlatButton.icon(
-                          padding: EdgeInsets.zero,
-                          icon: Icon(Icons.share),
-                          label: Text(DemoLocalizations.of(context)
-                              .vals["DiseaseDetection"]["10"]),
-                          onPressed: () {
-                            final RenderBox box = context.findRenderObject();
-                            Share.share(
-                                DemoLocalizations.of(context).vals["FirstPage"]
-                                    ["9"],
-                                sharePositionOrigin:
-                                    box.localToGlobal(Offset.zero) & box.size);
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Container(
-                color: myGreen,
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 1,
-                //height: double.infinity,
-                child: Column(
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                            //height: MediaQuery.of(context).size.width / 10,
-                            ),
-                        Row(
-                          children: [
-                            Container(
-                              // padding: EdgeInsets.all(20),
-                              width: MediaQuery.of(context).size.width,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Center(
-                                      child: showUsername(
+                                    },
+                                  ),
+                                ),
+                                DropdownMenuItem(
+                                    value: 2,
+                                    child: IconButton(
+                                        icon: Icon(Icons.location_on),
+                                        onPressed: () async {
+                                          LocationData value =
+                                              await getLocation(true);
+                                          Provider.of<UserModel>(context,
+                                                      listen: false)
+                                                  .loc =
+                                              LatLng(value.latitude,
+                                                  value.longitude);
+                                          await setWeatherData(
+                                              Provider.of<UserModel>(context,
+                                                      listen: false)
+                                                  .uid,
+                                              context,
+                                              value.latitude.toString(),
+                                              value.longitude.toString());
+                                          await updateUserWeather(
+                                              Provider.of<UserModel>(context,
+                                                      listen: false)
+                                                  .uid,
+                                              value);
+
+                                          Coordinates coords = new Coordinates(
+                                              value.latitude, value.longitude);
+                                          List<Address> temp = await Geocoder
+                                              .local
+                                              .findAddressesFromCoordinates(
+                                                  coords);
                                           Provider.of<UserModel>(context,
                                                   listen: false)
-                                              .uid,
-                                          controller)),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
+                                              .address = temp.first.addressLine;
+
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      profile()));
+                                        }))
+                              ],
+                              onChanged: (value) {},
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    buildWeatherCard(context),
-                    card(context, getUserData()),
+                    Center(
+                      child: Container(
+                          child: Center(
+                        child: AutoSizeText(
+                          DemoLocalizations.of(context).vals["FirstPage"]["10"],
+                          maxLines: 1,
+                          maxFontSize: 25,
+                          style: TextStyle(color: myGreen, fontSize: 100),
+                        ),
+                      )),
+                    ),
+                    Builder(
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: FlatButton.icon(
+                            padding: EdgeInsets.zero,
+                            icon: Icon(Icons.share),
+                            label: Text(DemoLocalizations.of(context)
+                                .vals["DiseaseDetection"]["10"]),
+                            onPressed: () {
+                              final RenderBox box = context.findRenderObject();
+                              Share.share(
+                                  DemoLocalizations.of(context)
+                                      .vals["FirstPage"]["9"],
+                                  sharePositionOrigin:
+                                      box.localToGlobal(Offset.zero) &
+                                          box.size);
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ],
-                ))
-          ])),
+                ),
+              ),
+              Container(
+                  color: myGreen,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 1,
+                  //height: double.infinity,
+                  child: Column(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                              //height: MediaQuery.of(context).size.width / 10,
+                              ),
+                          Row(
+                            children: [
+                              Container(
+                                // padding: EdgeInsets.all(20),
+                                width: MediaQuery.of(context).size.width,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Center(
+                                        child: showUsername(
+                                            Provider.of<UserModel>(context,
+                                                    listen: false)
+                                                .uid,
+                                            controller)),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      buildWeatherCard(context),
+                      card(context, getUserData()),
+                    ],
+                  ))
+            ])),
+          ),
         ),
       ),
     );
@@ -267,87 +278,24 @@ class _profile extends State<profile> {
                           MediaQuery.of(context).size.height < 600 ? 16.5 : 25,
                     ),
                   ),
-                  GestureDetector(
-                    child: Icon(
-                      Icons.edit,
-                      color: Colors.black54,
-                    ),
-                    onTap: () {
-                      showCupertinoModalPopup(
-                        context: context,
-                        builder: (BuildContext context) => CupertinoActionSheet(
-                          title: Text("What would you like to edit?"),
-                          message: Text("Select something to edit"),
-                          actions: <Widget>[
-                            CupertinoActionSheetAction(
-                              child: Text("Crop"),
-                              onPressed: () async {
-                                setState(() {
-                                  Navigator.pop(
-                                    context,
-                                  );
-                                });
-                                showCropPopup();
-                              },
-                            ),
-                            CupertinoActionSheetAction(
-                              child: Text("Date of Seeding"),
-                              onPressed: () async {
-                                setState(() {
-                                  Navigator.pop(
-                                    context,
-                                  );
-                                });
-                                showSeedingPopup(context);
-                              },
-                            ),
-                            CupertinoActionSheetAction(
-                              child: Text("Date of Transplanting"),
-                              onPressed: () async {
-                                setState(() {
-                                  Navigator.pop(
-                                    context,
-                                  );
-                                });
-                                showTransplantPopup(context);
-                              },
-                            ),
-                            CupertinoActionSheetAction(
-                              child: Text("Variety"),
-                              onPressed: () async {
-                                setState(() {
-                                  Navigator.pop(
-                                    context,
-                                  );
-                                });
-                                showVarietyPopup();
-                              },
-                            ),
-                            CupertinoActionSheetAction(
-                              child: Text("Crop Location"),
-                              onPressed: () async {
-                                setState(() {
-                                  Navigator.pop(
-                                    context,
-                                  );
-                                });
-                                showLocationPopup();
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  )
+                  editFields()
                 ],
               )
-            : Text("NA",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize:
-                      MediaQuery.of(context).size.height < 600 ? 16.5 : 25,
-                )),
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "NA",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize:
+                          MediaQuery.of(context).size.height < 600 ? 16.5 : 25,
+                    ),
+                  ),
+                  editFields()
+                ],
+              ),
         Container(
           child: Divider(color: Color.fromRGBO(24, 165, 123, 1)),
         ),
@@ -496,6 +444,81 @@ class _profile extends State<profile> {
     );
   }
 
+  GestureDetector editFields() {
+    return GestureDetector(
+      child: Icon(
+        Icons.edit,
+        color: Colors.black54,
+      ),
+      onTap: () {
+        showCupertinoModalPopup(
+          context: context,
+          builder: (BuildContext context) => CupertinoActionSheet(
+            title: Text("What would you like to edit?"),
+            message: Text("Select something to edit"),
+            actions: <Widget>[
+              CupertinoActionSheetAction(
+                child: Text("Crop"),
+                onPressed: () async {
+                  setState(() {
+                    Navigator.pop(
+                      context,
+                    );
+                  });
+                  showCropPopup();
+                },
+              ),
+              CupertinoActionSheetAction(
+                child: Text("Date of Seeding"),
+                onPressed: () async {
+                  setState(() {
+                    Navigator.pop(
+                      context,
+                    );
+                  });
+                  showSeedingPopup(context);
+                },
+              ),
+              CupertinoActionSheetAction(
+                child: Text("Date of Transplanting"),
+                onPressed: () async {
+                  setState(() {
+                    Navigator.pop(
+                      context,
+                    );
+                  });
+                  showTransplantPopup(context);
+                },
+              ),
+              CupertinoActionSheetAction(
+                child: Text("Variety"),
+                onPressed: () async {
+                  setState(() {
+                    Navigator.pop(
+                      context,
+                    );
+                  });
+                  showVarietyPopup();
+                },
+              ),
+              CupertinoActionSheetAction(
+                child: Text("Crop Location"),
+                onPressed: () async {
+                  setState(() {
+                    Navigator.pop(
+                      context,
+                    );
+                  });
+                  showLocationPopup();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void showCropPopup() {
     showCupertinoModalPopup(
       context: context,
@@ -510,6 +533,7 @@ class _profile extends State<profile> {
                 DemoLocalizations.of(context).vals["WelcometoJaikrishi"]["8"]),
             onPressed: () async {
               Map<String, dynamic> map = {"crop": "Rice"};
+              Provider.of<UserModel>(mainContext, listen: false).crop = "Rice";
               updateUser(
                   Provider.of<UserModel>(context, listen: false).uid, map);
               setState(() {
@@ -534,16 +558,23 @@ class _profile extends State<profile> {
           _seeding = value;
         });
       },
-    ).whenComplete(() {
+    ).whenComplete(() async {
       if (_seeding != null) {
         Map<String, dynamic> map = {"seed": _seeding};
+        Provider.of<UserModel>(mainContext, listen: false).seed = _seeding;
         updateUser(
           Provider.of<UserModel>(mainContext, listen: false).uid,
           map,
         );
       }
       setState(() {});
-      Navigator.pop(context);
+      // Navigator.pop(context);
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => profile(),
+      //   ),
+      // );
     });
   }
 
@@ -562,14 +593,16 @@ class _profile extends State<profile> {
       },
     ).whenComplete(() {
       if (_transplanting != null) {
+        print("transplant");
         Map<String, dynamic> map = {"trans": _transplanting};
+        Provider.of<UserModel>(mainContext, listen: false).trans =
+            _transplanting;
         updateUser(
           Provider.of<UserModel>(mainContext, listen: false).uid,
           map,
         );
       }
       setState(() {});
-      Navigator.pop(context);
     });
   }
 
@@ -588,11 +621,18 @@ class _profile extends State<profile> {
             onPressed: () {
               setState(() {
                 Map<String, dynamic> map = {"type": 1};
+                Provider.of<UserModel>(context, listen: false).type = 1;
                 updateUser(
                   Provider.of<UserModel>(mainContext, listen: false).uid,
                   map,
                 );
                 Navigator.pop(context, 'Short');
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => profile(),
+                //   ),
+                // );
               });
             },
           ),
@@ -602,11 +642,18 @@ class _profile extends State<profile> {
             onPressed: () {
               setState(() {
                 Map<String, dynamic> map = {"type": 2};
+                Provider.of<UserModel>(context, listen: false).type = 2;
                 updateUser(
                   Provider.of<UserModel>(mainContext, listen: false).uid,
                   map,
                 );
                 Navigator.pop(context, 'Medium');
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => profile(),
+                //   ),
+                // );
               });
             },
           ),
@@ -616,11 +663,18 @@ class _profile extends State<profile> {
             onPressed: () {
               setState(() {
                 Map<String, dynamic> map = {"type": 3};
+                Provider.of<UserModel>(context, listen: false).type = 3;
                 updateUser(
                   Provider.of<UserModel>(mainContext, listen: false).uid,
                   map,
                 );
                 Navigator.pop(context, 'Long');
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => profile(),
+                //   ),
+                // );
               });
             },
           )
@@ -650,7 +704,7 @@ class _profile extends State<profile> {
       builder: (BuildContext context) {
         return CupertinoActionSheet(
           cancelButton: CupertinoActionSheetAction(
-            onPressed: () {
+            onPressed: () async {
               Map<String, dynamic> map = {
                 'location': currLoc == null
                     ? userLoc.latitude.toString() +
@@ -660,11 +714,19 @@ class _profile extends State<profile> {
                         " " +
                         currLoc.longitude.toString(),
               };
+              Provider.of<UserModel>(mainContext, listen: false).loc =
+                  currLoc == null ? userLoc : currLoc;
               updateUser(
                 Provider.of<UserModel>(mainContext, listen: false).uid,
                 map,
               );
               Navigator.pop(context);
+              Navigator.push(
+                mainContext,
+                MaterialPageRoute(
+                  builder: (context) => profile(),
+                ),
+              );
             },
             child: Icon(
               Icons.check,
