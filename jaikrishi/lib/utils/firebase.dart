@@ -210,6 +210,7 @@ StreamBuilder autoLogin(BuildContext cont) {
             builder: (context, data) {
               if (data.hasData) {
                 Provider.of<UserModel>(context, listen: false).url = data.data;
+                DemoLocalizations.of(cont).firstSet(data.data);
                 justSignedUp = true;
                 return FutureBuilder(
                     future: DemoLocalizations.of(cont).setVals(),
@@ -217,10 +218,12 @@ StreamBuilder autoLogin(BuildContext cont) {
                       if (data.hasData) {
                         return Auth(false);
                       } else {
+                        print("asdfasdfasdfasdf");
                         return CircularProgressIndicator();
                       }
                     });
               } else {
+                print("now way");
                 return CircularProgressIndicator();
               }
             },

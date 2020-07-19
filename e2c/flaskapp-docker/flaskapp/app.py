@@ -22,9 +22,6 @@ communicate = Communicate()
 model = predict.Prediction()
 LOG_FILENAME = 'requests.log'
 
-logging.basicConfig(filename=LOG_FILENAME, level=logging.INFO)
-
-
 @app.route("/upload", methods=["POST"])
 def upload():
     image = request.files.get('image', '')
@@ -71,9 +68,12 @@ def send():
        
 @app.route("/text", methods=["POST"])
 def text():
-    with open('./text.json') as f: 
-        data = json.load(f)
-        return jsonify(data)
+    try: 
+        with open('./text.json') as f: 
+            data = json.load(f)
+            return jsonify(data)
+    except Exception as e: 
+        print(e)
 
 @app.route("/reminder", methods=["POST"])
 def reminder():

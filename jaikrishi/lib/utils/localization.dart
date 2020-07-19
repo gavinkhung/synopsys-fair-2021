@@ -25,16 +25,20 @@ class DemoLocalizations {
   }
 
   Future<bool> setVals() async {
-    if (vals == null) {
-      print("hi there partner");
-      if (_url == null) {
-        _url = await getUrl();
+    try {
+      if (vals == null) {
+        print("hi there partner");
+        if (_url == null) {
+          _url = await getUrl();
+        }
+        String temp = await getTextData(_url);
+        total = jsonDecode(temp);
       }
-      String temp = await getTextData(_url);
-      total = jsonDecode(temp);
+      vals = total[locale.languageCode];
+      print("hey ehy hey");
+    } catch (e) {
+      print(e);
     }
-    vals = total[locale.languageCode];
-    print("hey ehy hey");
     return true;
     // vals = await rootBundle
     //     .loadString("data/" + locale.languageCode + ".json")
