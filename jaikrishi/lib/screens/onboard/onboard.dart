@@ -14,6 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:location/location.dart' as loc;
 import 'package:provider/provider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'dart:async';
 
 import '../../main.dart';
@@ -59,7 +60,21 @@ class _Onboard extends State<Onboard> {
     // });
   }
 
+  @override
+  void dispose() {
+    _youtubePlayerController.dispose();
+    super.dispose();
+  }
+
   Completer<GoogleMapController> _controller = Completer();
+  YoutubePlayerController _youtubePlayerController = YoutubePlayerController(
+    flags: YoutubePlayerFlags(
+      autoPlay: true,
+      mute: false,
+    ),
+    initialVideoId: YoutubePlayer.convertUrlToId(
+        "https://www.youtube.com/watch?v=GjAFSd9zcAY"),
+  );
 
   static LatLng _center = LatLng(20.0, 79.0);
   final PermissionHandler _permissionHandler = PermissionHandler();
@@ -104,25 +119,35 @@ class _Onboard extends State<Onboard> {
         ),
         bodyWidget: Column(
           children: [
-            AutoSizeText(
-                DemoLocalizations.of(context).vals["WelcometoJaikrishi"]["1"],
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white,
-                  fontSize: 34.0,
-                )),
-            SizedBox(height: 10),
+            // AutoSizeText(
+            //   DemoLocalizations.of(context).vals["WelcometoJaikrishi"]["1"],
+            //   maxLines: 1,
+            //   textAlign: TextAlign.center,
+            //   style: TextStyle(
+            //     fontWeight: FontWeight.w800,
+            //     color: Colors.white,
+            //     fontSize: 34.0,
+            //   ),
+            // ),
+            // SizedBox(height: 10),
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 50),
+            //   child: AutoSizeText(
+            //     DemoLocalizations.of(context).vals["WelcometoJaikrishi"]["2"],
+            //     textAlign: TextAlign.center,
+            //     maxLines: 5,
+            //     style:
+            //         TextStyle(color: Colors.white, fontSize: 18.0, height: 1.2),
+            //   ),
+            // ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 50),
-              child: AutoSizeText(
-                  DemoLocalizations.of(context).vals["WelcometoJaikrishi"]["2"],
-                  textAlign: TextAlign.center,
-                  maxLines: 5,
-                  style: TextStyle(
-                      color: Colors.white, fontSize: 18.0, height: 1.2)),
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: YoutubePlayer(
+                controller: _youtubePlayerController,
+                showVideoProgressIndicator: false,
+              ),
             ),
+
             SizedBox(height: 20),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 15),
