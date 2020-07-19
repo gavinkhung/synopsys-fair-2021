@@ -273,7 +273,7 @@ Future<DocumentSnapshot> getData(String uid) {
 Future<String> getUrl() async {
   var ref =
       await Firestore.instance.collection("data").document("backend").get();
-  return "http://10.0.2.2:5000";
+  return ref["newIP"];
 }
 
 Future<bool> setVals(BuildContext context, FirebaseUser user) async {
