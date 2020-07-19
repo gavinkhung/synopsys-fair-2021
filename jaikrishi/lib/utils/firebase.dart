@@ -345,13 +345,18 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
   String url = await getUrl();
   userModel.url = url;
   if (locData.indexOf(" ") != -1) {
-    Coordinates coords = new Coordinates(
-        double.parse(locData.substring(0, locData.indexOf(" "))),
-        double.parse(locData.substring(locData.indexOf(" ") + 1)));
-    Geocoder.local
-        .findAddressesFromCoordinates(coords)
-        .then((value) => userModel.address = value.first.addressLine);
-
+    try {
+      Coordinates coords = new Coordinates(
+          double.parse(locData.substring(0, locData.indexOf(" "))),
+          double.parse(locData.substring(locData.indexOf(" ") + 1)));
+      Geocoder.local
+          .findAddressesFromCoordinates(coords)
+          .then((value) => userModel.address = value.first.addressLine);
+    } catch (e) {
+      print(e.toString());
+      analytics.logEvent(name: "geocoder_failed");
+      userModel.address = "Address is not currently available";
+    }
     setWeatherData(
         user.uid,
         context,
@@ -372,9 +377,12 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
   return true;
 }
 
-setWeatherData(String uid, BuildContext context, String lat, String long) {
-  getWeatherData(uid, lat, long).then((weather) {
+Future<bool> setWeatherData(
+    String uid, BuildContext context, String lat, String long) {
+  print(lat + " " + long);
+  return getWeatherData(uid, lat, long).then((weather) {
     WeatherModel wData = Provider.of<WeatherModel>(context, listen: false);
+    wData.loc = new LatLng(double.parse(lat), double.parse(long));
     wData.temp = weather['main']['temp'].round().toString();
     wData.minTemp = weather['main']['temp_min'].round().toString();
     wData.maxTemp = weather['main']['temp_max'].round().toString();
@@ -382,6 +390,7 @@ setWeatherData(String uid, BuildContext context, String lat, String long) {
     wData.typeWeather = weather['weather'][0]['main'].toString();
     wData.day = DateFormat.yMMMEd().format(DateTime.now());
     wData.id = weather['weather'][0]['icon'].toString();
+    return true;
   });
 }
 

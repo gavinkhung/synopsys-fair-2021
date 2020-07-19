@@ -672,6 +672,21 @@ class _profile extends State<profile> {
                 Provider.of<UserModel>(mainContext, listen: false).uid,
                 map,
               );
+
+              Coordinates coords = new Coordinates(
+                  double.parse(map["location"]
+                      .substring(0, map["location"].indexOf(" "))),
+                  double.parse(map["location"]
+                      .substring(map["location"].indexOf(" ") + 1)));
+              List<Address> value =
+                  await Geocoder.local.findAddressesFromCoordinates(coords);
+              Provider.of<UserModel>(mainContext, listen: false).address =
+                  value.first.addressLine;
+              await setWeatherData(
+                  Provider.of<UserModel>(mainContext, listen: false).uid,
+                  mainContext,
+                  map["location"].substring(0, map["location"].indexOf(" ")),
+                  map["location"].substring(map["location"].indexOf(" ") + 1));
               Navigator.pop(context);
               Navigator.push(
                 mainContext,
