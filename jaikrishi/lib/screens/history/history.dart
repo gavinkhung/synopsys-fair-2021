@@ -287,7 +287,7 @@ class _History extends State<History> {
               DateTime dt = DateTime.parse(notifs[0]["time"] + "Z").toLocal();
 
               return Column(children: [
-                notifBody(dt, notifs[0], context),
+                notifBody(dt, notifs[0].data, context),
                 GestureDetector(
                     child: Text(
                         DemoLocalizations.of(context).vals["History"]
