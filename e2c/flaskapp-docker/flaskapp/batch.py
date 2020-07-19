@@ -14,7 +14,6 @@ def get_data(docs):
     users = {}
     for doc in docs:
         d = doc.to_dict()
-        #print('d', d)
         try:
             date_of_seed = d["seed"].timestamp_pb().ToSeconds()
 
@@ -69,97 +68,342 @@ def get_data(docs):
             users[doc.id]["rain"] = avgR
 
         except Exception as e:
-            continue
+            print(e)
 
     return users
 
 
 def batch_process(communicate):
+    print("getting users")
     users = get_data(communicate.get_users())
+    print("got users")
+    notifications = {
+        "hi": {
+            "diseases": {
+                "Leaf Blast": {
+                    "tokens":[],
+                    "body": [{
+                        "Message": "Leaf Blast"
+                    }]
+                },
+                "BLB": {
+                    "tokens":[],
+                    "body": [{
+                        "Message": "BLB"
+                    }]
+                },
+                "Brown Spot": {
+                    "tokens":[],
+                    "body": [{
+                        "Message": "Brown Spot"
+                    }]
+                },
+                "Sheath Blight": {
+                    "tokens":[],
+                    "body": [{
+                        "Message": "Sheath Blight"
+                    }]
+                },
+                "False Smut": {
+                    "tokens":[],
+                    "body": [{
+                        "Message": "False Smut"
+                    }]
+                },
+                "Sheath Rot": {
+                    "tokens":[],
+                    "body": [{
+                        "Message": "Sheath Rot"
+                    }]
+                }
+            },
+            "treatments": {
+                "0": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "शुष्क नर्सरी के लिए बीज को 3 ग्राम कार्बेन्डाजिम प्रति किलोग्राम बीज से उपचारित करें",
+                        "Step 2": "बीज को 1 ग्राम कार्बेन्डाजिम प्रति लीटर पानी में प्रति किलोग्राम बीज के हिसाब से भिगो दें",
+                        "Step 3": "5 सेन्ट आकार की नर्सरी के लिए जुताई के दौरान नाइट्रोजेन, फॉस्फोरस, पोटाश प्रत्येक उर्वरक 1 किलोग्राम की दर से डालें।",
+                        "Link": "https://youtu.be/v2Za4IMxs6s",
+                        "Days": "0",
+                        "message": "यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।"
+                    }]
+                },
+                "14": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "5 सेन्ट नर्सरी के लिए प्रति लीटर पानी में 2 ग्राम जिंक सल्फेट घोल का छिड़काव करें तथा",
+                        "Step 2": "5 सेन्ट नर्सरी के लिए, 1 किलोग्राम नाइट्रोजेन उर्वरक डालें।",
+                        "Link": "",
+                        "Days": "14",
+                        "message": "यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।"
+                    }]
+                },
+                "20": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "धान की शुरुआती अवस्था मॆ फफूॅद जनित रोगो की रोकथाम",
+                        "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw",
+                        "Days": "20",
+                        "message": "यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।"
+                    }]
+                },
+                "21": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "5 सेन्ट नर्सरी के लिए 400 ग्राम कार्बोफ्यूरान 3 जी  दानेदार को एक किलोग्राम बालू (रेत) में मिलाएं एवं सुनिश्चित करें कि दवा डालने के समय पानी की पतली परत  नर्सरी मॆ बनी रखना चाहिए।",
+                        "Link": "",
+                        "Days": "21",
+                        "message": "यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।"
+                    }]
+                },
+                "26": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "धान रोपाई के दौरान संकर धान के 33 कल्ले प्रति वर्ग मीटर और पारंपरिक किस्मो के लिए 44 कल्ले प्रति वर्ग मीटर की दर से संख्या को खेत में बनाए रखना है।",
+                        "Link": "https://youtu.be/9LpSN1TWUUI",
+                        "Days": "26",
+                        "message": "यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।"
+                    }]
+                },
+                "27": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "धान की शुरुआती अवस्था मॆ फफूॅद जनित रोगो की रोकथाम",
+                        "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw",
+                        "Days": "27",
+                        "message": "यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।"
+                    }]
+                },
+                "34": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "धान की शुरुआती अवस्था मॆ फफूॅद जनित रोगो की रोकथाम",
+                        "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw",
+                        "Days": "34",
+                        "message": "यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।"
+                    }]
+                },
+                "40": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "जिंक सल्फेट हेक्टाहाइड्रेट का 25 किग्रा / हेक्टेयर अथवा 16 किग्रा / हेक्टेयर जिंक सल्फेट मोनोहाइड्रेट। ",
+                        "Step 2": "0.5% जिंक सल्फेट  (25 ग्राम जिंक सल्फेट प्रति 10 लीटर पानी में) का छिङकाव करॆ।",
+                        "Link": "https://youtu.be/tbsOs9POhVk",
+                        "Days": "40",
+                        "message": "यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।"
+                    }]
+                }
+            }
+        },
+        "en": {
+            "diseases": {
+                "Leaf Blast": {
+                    "tokens":[],
+                    "body": [{
+                        "message": "Leaf Blast"
+                    }]
+                },
+                "BLB": {
+                    "tokens":[],
+                    "body": [{
+                        "message": "BLB"
+                    }]
+                },
+                "Brown Spot": {
+                    "tokens":[],
+                    "body": [{
+                        "message": "Brown Spot"
+                    }]
+                },
+                "Sheath Blight": {
+                    "tokens":[],
+                    "body": [{
+                        "message": "Sheath Blight"
+                    }]
+                },
+                "False Smut": {
+                    "tokens":[],
+                    "body": [{
+                        "message": "False Smut"
+                    }]
+                },
+                "Sheath Rot": {
+                    "tokens":[],
+                    "body": [{
+                        "message": "Sheath Rot"
+                    }]
+                }
+            },
+            "treatments": {
+                "0": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "Treat Seeds with 3 gm Carbendazim per kg seed for dry Nursery",
+                        "Step 2": "Soak Seed in 1 gm Carbendazim per litre water per Kg seed",
+                        "Step 3": "For 5 cents of Nursery size, apply 1 kg each of  Nitrozen, Phosphorous, Potash fertilizer during ploughing",
+                        "Link": "https://youtu.be/v2Za4IMxs6s",
+                        "Days": "0",
+                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                    }]
+                },
+                "14": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "5 सेन्ट नर्सरी के लिए प्रति लीटर पानी में 2 ग्राम जिंक सल्फेट घोल का छिड़काव करें तथा",
+                        "Step 2": "5 सेन्ट नर्सरी के लिए, 1 किलोग्राम नाइट्रोजेन उर्वरक डालें।",
+                        "Link": "",
+                        "Days": "14",
+                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                    }]
+                },
+                "20": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "Prevention of early fungal diseases in rice crop",
+                        "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw",
+                        "Days": "20",
+                        "message": ""
+                    }]
+                },
+                "21": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "Apply 400 gm Carbofuran 3G granules mixed in a Kg of sand for 5 cent Nursey. Ensure thin layer of water is maintained at the time of application.",
+                        "Link": "",
+                        "Days": "21",
+                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                    }]
+                },
+                "26": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "Transplant seedlings maintaining a population of 33 hills per sq mt of land for hybrid rice and 44 hills per sq mt for traditional variety.",
+                        "Link": "https://youtu.be/9LpSN1TWUUI",
+                        "Days": "26",
+                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                    }]
+                },
+                "27": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "Prevention of early fungal diseases in rice crop",
+                        "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw",
+                        "Days": "27",
+                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                    }]
+                },
+                "34": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "Prevention of early fungal diseases in rice crop",
+                        "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw",
+                        "Days": "34",
+                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                    }]
+                },
+                "40": {
+                    "tokens":[],
+                    "body": [{
+                        "Step 1": "25 kg/Hectare of Zinc Sulphate HectaHydrate or 16 Kg/ Hectare Zinc Sulphate Monohydrate.",
+                        "Step 2": "Spray of 0.5% Zinc Sulphate (25 gm Zinc Sulphate in 10 lit of water)",
+                        "Link": "https://youtu.be/tbsOs9POhVk",
+                        "Days": "40",
+                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                    }]
+                }
+            }
+        }
+    }
+
     for i in users:
         try:
-            disease = get_diseases(users[i])
-            treatments = get_notifs(users[i])
-            try:
-                for j in disease:
-                    communicate.send_notifications(
-                        [users[i]["token"]], "Disease Prediction", str(j))
-                    communicate.add_daily_disease(i, str(j), 2)
-                if(treatments != []):
-                    print([users[i]["token"]],str(treatments[0]["Days"]))
-                    communicate.send_notifications(
-                        [users[i]["token"]], "Disease Prediction", str(treatments))
-                    communicate.add_daily_disease(i, treatments, 1)
-            except Exception as e:
-                # print("hi",e)
-                continue
+            user = users[i]
+            currentLang = user["lang"]
+            currentToken = user["token"]
+            diseases = get_diseases(user)
+            treatment = str(user["seed"])
+
+            for disease in diseases:
+                notifications[currentLang]["diseases"][disease]["tokens"].append(currentToken)
+                communicate.add_daily_disease(i, notifications[currentLang]["diseases"][treatment]["body"], 2)
+
+            notifications[currentLang]["treatments"][treatment]["tokens"].append(currentToken)
+            communicate.add_daily_disease(i, notifications[currentLang]["treatments"][treatment]["body"], 1)
         except Exception as e:
-            # print("hello",e)
-            continue
+            print(e)
 
+    try:
+        for lang in notifications:
+            for types in notifications[lang]:
+                for name in notifications[lang][types]:
+                    notification = notifications[lang][types][name]
+                    communicate.send_notifications(notification["tokens"], "Disease Prediction", str(notification["body"][0]["message"]))
+    except Exception as e2:
+        print(e2)
 
-def get_notifs(data):
-    treatments = []
-    if data["lang"] == "hi":
-        if(data["seed"] == 0):
-            treatments.append({"Step 1": "शुष्क नर्सरी के लिए बीज को 3 ग्राम कार्बेन्डाजिम प्रति किलोग्राम बीज से उपचारित करें",
-                               "Step 2": "बीज को 1 ग्राम कार्बेन्डाजिम प्रति लीटर पानी में प्रति किलोग्राम बीज के हिसाब से भिगो दें",
-                               "Step 3": "5 सेन्ट आकार की नर्सरी के लिए जुताई के दौरान नाइट्रोजेन, फॉस्फोरस, पोटाश प्रत्येक उर्वरक 1 किलोग्राम की दर से डालें।", "Link": "https://youtu.be/v2Za4IMxs6s", "Days": "0"})
-        elif(data["seed"] == 14):
-            treatments.append({"Step 1": "5 सेन्ट नर्सरी के लिए प्रति लीटर पानी में 2 ग्राम जिंक सल्फेट घोल का छिड़काव करें तथा",
-                               "Step 2": "5 सेन्ट नर्सरी के लिए, 1 किलोग्राम नाइट्रोजेन उर्वरक डालें।", "Link": "", "Days": "14"})
-        elif (data["seed"] == 20):
-            treatments.append({"Step 1": "धान की शुरुआती अवस्था मॆ फफूॅद जनित रोगो की रोकथाम",
-                               "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw", "Days": "20"})
-        elif(data["seed"] == 21):
-            treatments.append(
-                {"Step 1": "5 सेन्ट नर्सरी के लिए 400 ग्राम कार्बोफ्यूरान 3 जी  दानेदार को एक किलोग्राम बालू (रेत) में मिलाएं एवं सुनिश्चित करें कि दवा डालने के समय पानी की पतली परत  नर्सरी मॆ बनी रखना चाहिए।", "Link": "", "Days": "21"})
-        elif(data["seed"] == 26):
-            treatments.append(
-                {"Step 1": "धान रोपाई के दौरान संकर धान के 33 कल्ले प्रति वर्ग मीटर और पारंपरिक किस्मो के लिए 44 कल्ले प्रति वर्ग मीटर की दर से संख्या को खेत में बनाए रखना है।", "Link": "https://youtu.be/9LpSN1TWUUI",  "Days": "26"})
-        elif(data["seed"] == 27):
-            treatments.append({"Step 1": "धान की शुरुआती अवस्था मॆ फफूॅद जनित रोगो की रोकथाम",
-                               "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw",  "Days": "27"})
-        elif(data["seed"] == 34):
-            treatments.append({"Step 1": "धान की शुरुआती अवस्था मॆ फफूॅद जनित रोगो की रोकथाम",
-                               "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw", "Days": "34"})
-        elif(data["seed"] == 40):
-            treatments.append({"Step 1": "जिंक सल्फेट हेक्टाहाइड्रेट का 25 किग्रा / हेक्टेयर अथवा 16 किग्रा / हेक्टेयर जिंक सल्फेट मोनोहाइड्रेट। ",
-                               "Step 2": "0.5% जिंक सल्फेट  (25 ग्राम जिंक सल्फेट प्रति 10 लीटर पानी में) का छिङकाव करॆ।", "Link": "https://youtu.be/tbsOs9POhVk", "Days": "40"})
-    else:
-        if(data["seed"] == 0):
-            treatments.append({"Step 1": "Treat Seeds with 3 gm Carbendazim per kg seed for dry Nursery",
-                               "Step 2": "Soak Seed in 1 gm Carbendazim per litre water per Kg seed",
-                               "Step 3": "For 5 cents of Nursery size, apply 1 kg each of  Nitrozen, Phosphorous, Potash fertilizer during ploughing", "Link": "https://youtu.be/v2Za4IMxs6s", "Days": "0"})
-        elif(data["seed"] == 14):
-            treatments.append({"Step 1": "Spray 2 gm Zinc Sulphate Solution per Lt water for 5 cent Nursery",
-                               "Step 2": "Apply 1 Kg Nitrozen fertilizer for 5 cent nursery", "Link": ""
-                               , "Days": "14"})
-        elif(data["seed"] == 20):
-            treatments.append({"Step 1": "Prevention of early fungal diseases in rice crop",
-                               "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw"
-                               , "Days": "20"})
-        elif(data["seed"] == 21):
-            treatments.append(
-                {"Step 1": "Apply 400 gm Carbofuran 3G granules mixed in a Kg of sand for 5 cent Nursey. Ensure thin layer of water is maintained at the time of application.", "Link": ""
-                , "Days": "21"})
-        elif(data["seed"] == 26):
-            treatments.append(
-                {"Step 1": "Transplant seedlings maintaining a population of 33 hills per sq mt of land for hybrid rice and 44 hills per sq mt for traditional variety.", "Link": "https://youtu.be/9LpSN1TWUUI"
-                , "Days": "26"})
-        elif(data["seed"] == 27):
-            treatments.append({"Step 1": "Prevention of early fungal diseases in rice crop",
-                               "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw"
-                               , "Days": "27"})
-        elif data["seed"] == 34:
-            treatments.append({"Step 1": "Prevention of early fungal diseases in rice crop",
-                               "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw"
-                               , "Days": "34"})
-        elif(data["seed"] == 40):
-            treatments.append({"Step 1": "25 kg/Hectare of Zinc Sulphate HectaHydrate or 16 Kg/ Hectare Zinc Sulphate Monohydrate.",
-                               "Step 2": "Spray of 0.5% Zinc Sulphate (25 gm Zinc Sulphate in 10 lit of water)", "Link": "https://youtu.be/tbsOs9POhVk"
-                               , "Days": "40"})
-    return treatments
+# def get_notifs(data):
+#     treatments = []
+#     if data["lang"] == "hi":
+#         if(data["seed"] == 0):
+#             treatments.append({"Step 1": "शुष्क नर्सरी के लिए बीज को 3 ग्राम कार्बेन्डाजिम प्रति किलोग्राम बीज से उपचारित करें",
+#                                "Step 2": "बीज को 1 ग्राम कार्बेन्डाजिम प्रति लीटर पानी में प्रति किलोग्राम बीज के हिसाब से भिगो दें",
+#                                "Step 3": "5 सेन्ट आकार की नर्सरी के लिए जुताई के दौरान नाइट्रोजेन, फॉस्फोरस, पोटाश प्रत्येक उर्वरक 1 किलोग्राम की दर से डालें।", "Link": "https://youtu.be/v2Za4IMxs6s", "Days": "0"})
+#         elif(data["seed"] == 14):
+#             treatments.append({"Step 1": "5 सेन्ट नर्सरी के लिए प्रति लीटर पानी में 2 ग्राम जिंक सल्फेट घोल का छिड़काव करें तथा",
+#                                "Step 2": "5 सेन्ट नर्सरी के लिए, 1 किलोग्राम नाइट्रोजेन उर्वरक डालें।", "Link": "", "Days": "14"})
+#         elif (data["seed"] == 20):
+#             treatments.append({"Step 1": "धान की शुरुआती अवस्था मॆ फफूॅद जनित रोगो की रोकथाम",
+#                                "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw", "Days": "20"})
+#         elif(data["seed"] == 21):
+#             treatments.append(
+#                 {"Step 1": "5 सेन्ट नर्सरी के लिए 400 ग्राम कार्बोफ्यूरान 3 जी  दानेदार को एक किलोग्राम बालू (रेत) में मिलाएं एवं सुनिश्चित करें कि दवा डालने के समय पानी की पतली परत  नर्सरी मॆ बनी रखना चाहिए।", "Link": "", "Days": "21"})
+#         elif(data["seed"] == 26):
+#             treatments.append(
+#                 {"Step 1": "धान रोपाई के दौरान संकर धान के 33 कल्ले प्रति वर्ग मीटर और पारंपरिक किस्मो के लिए 44 कल्ले प्रति वर्ग मीटर की दर से संख्या को खेत में बनाए रखना है।", "Link": "https://youtu.be/9LpSN1TWUUI",  "Days": "26"})
+#         elif(data["seed"] == 27):
+#             treatments.append({"Step 1": "धान की शुरुआती अवस्था मॆ फफूॅद जनित रोगो की रोकथाम",
+#                                "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw",  "Days": "27"})
+#         elif(data["seed"] == 34):
+#             treatments.append({"Step 1": "धान की शुरुआती अवस्था मॆ फफूॅद जनित रोगो की रोकथाम",
+#                                "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw", "Days": "34"})
+#         elif(data["seed"] == 40):
+#             treatments.append({"Step 1": "जिंक सल्फेट हेक्टाहाइड्रेट का 25 किग्रा / हेक्टेयर अथवा 16 किग्रा / हेक्टेयर जिंक सल्फेट मोनोहाइड्रेट। ",
+#                                "Step 2": "0.5% जिंक सल्फेट  (25 ग्राम जिंक सल्फेट प्रति 10 लीटर पानी में) का छिङकाव करॆ।", "Link": "https://youtu.be/tbsOs9POhVk", "Days": "40"})
+#     else:
+#         if(data["seed"] == 0):
+#             treatments.append({"Step 1": "Treat Seeds with 3 gm Carbendazim per kg seed for dry Nursery",
+#                                "Step 2": "Soak Seed in 1 gm Carbendazim per litre water per Kg seed",
+#                                "Step 3": "For 5 cents of Nursery size, apply 1 kg each of  Nitrozen, Phosphorous, Potash fertilizer during ploughing", "Link": "https://youtu.be/v2Za4IMxs6s", "Days": "0"})
+#         elif(data["seed"] == 14):
+#             treatments.append({"Step 1": "Spray 2 gm Zinc Sulphate Solution per Lt water for 5 cent Nursery",
+#                                "Step 2": "Apply 1 Kg Nitrozen fertilizer for 5 cent nursery", "Link": ""
+#                                , "Days": "14"})
+#         elif(data["seed"] == 20):
+#             treatments.append({"Step 1": "Prevention of early fungal diseases in rice crop",
+#                                "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw"
+#                                , "Days": "20"})
+#         elif(data["seed"] == 21):
+#             treatments.append(
+#                 {"Step 1": "Apply 400 gm Carbofuran 3G granules mixed in a Kg of sand for 5 cent Nursey. Ensure thin layer of water is maintained at the time of application.", "Link": ""
+#                 , "Days": "21"})
+#         elif(data["seed"] == 26):
+#             treatments.append(
+#                 {"Step 1": "Transplant seedlings maintaining a population of 33 hills per sq mt of land for hybrid rice and 44 hills per sq mt for traditional variety.", "Link": "https://youtu.be/9LpSN1TWUUI"
+#                 , "Days": "26"})
+#         elif(data["seed"] == 27):
+#             treatments.append({"Step 1": "Prevention of early fungal diseases in rice crop",
+#                                "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw"
+#                                , "Days": "27"})
+#         elif data["seed"] == 34:
+#             treatments.append({"Step 1": "Prevention of early fungal diseases in rice crop",
+#                                "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw"
+#                                , "Days": "34"})
+#         elif(data["seed"] == 40):
+#             treatments.append({"Step 1": "25 kg/Hectare of Zinc Sulphate HectaHydrate or 16 Kg/ Hectare Zinc Sulphate Monohydrate.",
+#                                "Step 2": "Spray of 0.5% Zinc Sulphate (25 gm Zinc Sulphate in 10 lit of water)", "Link": "https://youtu.be/tbsOs9POhVk"
+#                                , "Days": "40"})
+#     return treatments
 
 
 def get_diseases(data):
@@ -316,3 +560,6 @@ def calc_avg_temps(data):
         maxTotal += maxVal
         minTotal += minVal
     return round(maxTotal/3), round(minTotal/3)
+
+communicate = Communicate()
+batch_process(communicate)

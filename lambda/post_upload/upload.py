@@ -25,6 +25,6 @@ def upload_route(event, context):
     communicate.add_image_disease(uid, ref, disease)
 
     return {
-        "querystring": event['queryStringParameters'],
-        "header": event['headers']
+        'statusCode': 200,
+        'body': json.dumps(disease)
     }
