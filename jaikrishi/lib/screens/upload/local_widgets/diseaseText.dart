@@ -11,8 +11,10 @@ import 'package:leaf_problem_detection/screens/upload/upload.dart';
 import '../uploader.dart';
 
 Widget diseaseText(BuildContext context, String _response) {
+  _response = _response.trim();
   if (_response == "Healthy Crop") _response = "Healthy";
   Map data = Provider.of<UserModel>(context, listen: false).data[_response];
+
   return Expanded(
       child: Center(
           child: Column(

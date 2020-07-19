@@ -44,35 +44,42 @@ class _notifications extends State<Notifications> {
         link = i["steps"][0]["Link"];
       else if (i["data"]["Link"] != null) link = i["data"]["Link"];
       print(link);
-      widgets.add(card(
-          context,
-          Column(children: [
-            notifBody(dt, i, context),
-            link != ""
-                ? YoutubePlayer(
-                    controller: YoutubePlayerController(
-                      initialVideoId: YoutubePlayer.convertUrlToId(link),
-                      flags: YoutubePlayerFlags(
-                        autoPlay: false,
-                        mute: false,
+      print("kk" + widgets.toString());
+      try {
+        widgets.add(card(
+            context,
+            Column(children: [
+              notifBody(dt, i.data, context, false),
+              link != ""
+                  ? YoutubePlayer(
+                      controller: YoutubePlayerController(
+                        initialVideoId: YoutubePlayer.convertUrlToId(link),
+                        flags: YoutubePlayerFlags(
+                          autoPlay: false,
+                          mute: false,
+                        ),
                       ),
-                    ),
-                    showVideoProgressIndicator: true,
-                    progressIndicatorColor: Colors.blueGrey,
-                    bottomActions: <Widget>[],
-                  )
-                : Container(
-                    height: 0,
-                  )
-          ])));
+                      showVideoProgressIndicator: true,
+                      progressIndicatorColor: Colors.blueGrey,
+                      bottomActions: <Widget>[],
+                    )
+                  : Container(
+                      height: 0,
+                    )
+            ])));
+      } catch (e) {
+        print(e);
+      }
+      print("asdfa" + widgets.toString());
     }
-
+    print("hello" + widgets.length.toString());
     if (widgets.length == 0) {
       widgets.add(card(
           context,
           Text(DemoLocalizations.of(context).vals["prevNotifications"]
               ["noNotifications"])));
     }
+    print("asdfasfd " + widgets.toString());
     return widgets;
   }
 
@@ -120,6 +127,7 @@ class _notifications extends State<Notifications> {
                     children: data.data,
                   );
                 } else {
+                  print(data.data.toString());
                   return card(
                       context, Center(child: CircularProgressIndicator()));
                 }
