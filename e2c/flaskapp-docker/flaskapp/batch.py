@@ -560,6 +560,3 @@ def calc_avg_temps(data):
         maxTotal += maxVal
         minTotal += minVal
     return round(maxTotal/3), round(minTotal/3)
-
-communicate = Communicate()
-batch_process(communicate)
