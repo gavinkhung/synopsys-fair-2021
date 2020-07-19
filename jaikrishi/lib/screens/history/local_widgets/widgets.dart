@@ -17,7 +17,7 @@ Column jsonPrevDiseaseCard(
     FlatButton no,
     BuildContext context) {
   dt = dt.toLocal();
-
+type = type.trim(); 
   Map<String, dynamic> data =
       Provider.of<UserModel>(context, listen: false).data[type];
   return Column(
