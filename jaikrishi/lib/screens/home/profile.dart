@@ -677,10 +677,17 @@ class _profile extends State<profile> {
                       .substring(0, map["location"].indexOf(" "))),
                   double.parse(map["location"]
                       .substring(map["location"].indexOf(" ") + 1)));
-              List<Address> value =
-                  await Geocoder.local.findAddressesFromCoordinates(coords);
-              Provider.of<UserModel>(mainContext, listen: false).address =
-                  value.first.addressLine;
+              try {
+                List<Address> value =
+                    await Geocoder.local.findAddressesFromCoordinates(coords);
+                Provider.of<UserModel>(mainContext, listen: false).address =
+                    value.first.addressLine;
+              } catch (e) {
+                analytics.logEvent(name: "Geocoder _fail");
+                Provider.of<UserModel>(mainContext, listen: false).address =
+                    "Address is not currently available";
+              }
+
               await setWeatherData(
                   Provider.of<UserModel>(mainContext, listen: false).uid,
                   mainContext,
