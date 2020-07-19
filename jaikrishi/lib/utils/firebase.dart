@@ -317,7 +317,7 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
     userModel.phoneNumber = null;
   }
 
-  String locData = "21 80";
+  String locData = "20 79";
   try {
     locData = data.data["location"];
     LatLng loc = new LatLng(

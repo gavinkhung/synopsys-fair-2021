@@ -12,7 +12,6 @@ import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/widgets/card.dart';
 import 'package:location/location.dart' as loc;
-import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -129,6 +128,8 @@ Widget buildWeatherCard(BuildContext context) {
 
 Widget usingWeatherData(BuildContext context) {
   try {
+    LatLng loccc = Provider.of<UserModel>(context, listen: false).loc;
+    if (loccc.latitude == 20 && loccc.longitude == 79) throw Exception;
     WeatherModel data = Provider.of<WeatherModel>(context, listen: true);
     return Container(
       child: Column(
@@ -256,21 +257,9 @@ class _locNotEnabled extends State<locNotEnabled> {
               setState(
                 () {
                   switchState = !switchState;
-                  // getLocation(true).then((value) {
-                  //   Provider.of<UserModel>(context, listen: false).loc =
-                  //       LatLng(value.latitude, value.longitude);
-                  //   setWeatherData(
-                  //       Provider.of<UserModel>(context, listen: false).uid,
-                  //       context,
-                  //       value.latitude.toString(),
-                  //       value.longitude.toString());
-                  //   updateUserWeather(
-                  //       Provider.of<UserModel>(context, listen: false).uid,
-                  //       value);
-                  // });
                 },
               );
-              LocationData value = await getLocation(true);
+              loc.LocationData value = await getLocation(true);
               Provider.of<UserModel>(context, listen: false).loc =
                   LatLng(value.latitude, value.longitude);
               await setWeatherData(
