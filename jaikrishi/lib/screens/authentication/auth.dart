@@ -33,7 +33,7 @@ class _Auth extends State<Auth> {
     if (error) {
       _getThingsOnStartup().then((value) {});
     }
-    getLocation(false).then((value) {
+    getLocation().then((value) {
       Provider.of<UserModel>(context, listen: false).loc =
           LatLng(value.latitude, value.longitude);
     });
@@ -424,7 +424,7 @@ class _Auth extends State<Auth> {
           builder: (context) => Onboard(
             uid,
             true,
-            uid,
+            this.code + phoneController.text,
             Provider.of<UserModel>(context, listen: false).url,
             Provider.of<UserModel>(context, listen: false).loc,
           ),
