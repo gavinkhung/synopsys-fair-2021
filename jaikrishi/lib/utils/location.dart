@@ -17,8 +17,8 @@ import 'package:http/http.dart' as http;
 
 final PermissionHandler _permissionHandler = PermissionHandler();
 
-Future<loc.LocationData> getLocation(bool check, BuildContext context) async {
-  requestLocationPermission();
+Future<loc.LocationData> getLocation() async {
+  await requestLocationPermission();
   loc.Location location = new loc.Location();
 
   bool _serviceEnabled;
@@ -35,20 +35,21 @@ Future<loc.LocationData> getLocation(bool check, BuildContext context) async {
     _permissionGranted = await location.requestPermission();
     if (_permissionGranted != PermissionStatus.granted) {}
   }
-  if (check) {
-    BuildContext c;
-    showDialog<void>(
-      context: context, // user must tap button!
-      builder: (BuildContext context) {
-        c = context;
-        return CupertinoAlertDialog(
-          title: LinearProgressIndicator(),
-        );
-      },
-    );
-    await Future.delayed(Duration(seconds: 5));
-    Navigator.pop(c);
-  }
+  // if (check) {
+  //   BuildContext c;
+  //   showDialog<void>(
+  //     context: context, // user must tap button!
+  //     builder: (BuildContext context) {
+  //       c = context;
+  //       return CupertinoAlertDialog(
+  //         title: LinearProgressIndicator(),
+  //       );
+  //     },
+  //   );
+  //   await Future.delayed(Duration(seconds: 5));
+  //   Navigator.pop(c);
+  //   print("popped");
+  // }
 
   _locationData = await location.getLocation();
   return _locationData;
@@ -267,7 +268,7 @@ class _locNotEnabled extends State<locNotEnabled> {
               setState(
                 () {
                   switchState = !switchState;
-                  getLocation(false, context).then((value) {
+                  getLocation().then((value) {
                     Provider.of<UserModel>(context, listen: false).loc =
                         LatLng(value.latitude, value.longitude);
                     setWeatherData(

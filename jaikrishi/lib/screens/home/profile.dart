@@ -115,7 +115,7 @@ class _profile extends State<profile> {
                                         icon: Icon(Icons.location_on),
                                         onPressed: () async {
                                           LocationData value =
-                                              await getLocation(true, context);
+                                              await getLocation();
                                           Provider.of<UserModel>(context,
                                                       listen: false)
                                                   .loc =
