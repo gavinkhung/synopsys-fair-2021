@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
@@ -129,6 +130,14 @@ class _profile extends State<profile> {
                                                   listen: false)
                                               .uid,
                                           value);
+
+                                      Coordinates coords = new Coordinates(
+                                          value.latitude, value.longitude);
+                                      List<Address> temp = await Geocoder.local
+                                          .findAddressesFromCoordinates(coords);
+                                      Provider.of<UserModel>(context,
+                                              listen: false)
+                                          .address = temp.first.addressLine;
 
                                       Navigator.push(
                                           context,

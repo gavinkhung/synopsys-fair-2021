@@ -417,6 +417,7 @@ class _Auth extends State<Auth> {
       };
       Provider.of<UserModel>(context, listen: false).uid = uid;
       setData(map, 0, context);
+      analytics.logSignUp(signUpMethod: "auth");
       Navigator.push(
         context,
         MaterialPageRoute(
