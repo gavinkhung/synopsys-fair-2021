@@ -18,8 +18,8 @@ import 'package:http/http.dart' as http;
 
 final PermissionHandler _permissionHandler = PermissionHandler();
 
-Future<loc.LocationData> getLocation(bool check) async {
-  requestLocationPermission();
+Future<loc.LocationData> getLocation() async {
+  await requestLocationPermission();
   loc.Location location = new loc.Location();
 
   bool _serviceEnabled;
@@ -36,8 +36,22 @@ Future<loc.LocationData> getLocation(bool check) async {
     _permissionGranted = await location.requestPermission();
     if (_permissionGranted != PermissionStatus.granted) {}
   }
+  // if (check) {
+  //   BuildContext c;
+  //   showDialog<void>(
+  //     context: context, // user must tap button!
+  //     builder: (BuildContext context) {
+  //       c = context;
+  //       return CupertinoAlertDialog(
+  //         title: LinearProgressIndicator(),
+  //       );
+  //     },
+  //   );
+  //   await Future.delayed(Duration(seconds: 5));
+  //   Navigator.pop(c);
+  //   print("popped");
+  // }
 
-  if (check) await Future.delayed(Duration(seconds: 5));
   _locationData = await location.getLocation();
   return _locationData;
 }
@@ -259,7 +273,7 @@ class _locNotEnabled extends State<locNotEnabled> {
                   switchState = !switchState;
                 },
               );
-              loc.LocationData value = await getLocation(true);
+              loc.LocationData value = await getLocation();
               Provider.of<UserModel>(context, listen: false).loc =
                   LatLng(value.latitude, value.longitude);
               await setWeatherData(
