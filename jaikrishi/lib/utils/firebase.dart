@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/models/weather_model.dart';
 import 'package:leaf_problem_detection/screens/authentication/auth.dart';
 import 'package:leaf_problem_detection/screens/home/home.dart';
@@ -14,10 +19,6 @@ import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/utils/location.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
-import 'package:leaf_problem_detection/models/user_model.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
-import 'dart:io';
 import 'package:share/share.dart';
 
 import 'imageProcessing.dart';
@@ -219,32 +220,34 @@ StreamBuilder autoLogin(BuildContext cont) {
           );
         } else {
           if (_auth.currentUser() != null && !justSignedUp) {
-            setVals(cont, user);
+            print("hello");
+            return FutureBuilder(
+              future: setVals(cont, user),
+              builder: (context, data) {
+                if (data.hasData) {
+                  return FutureBuilder(
+                      future: getData(user.uid),
+                      builder: (context, data) {
+                        if (data.hasData) {
+                          DemoLocalizations.of(cont).locale = new Locale(
+                              data.data["lang"] != null
+                                  ? data.data["lang"]
+                                  : "hi");
+                          return Home();
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      });
+                } else {
+                  analytics.logEvent(name: "set_vals_failed");
+                  return CircularProgressIndicator();
+                }
+              },
+            );
           }
-          return FutureBuilder(
-            future: setVals(cont, user),
-            builder: (context, data) {
-              if (data.hasData) {
-                return FutureBuilder(
-                    future: getData(user.uid),
-                    builder: (context, data) {
-                      if (data.hasData) {
-                        DemoLocalizations.of(cont).locale = new Locale(
-                            data.data["lang"] != null
-                                ? data.data["lang"]
-                                : "hi");
-                        return Home();
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    });
-              } else {
-                analytics.logEvent(name: "set_vals_failed");
-                return CircularProgressIndicator();
-              }
-            },
-          );
-          //return Home();
+          print("hi there");
+
+          return Container();
         }
       } else {
         analytics.logEvent(name: "snapshot_data_null");
