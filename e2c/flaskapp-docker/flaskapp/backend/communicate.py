@@ -23,14 +23,18 @@ class Communicate:
 
     def upload(self, file, uid):
         title = self.getTime()
+        # filename = uid+"/"+title+".png"
+        # blob = self.bucket.blob(filename)
+        # f = TemporaryFile()
+        # pil_image.save(f, 'JPEG')
+        # f.seek(0)
+        # blob.upload_from_file(f)
+        # blob.make_public()
+        # f.close()
         filename = uid+"/"+title+".png"
         blob = self.bucket.blob(filename)
-        f = TemporaryFile()
-        pil_image.save(f, 'JPEG')
-        f.seek(0)
-        blob.upload_from_file(f)
+        blob.upload_from_string(file.read())
         blob.make_public()
-        f.close()
         return blob.public_url
     
     def get_users(self):
