@@ -545,7 +545,6 @@ class _profile extends State<profile> {
       },
     ).whenComplete(() {
       if (_transplanting != null) {
-        print("transplant");
         Map<String, dynamic> map = {"trans": _transplanting};
         Provider.of<UserModel>(mainContext, listen: false).trans =
             _transplanting;

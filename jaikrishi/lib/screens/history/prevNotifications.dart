@@ -26,8 +26,6 @@ class _notifications extends State<Notifications> {
   }
 
   Future<List<Widget>> getHist(context) async {
-    print(_uid);
-
     List<Widget> widgets = new List<Widget>();
     dynamic qs = await getPrevNotifs(_uid);
     var docs = qs.documents;
@@ -43,8 +41,6 @@ class _notifications extends State<Notifications> {
       if (i["steps"] != null && i["steps"][0]["Link"] != "")
         link = i["steps"][0]["Link"];
       else if (i["data"]["Link"] != null) link = i["data"]["Link"];
-      print(link);
-      print("kk" + widgets.toString());
       try {
         widgets.add(card(
             context,
@@ -70,16 +66,13 @@ class _notifications extends State<Notifications> {
       } catch (e) {
         print(e);
       }
-      print("asdfa" + widgets.toString());
     }
-    print("hello" + widgets.length.toString());
     if (widgets.length == 0) {
       widgets.add(card(
           context,
           Text(DemoLocalizations.of(context).vals["prevNotifications"]
               ["noNotifications"])));
     }
-    print("asdfasfd " + widgets.toString());
     return widgets;
   }
 
@@ -127,7 +120,6 @@ class _notifications extends State<Notifications> {
                     children: data.data,
                   );
                 } else {
-                  print(data.data.toString());
                   return card(
                       context, Center(child: CircularProgressIndicator()));
                 }

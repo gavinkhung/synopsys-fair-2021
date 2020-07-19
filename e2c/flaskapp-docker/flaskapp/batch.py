@@ -74,9 +74,7 @@ def get_data(docs):
 
 
 def batch_process(communicate):
-    print("getting users")
     users = get_data(communicate.get_users())
-    print("got users")
     notifications = {
         "hi": {
             "diseases": {

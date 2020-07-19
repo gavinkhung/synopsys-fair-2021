@@ -27,7 +27,6 @@ class DemoLocalizations {
   Future<bool> setVals() async {
     try {
       if (vals == null) {
-        print("hi there partner");
         if (_url == null) {
           _url = await getUrl();
         }
@@ -35,18 +34,10 @@ class DemoLocalizations {
         total = jsonDecode(temp);
       }
       vals = total[locale.languageCode];
-      print("hey ehy hey");
     } catch (e) {
       print(e);
     }
     return true;
-    // vals = await rootBundle
-    //     .loadString("data/" + locale.languageCode + ".json")
-    //     .then((value) {
-    //   return jsonDecode(value);
-    // }).catchError((e) {
-    //   print(e);
-    // });
   }
 
   Map<String, dynamic> get valuess {

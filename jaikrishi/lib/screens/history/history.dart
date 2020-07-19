@@ -303,7 +303,6 @@ class _History extends State<History> {
               ]);
             }
           } else {
-            print("hello this is the data: " + data.toString());
             return Center(child: CircularProgressIndicator());
           }
         });
