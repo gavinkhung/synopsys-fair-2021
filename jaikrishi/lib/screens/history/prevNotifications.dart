@@ -8,6 +8,8 @@ import 'package:leaf_problem_detection/widgets/card.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+import 'local_widgets/widgets.dart';
+
 class Notifications extends StatefulWidget {
   Notifications();
   _notifications createState() => _notifications();
@@ -24,6 +26,8 @@ class _notifications extends State<Notifications> {
   }
 
   Future<List<Widget>> getHist(context) async {
+    print(_uid);
+
     List<Widget> widgets = new List<Widget>();
     dynamic qs = await getPrevNotifs(_uid);
     var docs = qs.documents;
@@ -34,15 +38,20 @@ class _notifications extends State<Notifications> {
     });
     for (var i in docs) {
       DateTime dt = DateTime.parse(i["time"] + "Z").toLocal();
+      String link = "";
+
+      if (i["steps"] != null && i["steps"][0]["Link"] != "")
+        link = i["steps"][0]["Link"];
+      else if (i["data"]["Link"] != null) link = i["data"]["Link"];
+      print(link);
       widgets.add(card(
           context,
           Column(children: [
             notifBody(dt, i, context),
-            i["steps"] != null && i["steps"][0]["Link"] != ""
+            link != ""
                 ? YoutubePlayer(
                     controller: YoutubePlayerController(
-                      initialVideoId:
-                          YoutubePlayer.convertUrlToId(i["steps"][0]["Link"]),
+                      initialVideoId: YoutubePlayer.convertUrlToId(link),
                       flags: YoutubePlayerFlags(
                         autoPlay: false,
                         mute: false,

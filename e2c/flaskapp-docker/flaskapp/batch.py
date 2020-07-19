@@ -84,12 +84,12 @@ def batch_process(communicate):
                 for j in disease:
                     communicate.send_notifications(
                         [users[i]["token"]], "Disease Prediction", str(j))
-                    communicate.add_daily_disease(i, str(j), True)
+                    communicate.add_daily_disease(i, str(j), 2)
                 if(treatments != []):
                     print([users[i]["token"]],str(treatments[0]["Days"]))
                     communicate.send_notifications(
                         [users[i]["token"]], "Disease Prediction", str(treatments))
-                    communicate.add_daily_disease(i, treatments, False)
+                    communicate.add_daily_disease(i, treatments, 1)
             except Exception as e:
                 # print("hi",e)
                 continue
