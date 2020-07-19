@@ -585,7 +585,7 @@ class _Onboard extends State<Onboard> {
     return Scaffold(
       body: IntroductionScreen(
         pages: introScreens,
-        onDone: () {
+        onDone: () async {
           if (_seedingDate == null ||
               _transplantingDate == null ||
               _length == "Select Rice Variety" ||
@@ -610,7 +610,7 @@ class _Onboard extends State<Onboard> {
                 });
           } else {
             if (_firstTime) {
-              Firestore.instance
+              await Firestore.instance
                   .collection('users')
                   .document(_username)
                   .setData({
@@ -632,7 +632,7 @@ class _Onboard extends State<Onboard> {
                 'crop': _crop,
               }, merge: true);
             } else {
-              Firestore.instance
+              await Firestore.instance
                   .collection('users')
                   .document(_username)
                   .updateData({
@@ -672,9 +672,12 @@ class _Onboard extends State<Onboard> {
 
           }
         },
-        onSkip: () {
+        onSkip: () async {
           if (_firstTime) {
-            Firestore.instance.collection('users').document(_username).setData({
+            await Firestore.instance
+                .collection('users')
+                .document(_username)
+                .setData({
               'phone': _phone,
               'numFollowers': 0,
               'numFollowing': 0,
@@ -686,7 +689,7 @@ class _Onboard extends State<Onboard> {
               'crop': ""
             });
           } else {
-            Firestore.instance
+            await Firestore.instance
                 .collection('users')
                 .document(_username)
                 .updateData({

@@ -49,10 +49,8 @@ class _profile extends State<profile> {
   @override
   void initState() {
     super.initState();
-    print(Provider.of<UserModel>(context, listen: false).crop);
     _username = Provider.of<UserModel>(context, listen: false).uid;
     userLoc = Provider.of<UserModel>(context, listen: false).loc;
-    print(Provider.of<UserModel>(context, listen: false).crop);
     //signOut();
   }
 
@@ -117,7 +115,7 @@ class _profile extends State<profile> {
                                         icon: Icon(Icons.location_on),
                                         onPressed: () async {
                                           LocationData value =
-                                              await getLocation(true);
+                                              await getLocation(true, context);
                                           Provider.of<UserModel>(context,
                                                       listen: false)
                                                   .loc =
