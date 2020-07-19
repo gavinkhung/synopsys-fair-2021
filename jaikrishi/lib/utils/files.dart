@@ -62,3 +62,9 @@ Future<String> startUploadToAPI(String uid, String path, String url) async {
   var response = await res.stream.bytesToString();
   return response;
 }
+
+Future<String> getText() async {
+  String url = await getUrl();
+  var res = await http.post(url + "/text");
+  return res.body;
+}

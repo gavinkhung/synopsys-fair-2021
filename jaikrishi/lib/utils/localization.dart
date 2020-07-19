@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
+import 'files.dart';
+
 class DemoLocalizations {
   DemoLocalizations(this.locale);
 
@@ -13,15 +15,21 @@ class DemoLocalizations {
   }
 
   Map<dynamic, dynamic> vals;
+  Map<dynamic, dynamic> total;
 
   setVals() async {
-    vals = await rootBundle
-        .loadString("data/" + locale.languageCode + ".json")
-        .then((value) {
-      return jsonDecode(value);
-    }).catchError((e) {
-      print(e);
-    });
+    if (vals == null) {
+      String temp = await getText();
+      total = jsonDecode(temp);
+    }
+    vals = total[locale.languageCode];
+    // vals = await rootBundle
+    //     .loadString("data/" + locale.languageCode + ".json")
+    //     .then((value) {
+    //   return jsonDecode(value);
+    // }).catchError((e) {
+    //   print(e);
+    // });
   }
 
   Map<String, dynamic> get valuess {

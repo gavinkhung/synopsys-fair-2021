@@ -220,7 +220,7 @@ StreamBuilder autoLogin(BuildContext cont) {
           );
         } else {
           if (_auth.currentUser() != null && !justSignedUp) {
-            print("hello");
+            // print("hello");
             return FutureBuilder(
               future: setVals(cont, user),
               builder: (context, data) {
@@ -266,7 +266,7 @@ Future<DocumentSnapshot> getData(String uid) {
 Future<String> getUrl() async {
   var ref =
       await Firestore.instance.collection("data").document("backend").get();
-  return "http://54.183.188.209";
+  return "http://10.0.2.2:5000";
 }
 
 Future<bool> setVals(BuildContext context, FirebaseUser user) async {
@@ -351,11 +351,13 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
   String lang = null;
   try {
     lang = data.data["lang"];
+    DemoLocalizations.of(context).locale = new Locale(lang);
+    DemoLocalizations.of(context).setVals();
   } catch (e) {
     print(e.toString());
   }
 
-  userModel.data = await loadJson(url, context, lang != null ? lang : "en");
+  userModel.data = await loadJson(url, context, lang != null ? lang : "hi");
 
   return true;
 }

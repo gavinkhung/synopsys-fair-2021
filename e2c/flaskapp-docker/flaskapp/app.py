@@ -12,6 +12,7 @@ from backend import communicate
 from model import predict
 from batch import *
 from PIL import Image
+import json 
 
 import logging
 import copy
@@ -62,12 +63,17 @@ def send():
             print(user.id); 
         except Exception as e:
             print(e)
-    for key, val in tokens.items():
-        if key == 'en':
-            communicate.send_notifications(tokens[key]["token"], "Please Watch Video", "* It is highly recommend you watch the video we have sent. You will find it in the notification section. ")
-        elif key == "hi": 
-            communicate.send_notifications(tokens[key]["token"], "वीडियो जरूर देखें", "* यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।")
+    # for key, val in tokens.items():
+    #     if key == 'en':
+    #         communicate.send_notifications(tokens[key]["token"], "Please Watch Video", "* It is highly recommend you watch the video we have sent. You will find it in the notification section. ")
+    #     elif key == "hi": 
+    #         communicate.send_notifications(tokens[key]["token"], "वीडियो जरूर देखें", "* यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।")
        
+@app.route("/text", methods=["POST"])
+def text():
+    with open('./text.json') as f: 
+        data = json.load(f)
+        return jsonify(data)
 
 @app.route("/reminder", methods=["POST"])
 def reminder():
