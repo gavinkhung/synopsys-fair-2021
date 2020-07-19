@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
+import 'firebase.dart';
+
+import 'files.dart';
+
 class DemoLocalizations {
   DemoLocalizations(this.locale);
 
@@ -13,15 +17,32 @@ class DemoLocalizations {
   }
 
   Map<dynamic, dynamic> vals;
+  Map<dynamic, dynamic> total;
+  String _url;
 
-  setVals() async {
-    vals = await rootBundle
-        .loadString("data/" + locale.languageCode + ".json")
-        .then((value) {
-      return jsonDecode(value);
-    }).catchError((e) {
-      print(e);
-    });
+  firstSet(String url) {
+    _url = url;
+  }
+
+  Future<bool> setVals() async {
+    if (vals == null) {
+      print("hi there partner");
+      if (_url == null) {
+        _url = await getUrl();
+      }
+      String temp = await getTextData(_url);
+      total = jsonDecode(temp);
+    }
+    vals = total[locale.languageCode];
+    print("hey ehy hey");
+    return true;
+    // vals = await rootBundle
+    //     .loadString("data/" + locale.languageCode + ".json")
+    //     .then((value) {
+    //   return jsonDecode(value);
+    // }).catchError((e) {
+    //   print(e);
+    // });
   }
 
   Map<String, dynamic> get valuess {

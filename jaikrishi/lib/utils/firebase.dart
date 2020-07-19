@@ -203,7 +203,6 @@ StreamBuilder autoLogin(BuildContext cont) {
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.active) {
         FirebaseUser user = snapshot.data;
-        DemoLocalizations.of(cont).setVals();
 
         if (user == null) {
           return FutureBuilder<String>(
@@ -212,7 +211,15 @@ StreamBuilder autoLogin(BuildContext cont) {
               if (data.hasData) {
                 Provider.of<UserModel>(context, listen: false).url = data.data;
                 justSignedUp = true;
-                return Auth(false);
+                return FutureBuilder(
+                    future: DemoLocalizations.of(cont).setVals(),
+                    builder: (context, data) {
+                      if (data.hasData) {
+                        return Auth(false);
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    });
               } else {
                 return CircularProgressIndicator();
               }
@@ -220,7 +227,7 @@ StreamBuilder autoLogin(BuildContext cont) {
           );
         } else {
           if (_auth.currentUser() != null && !justSignedUp) {
-            print("hello");
+            // print("hello");
             return FutureBuilder(
               future: setVals(cont, user),
               builder: (context, data) {
@@ -266,7 +273,7 @@ Future<DocumentSnapshot> getData(String uid) {
 Future<String> getUrl() async {
   var ref =
       await Firestore.instance.collection("data").document("backend").get();
-  return "http://54.183.188.209";
+  return "http://10.0.2.2:5000";
 }
 
 Future<bool> setVals(BuildContext context, FirebaseUser user) async {
@@ -310,7 +317,7 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
     userModel.phoneNumber = null;
   }
 
-  String locData = "21 80";
+  String locData = "20 79";
   try {
     locData = data.data["location"];
     LatLng loc = new LatLng(
@@ -351,11 +358,13 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
   String lang = null;
   try {
     lang = data.data["lang"];
+    DemoLocalizations.of(context).locale = new Locale(lang);
+    DemoLocalizations.of(context).setVals();
   } catch (e) {
     print(e.toString());
   }
 
-  userModel.data = await loadJson(url, context, lang != null ? lang : "en");
+  userModel.data = await loadJson(url, context, lang != null ? lang : "hi");
 
   return true;
 }

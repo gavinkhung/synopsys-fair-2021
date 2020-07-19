@@ -256,7 +256,7 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
               ? Text(
                   "We highly recommend that you watch the following video. To view the video in app please click \"See More\"",
                   style: TextStyle(fontSize: 20))
-              : Text("We highly recommend taht you watch the following video",
+              : Text("We highly recommend that you watch the following video",
                   style: TextStyle(fontSize: 20)),
         )
       ],

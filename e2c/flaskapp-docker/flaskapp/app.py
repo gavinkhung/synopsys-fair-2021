@@ -12,6 +12,7 @@ from backend import communicate
 from model import predict
 from batch import *
 from PIL import Image
+import json 
 
 import logging
 import copy
@@ -68,6 +69,11 @@ def send():
         elif key == "hi": 
             communicate.send_notifications(tokens[key]["token"], "वीडियो जरूर देखें", "* यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।")
        
+@app.route("/text", methods=["POST"])
+def text():
+    with open('./text.json') as f: 
+        data = json.load(f)
+        return jsonify(data)
 
 @app.route("/reminder", methods=["POST"])
 def reminder():
