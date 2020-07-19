@@ -63,8 +63,7 @@ Future<String> startUploadToAPI(String uid, String path, String url) async {
   return response;
 }
 
-Future<String> getText() async {
-  String url = await getUrl();
+Future<String> getTextData(String url) async {
   var res = await http.post(url + "/text");
   return res.body;
 }

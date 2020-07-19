@@ -203,7 +203,6 @@ StreamBuilder autoLogin(BuildContext cont) {
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.active) {
         FirebaseUser user = snapshot.data;
-        DemoLocalizations.of(cont).setVals();
 
         if (user == null) {
           return FutureBuilder<String>(
@@ -212,7 +211,15 @@ StreamBuilder autoLogin(BuildContext cont) {
               if (data.hasData) {
                 Provider.of<UserModel>(context, listen: false).url = data.data;
                 justSignedUp = true;
-                return Auth(false);
+                return FutureBuilder(
+                    future: DemoLocalizations.of(cont).setVals(),
+                    builder: (context, data) {
+                      if (data.hasData) {
+                        return Auth(false);
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    });
               } else {
                 return CircularProgressIndicator();
               }
