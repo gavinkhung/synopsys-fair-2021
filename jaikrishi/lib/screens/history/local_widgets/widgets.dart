@@ -17,7 +17,7 @@ Column jsonPrevDiseaseCard(
     FlatButton no,
     BuildContext context) {
   dt = dt.toLocal();
-
+type = type.trim(); 
   Map<String, dynamic> data =
       Provider.of<UserModel>(context, listen: false).data[type];
   return Column(
@@ -129,7 +129,7 @@ Future feedbackResponse(BuildContext context, bool yes) {
           ));
 }
 
-Widget notifBody(DateTime dt, Map notifs, BuildContext context) {
+Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
   if (notifs["type"] == "date_notif") {
     String step1 = "";
     String step2 = "";
@@ -248,7 +248,19 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context) {
         ])
       ],
     );
+  } else if (notifs['type'] == "misc") {
+    return Column(
+      children: [
+        Center(
+          child: page
+              ? Text(
+                  "We highly recommend that you watch the following video. To view the video in app please click \"See More\"",
+                  style: TextStyle(fontSize: 20))
+              : Text("We highly recommend taht you watch the following video",
+                  style: TextStyle(fontSize: 20)),
+        )
+      ],
+    );
   }
-
   return Container();
 }

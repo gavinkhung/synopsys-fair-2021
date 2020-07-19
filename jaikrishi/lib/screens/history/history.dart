@@ -287,7 +287,7 @@ class _History extends State<History> {
               DateTime dt = DateTime.parse(notifs[0]["time"] + "Z").toLocal();
 
               return Column(children: [
-                notifBody(dt, notifs[0].data, context),
+                notifBody(dt, notifs[0].data, context, true),
                 GestureDetector(
                     child: Text(
                         DemoLocalizations.of(context).vals["History"]
@@ -302,8 +302,10 @@ class _History extends State<History> {
                         builder: (context) => Notifications())))
               ]);
             }
-          } else
+          } else {
+            print("hello this is the data: " + data.toString());
             return Center(child: CircularProgressIndicator());
+          }
         });
   }
 }
