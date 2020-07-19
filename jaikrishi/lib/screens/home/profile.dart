@@ -88,70 +88,24 @@ class _profile extends State<profile> {
                       builder: (BuildContext context) {
                         return Center(
                           child: Material(
-                            child: DropdownButton(
-                              icon: Icon(Icons.more, color: myGreen),
-                              items: [
-                                DropdownMenuItem(
-                                  value: 1,
-                                  child: IconButton(
-                                    icon: Icon(Icons.language),
-                                    tooltip: "Language",
-                                    onPressed: () async {
-                                      await pickLang(
-                                          context,
-                                          Provider.of<UserModel>(context,
-                                                  listen: false)
-                                              .uid);
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => profile()));
-                                    },
+                            color: Color.fromRGBO(196, 243, 220, 1),
+                            child: FlatButton.icon(
+                              label: Text("Language"),
+                              padding: EdgeInsets.only(left: 3),
+                              icon: Icon(Icons.language),
+                              onPressed: () async {
+                                await pickLang(
+                                    context,
+                                    Provider.of<UserModel>(context,
+                                            listen: false)
+                                        .uid);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => profile(),
                                   ),
-                                ),
-                                DropdownMenuItem(
-                                    value: 2,
-                                    child: IconButton(
-                                        icon: Icon(Icons.location_on),
-                                        onPressed: () async {
-                                          LocationData value =
-                                              await getLocation();
-                                          Provider.of<UserModel>(context,
-                                                      listen: false)
-                                                  .loc =
-                                              LatLng(value.latitude,
-                                                  value.longitude);
-                                          await setWeatherData(
-                                              Provider.of<UserModel>(context,
-                                                      listen: false)
-                                                  .uid,
-                                              context,
-                                              value.latitude.toString(),
-                                              value.longitude.toString());
-                                          await updateUserWeather(
-                                              Provider.of<UserModel>(context,
-                                                      listen: false)
-                                                  .uid,
-                                              value);
-
-                                          Coordinates coords = new Coordinates(
-                                              value.latitude, value.longitude);
-                                          List<Address> temp = await Geocoder
-                                              .local
-                                              .findAddressesFromCoordinates(
-                                                  coords);
-                                          Provider.of<UserModel>(context,
-                                                  listen: false)
-                                              .address = temp.first.addressLine;
-
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      profile()));
-                                        }))
-                              ],
-                              onChanged: (value) {},
+                                );
+                              },
                             ),
                           ),
                         );
