@@ -99,47 +99,60 @@ class _instructions extends State<Instructions> {
                   progressIndicatorColor: Colors.blueGrey,
                 ),
                 builder: (context, player) => Container(
-                    //padding: EdgeInsets.all(30),
-                    height: MediaQuery.of(context).size.height * 2,
-                    width: MediaQuery.of(context).size.width,
-                    color: Color.fromRGBO(24, 165, 123, 1),
-                    child: CupertinoScrollbar(
-                        child: ListView(padding: EdgeInsets.zero, children: [
-                      Column(children: [
-                        Container(
-                          color: Colors.white,
-                          padding:
-                              EdgeInsets.only(left: 10, right: 20, top: 20),
-                          child: Row(
-                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.arrow_back),
-                                iconSize: 30.0,
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              Expanded(
-                                  child: Center(
+                  //padding: EdgeInsets.all(30),
+                  height: MediaQuery.of(context).size.height * 2,
+                  width: MediaQuery.of(context).size.width,
+                  color: Color.fromRGBO(24, 165, 123, 1),
+                  child: CupertinoScrollbar(
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              color: Colors.white,
+                              padding:
+                                  EdgeInsets.only(left: 10, right: 20, top: 20),
+                              child: Row(
+                                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.arrow_back),
+                                    iconSize: 30.0,
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  Expanded(
+                                    child: Center(
                                       child: data == null
                                           ? Text(DemoLocalizations.of(context)
                                               .vals["Instructions"]["2"])
-                                          : Text(data["Disease"],
+                                          : Text(
+                                              data["Disease"],
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight:
-                                                      FontWeight.w600))))
-                            ],
-                          ),
-                        ),
-                        Container(
-                            child: Column(
-                          children: getSteps(context, player),
-                        ))
-                      ])
-                    ]))))
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Column(
+                                children: getSteps(context, player),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              )
             : Container(
                 //padding: EdgeInsets.all(30),
                 height: MediaQuery.of(context).size.height * 2,
