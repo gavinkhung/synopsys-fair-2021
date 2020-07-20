@@ -171,11 +171,6 @@ class _Onboard extends State<Onboard> {
                             child: Text(DemoLocalizations.of(context)
                                 .vals["WelcometoJaikrishi"]["8"]),
                             onPressed: () async {
-                              try {
-                                //await FirebaseAuth.instance.signOut();
-                              } catch (e) {
-                                print(e);
-                              }
                               setState(() {
                                 _crop = "Rice";
                                 Navigator.pop(context, 'Rice');
@@ -235,14 +230,15 @@ class _Onboard extends State<Onboard> {
                     )),
                 SizedBox(height: 10),
                 AutoSizeText(
-                    DemoLocalizations.of(context).vals["SeedingLocation"]["2"],
-                    textAlign: TextAlign.center,
-                    maxLines: 3,
-                    style: TextStyle(
-                      color: Colors.white,
-                      height: 1.2,
-                      fontSize: 18.0,
-                    )),
+                  DemoLocalizations.of(context).vals["SeedingLocation"]["2"],
+                  textAlign: TextAlign.center,
+                  maxLines: 3,
+                  style: TextStyle(
+                    color: Colors.white,
+                    height: 1.2,
+                    fontSize: 18.0,
+                  ),
+                ),
                 SizedBox(
                   height: 30,
                 ),
@@ -325,7 +321,6 @@ class _Onboard extends State<Onboard> {
                 )
               ],
             )),
-        //image:
       ),
       PageViewModel(
         decoration: PageDecoration(pageColor: myGreen),
@@ -344,24 +339,27 @@ class _Onboard extends State<Onboard> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: AutoSizeText(
-                    DemoLocalizations.of(context).vals["VarietyLocation"]["1"],
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      color: Colors.white,
-                      fontSize: 32.0,
-                    )),
+                  DemoLocalizations.of(context).vals["VarietyLocation"]["1"],
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    fontSize: 32.0,
+                  ),
+                ),
               ),
               SizedBox(height: 10),
-              Text(DemoLocalizations.of(context).vals["VarietyLocation"]["2"],
-                  textAlign: TextAlign.center,
-                  maxLines: 3,
-                  style: TextStyle(
-                    color: Colors.white,
-                    height: 1.2,
-                    fontSize: 18.0,
-                  )),
+              Text(
+                DemoLocalizations.of(context).vals["VarietyLocation"]["2"],
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                style: TextStyle(
+                  color: Colors.white,
+                  height: 1.2,
+                  fontSize: 18.0,
+                ),
+              ),
               SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
@@ -431,22 +429,25 @@ class _Onboard extends State<Onboard> {
                                   : DemoLocalizations.of(context)
                                       .vals["VarietyLocation"]["3"],
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold),
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
               ),
               SizedBox(height: 10),
               Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Center(
-                      child: AutoSizeText(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Center(
+                  child: AutoSizeText(
                     DemoLocalizations.of(context).vals["VarietyLocation"]["7"],
                     style: TextStyle(color: Colors.white, fontSize: 1000),
                     maxLines: 1,
-                  ))),
+                  ),
+                ),
+              ),
               SizedBox(height: 5),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
@@ -568,9 +569,10 @@ class _Onboard extends State<Onboard> {
                             ["4"],
                         maxFontSize: 20,
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 50,
-                            fontWeight: FontWeight.bold),
+                          color: Colors.white,
+                          fontSize: 50,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
