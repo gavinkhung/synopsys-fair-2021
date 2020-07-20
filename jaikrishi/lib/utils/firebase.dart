@@ -92,7 +92,7 @@ Future pickLang(BuildContext cont, String uid) {
                 children: [
                   AppBar(
                     title: Text(
-                      "Select your preferred language",
+                      "भाषा (Language)",
                       style: TextStyle(color: Colors.black),
                     ),
                     shape: RoundedRectangleBorder(
@@ -135,11 +135,6 @@ Future pickLang(BuildContext cont, String uid) {
                               selectedIndex = 0;
                             });
                           },
-                          leading: Icon(
-                            Icons.favorite,
-                            color:
-                                selectedIndex == 0 ? Colors.red : Colors.grey,
-                          ),
                           title: Text("English"),
                           trailing: Icon(
                             selectedIndex == 0 ? Icons.check : null,
@@ -163,12 +158,7 @@ Future pickLang(BuildContext cont, String uid) {
                               selectedIndex = 2;
                             });
                           },
-                          leading: Icon(
-                            Icons.star,
-                            color:
-                                selectedIndex == 2 ? Colors.red : Colors.grey,
-                          ),
-                          title: Text("Hindi"),
+                          title: Text("हिन्दी"),
                           trailing: Icon(
                             selectedIndex == 2 ? Icons.check : null,
                           ),

@@ -716,7 +716,7 @@ class _Onboard extends State<Onboard> {
         },
         done: Text(DemoLocalizations.of(context).vals["VarietyLocation"]["5"],
             style: TextStyle(color: Colors.white, fontSize: 20)),
-        showSkipButton: true,
+        showSkipButton: false,
         skip: Text(DemoLocalizations.of(context).vals["SeedingLocation"]["5"],
             style: TextStyle(color: Colors.white, fontSize: 20)),
         showNextButton: true,

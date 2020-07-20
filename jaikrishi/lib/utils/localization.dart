@@ -56,7 +56,8 @@ class DemoLocalizationsDelegate
   Future<DemoLocalizations> load(Locale locale) {
     // Returning a SynchronousFuture here because an async "load" operation
     // isn't needed to produce an instance of DemoLocalizations.
-    return SynchronousFuture<DemoLocalizations>(DemoLocalizations(locale));
+    return SynchronousFuture<DemoLocalizations>(
+        DemoLocalizations(new Locale("hi")));
   }
 
   @override
