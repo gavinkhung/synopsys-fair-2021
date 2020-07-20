@@ -120,6 +120,19 @@
             "7": "देश कोड पहले से ही निर्दिष्ट है।",
             "8": "लॉग इन करने में असमर्थ।"
         },
+        "edit" : {
+            "question" : "What would you like to edit?",
+            "select": "Select something to edit",
+            "loc": "Crop Location", 
+            "variety": "Variety", 
+            "trans": "Date of Transplanting",
+            "seed": "Date of Seeding",
+            "crop" :"Crop"
+        },
+        "error": {
+            "Address": "Address is not currently available",
+            "loc": "Enable Location Permissions: "
+        },
         "Crops": {
             "1": "धान"
         },
@@ -148,7 +161,9 @@
             "ok": "ठीक है",
             "warningNotif": " चेतावनी देते हैं कि आपको अपनी फसल को स्वस्थ रखने के लिए निम्नलिखित कदम उठाने की आवश्यकता है: ",
             "warningDisease": " आपकी फसल में मौजूद हो सकता है। कृपया जाँचने के लिए हमारी पहचान सुविधा का उपयोग करें।",
-            "warns": " चेतावनी दी है कि "
+            "warns": " चेतावनी दी है कि ",
+            "suggestLink": "We highly recommend that you watch the following video. To view the video in app please click \"See More\"", 
+            "suggestLinkOnPrev": "We highly recommend that you watch the following video"
         },
         "prevNotifications": {
             "warning": "विगत रोग चेतावनी",
@@ -286,6 +301,19 @@
         "Crops": {
             "1": "Rice"
         },
+        "edit" : {
+            "question" : "What would you like to edit?",
+            "select": "Select something to edit",
+            "loc": "Crop Location", 
+            "variety": "Variety", 
+            "trans": "Date of Transplanting",
+            "seed": "Date of Seeding",
+            "crop" :"Crop"
+        },
+        "error": {
+            "Address": "Address is not currently available",
+            "loc": "Enable Location Permissions: "
+        },
         "Instructions": {
             "1": "Video Instructions",
             "2": "Learn More",
@@ -311,7 +339,9 @@
             "ok": "Okay",
             "warningNotif": " warns that you need to do the following steps to keep your crop healthy: ",
             "warningDisease": " might be present in your crop. Please use our detection feature to check.",
-            "warns": " warns that "
+            "warns": " warns that ",
+            "suggestLink": "We highly recommend that you watch the following video. To view the video in app please click \"See More\"", 
+            "suggestLinkOnPrev": "We highly recommend that you watch the following video"
         },
         "prevNotifications": {
             "warning": "Past Disease Warning",
