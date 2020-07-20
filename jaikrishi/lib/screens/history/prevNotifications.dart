@@ -26,54 +26,60 @@ class _notifications extends State<Notifications> {
   }
 
   Future<List<Widget>> getHist(context) async {
-    List<Widget> widgets = new List<Widget>();
-    dynamic qs = await getPrevNotifs(_uid);
-    var docs = qs.documents;
-    docs.sort((a, b) {
-      var aDT = DateTime.parse(a.data["time"].replaceAll("/", "-") + "Z");
-      var bDT = DateTime.parse(b.data["time"].replaceAll("/", "-") + "Z");
-      return bDT.compareTo(aDT);
-    });
-    for (var i in docs) {
-      DateTime dt = DateTime.parse(i["time"] + "Z").toLocal();
-      String link = "";
+    try {
+      List<Widget> widgets = new List<Widget>();
+      dynamic qs = await getPrevNotifs(_uid);
+      var docs = qs.documents;
+      docs.sort((a, b) {
+        var aDT = DateTime.parse(a.data["time"].replaceAll("/", "-") + "Z");
+        var bDT = DateTime.parse(b.data["time"].replaceAll("/", "-") + "Z");
+        return bDT.compareTo(aDT);
+      });
+      for (var i in docs) {
+        DateTime dt = DateTime.parse(i["time"] + "Z").toLocal();
+        String link = "";
 
-      if (i["steps"] != null && i["steps"][0]["Link"] != "")
-        link = i["steps"][0]["Link"];
-      else if (i["data"]["Link"] != null) link = i["data"]["Link"];
-      try {
+        if (i["steps"] != null && i["steps"][0]["Link"] != "")
+          link = i["steps"][0]["Link"];
+        else if (i["data"] != null && i["data"]["Link"] != null)
+          link = i["data"]["Link"];
+        try {
+          widgets.add(card(
+              context,
+              Column(children: [
+                notifBody(dt, i.data, context, false),
+                link != ""
+                    ? YoutubePlayer(
+                        controller: YoutubePlayerController(
+                          initialVideoId: YoutubePlayer.convertUrlToId(link),
+                          flags: YoutubePlayerFlags(
+                            autoPlay: false,
+                            mute: false,
+                          ),
+                        ),
+                        showVideoProgressIndicator: true,
+                        progressIndicatorColor: Colors.blueGrey,
+                        bottomActions: <Widget>[],
+                      )
+                    : Container(
+                        height: 0,
+                      )
+              ])));
+        } catch (e) {
+          print(e);
+        }
+      }
+      if (widgets.length == 0) {
         widgets.add(card(
             context,
-            Column(children: [
-              notifBody(dt, i.data, context, false),
-              link != ""
-                  ? YoutubePlayer(
-                      controller: YoutubePlayerController(
-                        initialVideoId: YoutubePlayer.convertUrlToId(link),
-                        flags: YoutubePlayerFlags(
-                          autoPlay: false,
-                          mute: false,
-                        ),
-                      ),
-                      showVideoProgressIndicator: true,
-                      progressIndicatorColor: Colors.blueGrey,
-                      bottomActions: <Widget>[],
-                    )
-                  : Container(
-                      height: 0,
-                    )
-            ])));
-      } catch (e) {
-        print(e);
+            Text(DemoLocalizations.of(context).vals["prevNotifications"]
+                ["noNotifications"])));
       }
+      return widgets;
+    } catch (e) {
+      print(e);
+      throw e;
     }
-    if (widgets.length == 0) {
-      widgets.add(card(
-          context,
-          Text(DemoLocalizations.of(context).vals["prevNotifications"]
-              ["noNotifications"])));
-    }
-    return widgets;
   }
 
   void dispose() {

@@ -45,15 +45,7 @@ Future<File> compress(File _imageFile) async {
 Widget imageType(BuildContext context, String type) {
   String image =
       Provider.of<UserModel>(context, listen: false).data[type]["Image"];
-  Image img;
-  if (image.indexOf("h") == 0) {
-    img = Image.network(
-        "https://i1.wp.com/agfax.com/wp-content/uploads/rice-blast-leaf-lesions-lsu.jpg?fit=600%2C400&ssl=1",
-        scale: 2);
-  } else {
-    String info = image.substring(image.indexOf(",") + 1);
-    img = Image.memory(base64.decode(info), scale: 2);
-  }
+  Image img = Image.network(image);
 
   return img;
 }

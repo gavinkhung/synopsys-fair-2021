@@ -17,7 +17,7 @@ Column jsonPrevDiseaseCard(
     FlatButton no,
     BuildContext context) {
   dt = dt.toLocal();
-type = type.trim(); 
+  type = type.trim();
   Map<String, dynamic> data =
       Provider.of<UserModel>(context, listen: false).data[type];
   return Column(
@@ -199,7 +199,7 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
     ]);
   } else if (notifs["type"] == "disease_notif") {
     String tp = Provider.of<UserModel>(context, listen: false)
-        .data[notifs["type"]]["Disease"];
+        .data[notifs["disease"]]["Disease"];
     return Column(
       children: [
         Center(
@@ -209,7 +209,7 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
                   DemoLocalizations.of(context).vals["History"]["present"],
               style: TextStyle(fontSize: 20)),
         ),
-        imageType(context, notifs['type']),
+        imageType(context, notifs['disease']),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Builder(
             builder: (BuildContext context) {
