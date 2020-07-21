@@ -254,7 +254,7 @@ class _locNotEnabled extends State<locNotEnabled> {
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text("Enable Location Permissions: "),
+          title: Text(DemoLocalizations.of(context).vals["error"]["loc"]),
           trailing: CupertinoSwitch(
             value: switchState,
             activeColor: Color.fromRGBO(24, 165, 123, 1),

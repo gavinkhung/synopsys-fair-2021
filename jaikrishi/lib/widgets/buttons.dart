@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/screens/upload/instructions.dart';
+import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:share/share.dart';
 
@@ -43,6 +44,7 @@ Widget shareButton(BuildContext context, String text) {
           label: Text(
               DemoLocalizations.of(context).vals["DiseaseDetection"]["10"]),
           onPressed: () {
+            analytics.logShare(contentType: null, itemId: null, method: text);
             final RenderBox box = context.findRenderObject();
             Share.share(text,
                 sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);

@@ -406,11 +406,11 @@ class _profile extends State<profile> {
         showCupertinoModalPopup(
           context: context,
           builder: (BuildContext context) => CupertinoActionSheet(
-            title: Text("What would you like to edit?"),
-            message: Text("Select something to edit"),
+            title: Text(DemoLocalizations.of(context).vals["edit"]["question"]),
+            message: Text(DemoLocalizations.of(context).vals["edit"]["select"]),
             actions: <Widget>[
               CupertinoActionSheetAction(
-                child: Text("Crop"),
+                child: Text(DemoLocalizations.of(context).vals["edit"]["crop"]),
                 onPressed: () async {
                   setState(() {
                     Navigator.pop(
@@ -421,7 +421,7 @@ class _profile extends State<profile> {
                 },
               ),
               CupertinoActionSheetAction(
-                child: Text("Date of Seeding"),
+                child: Text(DemoLocalizations.of(context).vals["edit"]["seed"]),
                 onPressed: () async {
                   setState(() {
                     Navigator.pop(
@@ -432,7 +432,8 @@ class _profile extends State<profile> {
                 },
               ),
               CupertinoActionSheetAction(
-                child: Text("Date of Transplanting"),
+                child:
+                    Text(DemoLocalizations.of(context).vals["edit"]["trans"]),
                 onPressed: () async {
                   setState(() {
                     Navigator.pop(
@@ -443,7 +444,8 @@ class _profile extends State<profile> {
                 },
               ),
               CupertinoActionSheetAction(
-                child: Text("Variety"),
+                child:
+                    Text(DemoLocalizations.of(context).vals["edit"]["variety"]),
                 onPressed: () async {
                   setState(() {
                     Navigator.pop(
@@ -454,7 +456,7 @@ class _profile extends State<profile> {
                 },
               ),
               CupertinoActionSheetAction(
-                child: Text("Crop Location"),
+                child: Text(DemoLocalizations.of(context).vals["edit"]["loc"]),
                 onPressed: () async {
                   setState(() {
                     Navigator.pop(
@@ -489,7 +491,7 @@ class _profile extends State<profile> {
               updateUser(
                   Provider.of<UserModel>(context, listen: false).uid, map);
               setState(() {
-                Navigator.pop(context, 'Ricee');
+                Navigator.pop(context, 'Rice');
               });
             },
           ),

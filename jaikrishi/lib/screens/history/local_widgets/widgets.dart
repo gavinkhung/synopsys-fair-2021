@@ -254,9 +254,11 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
         Center(
           child: page
               ? Text(
-                  "We highly recommend that you watch the following video. To view the video in app please click \"See More\"",
+                  DemoLocalizations.of(context).vals["History"]["suggestLink"],
                   style: TextStyle(fontSize: 20))
-              : Text("We highly recommend that you watch the following video",
+              : Text(
+                  DemoLocalizations.of(context).vals["History"]
+                      ["suggestLinkOnPrev"],
                   style: TextStyle(fontSize: 20)),
         )
       ],

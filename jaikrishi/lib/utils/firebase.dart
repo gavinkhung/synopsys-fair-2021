@@ -26,7 +26,7 @@ import 'imageProcessing.dart';
 FirebaseAuth _auth = FirebaseAuth.instance;
 Firestore _firebaseStore = Firestore.instance;
 bool justSignedUp = false;
-int selectedIndex = 0;
+int selectedIndex = 2;
 
 final FirebaseAnalytics analytics = FirebaseAnalytics();
 final FirebaseMessaging _fcm = FirebaseMessaging();
@@ -121,29 +121,6 @@ Future pickLang(BuildContext cont, String uid) {
                           contentPadding: EdgeInsets.symmetric(horizontal: 30),
                           onTap: () async {
                             DemoLocalizations.of(context).locale =
-                                new Locale("en");
-                            DemoLocalizations.of(context).setVals();
-                            String url = await getUrl();
-                            Provider.of<UserModel>(cont, listen: false).data =
-                                await loadJson(url, cont, "en");
-                            if (uid != "") {
-                              Map<String, dynamic> temp = {"lang": "en"};
-                              updateUser(uid, temp);
-                            }
-                            Navigator.pop(context);
-                            setState(() {
-                              selectedIndex = 0;
-                            });
-                          },
-                          title: Text("English"),
-                          trailing: Icon(
-                            selectedIndex == 0 ? Icons.check : null,
-                          ),
-                        ),
-                        ListTile(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 30),
-                          onTap: () async {
-                            DemoLocalizations.of(context).locale =
                                 new Locale("hi");
                             DemoLocalizations.of(context).setVals();
                             String url = await getUrl();
@@ -161,6 +138,29 @@ Future pickLang(BuildContext cont, String uid) {
                           title: Text("हिन्दी"),
                           trailing: Icon(
                             selectedIndex == 2 ? Icons.check : null,
+                          ),
+                        ),
+                        ListTile(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 30),
+                          onTap: () async {
+                            DemoLocalizations.of(context).locale =
+                                new Locale("en");
+                            DemoLocalizations.of(context).setVals();
+                            String url = await getUrl();
+                            Provider.of<UserModel>(cont, listen: false).data =
+                                await loadJson(url, cont, "en");
+                            if (uid != "") {
+                              Map<String, dynamic> temp = {"lang": "en"};
+                              updateUser(uid, temp);
+                            }
+                            Navigator.pop(context);
+                            setState(() {
+                              selectedIndex = 0;
+                            });
+                          },
+                          title: Text("English"),
+                          trailing: Icon(
+                            selectedIndex == 0 ? Icons.check : null,
                           ),
                         ),
                       ],
@@ -218,6 +218,7 @@ StreamBuilder autoLogin(BuildContext cont) {
           );
         } else {
           if (_auth.currentUser() != null && !justSignedUp) {
+            analytics.logLogin();
             return FutureBuilder(
               future: setVals(cont, user),
               builder: (context, data) {
@@ -341,7 +342,8 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
     } catch (e) {
       print(e.toString());
       analytics.logEvent(name: "geocoder_failed");
-      userModel.address = "Address is not currently available";
+      userModel.address =
+          DemoLocalizations.of(context).vals["error"]["Address"];
     }
     setWeatherData(
         user.uid,
