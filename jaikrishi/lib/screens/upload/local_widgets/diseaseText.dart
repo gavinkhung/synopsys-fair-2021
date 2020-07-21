@@ -22,7 +22,8 @@ Widget diseaseText(BuildContext context, String _response) {
               children: [
         _response != "This is not rice" &&
                 _response != "Image is unclear. Please try again" &&
-                _response != "Healthy Crop"
+                _response != "Healthy Crop" &&
+                _response != "PaddyField"
             ? buildDiseaseReport(context, _response, data)
             : Text(
                 data["Disease"],
@@ -31,7 +32,8 @@ Widget diseaseText(BuildContext context, String _response) {
               ),
         _response != "This is not rice" &&
                 _response != "Image is unclear. Please try again" &&
-                _response != "Healthy"
+                _response != "Healthy" &&
+                _response != "PaddyField"
             ? infoButton(context, data)
             : Container(
                 height: 0,

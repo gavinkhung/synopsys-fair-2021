@@ -44,7 +44,8 @@ class _detection extends State<Detection> {
           type == "Please try again" ||
           type == "Please send an image of Rice!" ||
           type == "Healthy" ||
-          type == "Healthy Crop") continue;
+          type == "Healthy Crop" ||
+          i.data["type"] == "PaddyField") continue;
 
       widgets.add(card(
           context,

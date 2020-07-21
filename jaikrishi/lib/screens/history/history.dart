@@ -182,7 +182,8 @@ class _History extends State<History> {
                       i.data["type"] != "Please send an image of Rice!" &&
                       i.data["type"] != "Healthy Rice Plant!" &&
                       i.data["type"] != "Healthy" &&
-                      i.data["type"] != "Healthy Crop") {
+                      i.data["type"] != "Healthy Crop" &&
+                      i.data["type"] != "PaddyField") {
                     type = i.data["type"];
                   } else
                     continue;
@@ -198,7 +199,8 @@ class _History extends State<History> {
                     i.data["type"] != "Please send an image of Rice!" &&
                     i.data["type"] != "Healthy Rice Plant!" &&
                     i.data["type"] != "Healthy" &&
-                    i.data["type"] != "Healthy Crop") {
+                    i.data["type"] != "Healthy Crop" &&
+                    i.data["type"] != "PaddyField") {
                   count++;
                 }
               }
