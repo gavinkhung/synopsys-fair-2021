@@ -141,11 +141,16 @@ class _Onboard extends State<Onboard> {
             //         TextStyle(color: Colors.white, fontSize: 18.0, height: 1.2),
             //   ),
             // ),
-            Text(DemoLocalizations.of(context).vals["Instructions"]["1"],
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 50,
-                    fontWeight: FontWeight.bold)),
+            AutoSizeText(
+              DemoLocalizations.of(context).vals["Instructions"]["1"],
+              maxLines: 1,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 34,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: YoutubePlayer(

@@ -51,7 +51,6 @@ class _profile extends State<profile> {
     super.initState();
     _username = Provider.of<UserModel>(context, listen: false).uid;
     userLoc = Provider.of<UserModel>(context, listen: false).loc;
-    //signOut();
   }
 
   String getVariety(String type, BuildContext context) {
@@ -74,118 +73,128 @@ class _profile extends State<profile> {
           child: Container(
             color: Color.fromRGBO(196, 243, 220, 1),
             child: CupertinoScrollbar(
-                child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-              Container(
-                decoration:
-                    BoxDecoration(color: Color.fromRGBO(196, 243, 220, 1)),
-                //height: MediaQuery.of(context).size.width / 5,
-                padding: EdgeInsets.only(left: 0, right: 0, top: 5, bottom: 5),
-                child: Row(
-                  //crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Builder(
-                      builder: (BuildContext context) {
-                        return Center(
-                          child: Material(
-                            color: Color.fromRGBO(196, 243, 220, 1),
-                            child: FlatButton.icon(
-                              label: Text(DemoLocalizations.of(context)
-                                  .vals["FirstPage"]["15"]),
-                              padding: EdgeInsets.only(left: 3),
-                              icon: Icon(Icons.language),
-                              onPressed: () async {
-                                await pickLang(
-                                    context,
-                                    Provider.of<UserModel>(context,
-                                            listen: false)
-                                        .uid);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => profile(),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    Center(
-                      child: Container(
-                          child: Center(
-                        child: AutoSizeText(
-                          DemoLocalizations.of(context).vals["FirstPage"]["10"],
-                          maxLines: 1,
-                          maxFontSize: 25,
-                          style: TextStyle(color: myGreen, fontSize: 100),
-                        ),
-                      )),
-                    ),
-                    Builder(
-                      builder: (BuildContext context) {
-                        return Center(
-                          child: FlatButton.icon(
-                            padding: EdgeInsets.zero,
-                            icon: Icon(Icons.share),
-                            label: Text(DemoLocalizations.of(context)
-                                .vals["DiseaseDetection"]["10"]),
-                            onPressed: () {
-                              final RenderBox box = context.findRenderObject();
-                              Share.share(
-                                  DemoLocalizations.of(context)
-                                      .vals["FirstPage"]["9"],
-                                  sharePositionOrigin:
-                                      box.localToGlobal(Offset.zero) &
-                                          box.size);
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                  color: myGreen,
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 1,
-                  //height: double.infinity,
-                  child: Column(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                              //height: MediaQuery.of(context).size.width / 10,
-                              ),
-                          Row(
-                            children: [
-                              Container(
-                                // padding: EdgeInsets.all(20),
-                                width: MediaQuery.of(context).size.width,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Center(
-                                        child: showUsername(
-                                            Provider.of<UserModel>(context,
-                                                    listen: false)
-                                                .uid,
-                                            controller)),
-                                  ],
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  Container(
+                    decoration:
+                        BoxDecoration(color: Color.fromRGBO(196, 243, 220, 1)),
+                    //height: MediaQuery.of(context).size.width / 5,
+                    padding:
+                        EdgeInsets.only(left: 0, right: 0, top: 5, bottom: 5),
+                    child: Row(
+                      //crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Builder(
+                          builder: (BuildContext context) {
+                            return Center(
+                              child: Material(
+                                color: Color.fromRGBO(196, 243, 220, 1),
+                                child: FlatButton.icon(
+                                  label: Text("Language"),
+                                  padding: EdgeInsets.only(left: 3),
+                                  icon: Icon(Icons.language),
+                                  onPressed: () async {
+                                    await pickLang(
+                                        context,
+                                        Provider.of<UserModel>(context,
+                                                listen: false)
+                                            .uid);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => profile(),
+                                      ),
+                                    );
+                                  },
                                 ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      buildWeatherCard(context),
-                      card(context, getUserData()),
-                    ],
-                  ))
-            ])),
+                              ),
+                            );
+                          },
+                        ),
+                        Center(
+                          child: Container(
+                              child: Center(
+                            child: AutoSizeText(
+                              DemoLocalizations.of(context).vals["FirstPage"]
+                                  ["10"],
+                              maxLines: 1,
+                              maxFontSize: 25,
+                              style: TextStyle(color: myGreen, fontSize: 100),
+                            ),
+                          )),
+                        ),
+                        Builder(
+                          builder: (BuildContext context) {
+                            return Center(
+                              child: FlatButton.icon(
+                                padding: EdgeInsets.zero,
+                                icon: Icon(Icons.share),
+                                label: Text(DemoLocalizations.of(context)
+                                    .vals["DiseaseDetection"]["10"]),
+                                onPressed: () {
+                                  final RenderBox box =
+                                      context.findRenderObject();
+                                  Share.share(
+                                      DemoLocalizations.of(context)
+                                          .vals["FirstPage"]["9"],
+                                      sharePositionOrigin:
+                                          box.localToGlobal(Offset.zero) &
+                                              box.size);
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    color: myGreen,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 1,
+                    //height: double.infinity,
+                    child: Column(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                                //height: MediaQuery.of(context).size.width / 10,
+                                ),
+                            Row(
+                              children: [
+                                Container(
+                                  // padding: EdgeInsets.all(20),
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Center(
+                                        child: showUsername(
+                                          Provider.of<UserModel>(context,
+                                                  listen: false)
+                                              .uid,
+                                          controller,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        buildWeatherCard(context),
+                        card(context, getUserData()),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
