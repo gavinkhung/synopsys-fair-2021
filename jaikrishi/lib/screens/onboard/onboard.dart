@@ -150,6 +150,7 @@ class _Onboard extends State<Onboard> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(height: 10),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: YoutubePlayer(
