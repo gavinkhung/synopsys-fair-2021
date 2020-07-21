@@ -121,17 +121,17 @@
             "8": "लॉग इन करने में असमर्थ।"
         },
         "edit" : {
-            "question" : "What would you like to edit?",
-            "select": "Select something to edit",
-            "loc": "Crop Location", 
-            "variety": "Variety", 
-            "trans": "Date of Transplanting",
-            "seed": "Date of Seeding",
-            "crop" :"Crop"
+            "question" : "अाप क्या बदलना चाहते हैं।",
+            "select": "बदलने के लिये इनमॆ से चुनॆ।",
+            "loc": "फसल स्थान",
+            "variety": "प्रजात", 
+            "trans": "रोपाई की तिथि",
+            "seed": "बोवाई की तिथि",
+            "crop" : "फसल"
         },
         "error": {
-            "Address": "Address is not currently available",
-            "loc": "Enable Location Permissions: "
+            "Address": "पता उपलब्ध नहीं है",
+            "loc": "कृपया स्थान जानने की अनुमति दॆ"
         },
         "Crops": {
             "1": "धान"
@@ -162,8 +162,8 @@
             "warningNotif": " चेतावनी देते हैं कि आपको अपनी फसल को स्वस्थ रखने के लिए निम्नलिखित कदम उठाने की आवश्यकता है: ",
             "warningDisease": " आपकी फसल में मौजूद हो सकता है। कृपया जाँचने के लिए हमारी पहचान सुविधा का उपयोग करें।",
             "warns": " चेतावनी दी है कि ",
-            "suggestLink": "We highly recommend that you watch the following video. To view the video in app please click \"See More\"", 
-            "suggestLinkOnPrev": "We highly recommend that you watch the following video"
+            "suggestLink": "हमारा सूझाव है कि अाप यह वीडियो देखॆ” वीडियो देखने के लिये कृपया दबायॆ \"अौर देखॆ\"", 
+            "suggestLinkOnPrev": "हमारा सूझाव है कि अाप यह वीडियो देखॆ"
         },
         "prevNotifications": {
             "warning": "विगत रोग चेतावनी",

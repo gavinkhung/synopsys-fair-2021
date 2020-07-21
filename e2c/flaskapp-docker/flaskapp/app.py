@@ -12,7 +12,6 @@ from backend import communicate
 from model import predict
 from batch import *
 from PIL import Image
-import json 
 
 import logging
 import copy
@@ -21,6 +20,8 @@ app = Flask(__name__)
 communicate = Communicate()
 model = predict.Prediction()
 LOG_FILENAME = 'requests.log'
+
+
 
 @app.route("/upload", methods=["POST"])
 def upload():
@@ -56,8 +57,7 @@ def send():
             data = {
                 "Link" : link
             }
-            communicate.add_daily_disease(user.id, data, 3)
-            print(user.id); 
+            communicate.add_daily_disease(user.id, data, 3) 
         except Exception as e:
             print(e)
     for key, val in tokens.items():
@@ -68,12 +68,339 @@ def send():
        
 @app.route("/text", methods=["POST"])
 def text():
-    try: 
-        with open('./text.json') as f: 
-            data = json.load(f)
-            return jsonify(data)
-    except Exception as e: 
-        print(e)
+    # with open('./text.json') as f: 
+    #     data = json.load(f)
+    #     return jsonify(data)
+    return {
+        "hi" :{
+            "DiseaseDetection": {
+                "1": "रोग पहचाने",
+                "2": "निर्देश",
+                "3": "कृपया आप मोबाइल फोन या गैलरी से पौधों के रोगग्रस्त भाग का क्लोज़-अप फोटो लें",
+                "4": "इसे रोग की पहचान के लिए अपलोड करें",
+                "5": "एक उदाहरण फोटो",
+                "6": "कैमरा",
+                "7": "गैलरी",
+                "8": "रोग पहचाने",
+                "9": "इस फसल में। अब इस लिंक पर शामिल हों: ",
+                "10": "साझा करें",
+                "11": "फसल चुनें",
+                "12": "आपके विकल्प हैं"
+            },
+            "FirstPage": {
+                "1": "मौसम की स्थिति: ",
+                "2": "आर्द्रता: ",
+                "3": "धान",
+                "4": "प्रजाति: ",
+                "5": "बुवाई की तिथि: ",
+                "6": "रोपाई की तिथि: ",
+                "7": "स्थान:",
+                "8": "स्थान डेटा के बिना, मौसम डेटा उपलब्ध नहीं है",
+                "9": "इस लिंक पर अब जयकृषि से जुड़ें: https://play.google.com/store/apps/details?id=com.jaikrishi.appjaikrishi",
+                "10": "फसल वर्णन",
+                "11": "कम",
+                "12": "मध्यम",
+                "13": "लंबा",
+                "14": "उपयोगकर्ता नाम दर्ज करें"
+            },
+            "DetectRice": {
+                "1": "पता लगाएँ",
+                "2": "हमने पता लगाया: ",
+                "3": "रोग की रोक-थाम"
+            },
+            "DetectRandomPicture": {
+                "1": "पता लगाएँ",
+                "2": "कृपया धान की फोटो भेजें!"
+            },
+            "CropStatus": {
+                "1": "फसल की स्थिति",
+                "2": "रोग की चेतावनी",
+                "3": "हमारा परामर्श है कि आप अपनी स्वस्थ फसल के लिये, निम्नलिखित उपाय करें",
+                "4": "सूखे नर्सरी के लिए, प्रति किलोग्राम बीज में  तीन ग्राम  (3 gm) कार्बेन्डाजिम के साथ बीज का उपचार करें",
+                "5": "1 ग्राम कार्बेन्डाजिम प्रति लीटर पानी प्रति किलो बीज में बीज को सोखें ",
+                "6": "5 सेन्ट आकार की नर्सरी के लिए, जुताई के दौरान नाइट्रोजेन, फॉस्फोरस, पोटाश प्रत्येक उर्वरक 1 किलोग्राम की दर से डालें",
+                "7": "और देखें",
+                "8": "पिछला रोग विवरण",
+                "9": "आपकी फसल में भूरे रंग के धब्बे का पता चला",
+                "10": "और जानें",
+                "11": "क्या उपचार कार्य सफल था?",
+                "12": "हाँ",
+                "13": "नहीं",
+                "14": "और देखें"
+            },
+            "PastDiseaseDetection": {
+                "1": "आपकी फसल में भूरे रंग के धब्बे का पता चला",
+                "2": "और जानें",
+                "3": "क्या उपचार कार्य सफल था?",
+                "4": "हाँ",
+                "5": "नहीं",
+                "6": "आपकी फसल में स्वस्थ धान के पौधे का पता चला!",
+                "7": "और जानें!",
+                "8": "क्या उपचार कार्य सफल था?",
+                "9": "हाँ",
+                "10": "नहीं",
+                "11": "आपकी फसल में पाया जाने वाला बैक्टीरियल लीफ ब्लाइट",
+                "12": "और जानें!",
+                "13": "क्या उपचार कार्य सफल था?",
+                "14": "हाँ",
+                "15": "नहीं"
+            },
+            "WelcometoJaikrishi": {
+                "1": " जयकृषि में आपका स्वागत है",
+                "2": "फसल रोग चेतावनी, रोग की खोज और नियंत्रण के लिए आपका मित्र",
+                "3": "फसल का चयन करें",
+                "4": "छोड़ें",
+                "5": "अगला",
+                "6": "फसल  चुनें",
+                "7": "आपके विकल्प हैं",
+                "8": "धान"
+            },
+            "SeedingLocation": {
+                "1": " बुवाई और स्थान",
+                "2": "अपनी फसल की बुवाई और रोपाई की तारीखें आपको समय पर फसल रोग की चेतावनी देती रहेगी।",
+                "3": "बीज बोने की तिथि  बतायॆ",
+                "4": "रोपाई की तिथि बतायॆ",
+                "5": " अभी छोड़ें",
+                "6": "अगला",
+                "7": "आपके विकल्प हैं",
+                "8": "धान"
+            },
+            "VarietyLocation": {
+                "1": " प्रजाति और स्थान",
+                "2": "बीमारी की चेतावनी प्राप्त करने के लिए अपनी फसल की प्रजाति और अपनी फसल का स्थान बतायॆ।",
+                "3": "धान की प्रजाति का चयन करें",
+                "4": "फसल का स्थान का चयन करॆ",
+                "5": "हो गया",
+                "6": "मार्कर को अपनी फसल के स्थान पर खींचें",
+                "7": "वर्तमान स्थान आपकी फसल का स्थान है।",
+                "8": "त्रुटि:",
+                "9": "एक या अधिक क्षेत्र खाली थे। कृपया उन्हें भरें।",
+                "10": "धान की प्रजाति चुनें",
+                "11": "आपके विकल्प हैं",
+                "12": "लघु अवधि",
+                "13": "मध्यम अवधि",
+                "14": "लम्बा अवधि",
+                "15": "फसल का स्थान",
+                "16": "आगे बढ़ने के लिए खींचें"
+            },
+            "SignUp": {
+                "1": "आरंभ करें",
+                "2": "फोन नंबर",
+                "3": "लॉग इन",
+                "4": "त्रुटि:",
+                "5": "फोन नंबर खाली नहीं हो सकता।",
+                "6": "उपयोगकर्ता नाम पहले से ही उपयोग में है।",
+                "7": "देश कोड पहले से ही निर्दिष्ट है।",
+                "8": "लॉग इन करने में असमर्थ।"
+            },
+            "Crops": {
+                "1": "धान"
+            },
+            "Instructions": {
+                "1": "वीडियो निर्देश",
+                "2": "और जानें",
+                "3": "चरण"
+            },
+            "History": {
+                "based": "चूंकि बुआई से ",
+                "days": "  दिन हो चुके हैं, ",  
+                "recomend": "हमारा परामर्श है कि आप अपनी स्वस्थ फसल के लिये, निम्नलिखित उपाय करें ",
+                "glad": "सुनकर बहुत अच्छा लगा!",
+                "unfortunate": "दुर्भाग्यपूर्ण, लेकिन हम अभी भी काम कर रहे हैं",
+                "thankyou": "आपके उत्तर के लिए धन्यवाद, हम सुधार करेंगे",
+                "noNotifications": "कोइ नया परामर्श नही है !",
+                "seeMore": "और देखें",
+                "highChance": "एक उच्च संभावना है कि",
+                "present": "आपकी फसल में मौजूद है। जितनी जल्दी हो सके अपनी फसल की जांच करें।",
+                "detected": "फसल रोग: ",
+                "yourCrop": "आपकी फसल में!",
+                "work": "क्या उपचार कार्य किया था?",
+                "noDetect": "पिछली बीमारियों का पता नहीं चला",
+                "warning": "रोग चेतावनी",
+                "haventDetect": "अभी तक किसी भी बीमारी का पता नहीं चला है! :)",
+                "ok": "ठीक है",
+                "warningNotif": " चेतावनी देते हैं कि आपको अपनी फसल को स्वस्थ रखने के लिए निम्नलिखित कदम उठाने की आवश्यकता है: ",
+                "warningDisease": " आपकी फसल में मौजूद हो सकता है। कृपया जाँचने के लिए हमारी पहचान सुविधा का उपयोग करें।",
+                "warns": " चेतावनी दी है कि "
+            },
+            "prevNotifications": {
+                "warning": "विगत रोग चेतावनी",
+                "noNotifications": "कोइ नया परामर्श नही है!"
+            },
+            "prevDetections": {
+                "noDetected": "अब तक फसल मॆ कोइ रोग नही ",
+                "detected": "आपकी फसल के अब तक के सारे रोग",
+                "yes": "हाँ",
+                "no": "नहीं",
+                "thankyou": "आपके उत्तर के लिए धन्यवाद, हम सुधार करेंगे",
+                "great": "सुनकर बहुत अच्छा लगा!",
+                "unfortunate": "दुर्भाग्यपूर्ण, लेकिन हम अभी भी काम कर रहे हैं"
+            }
+        }, 
+        "en": {
+            "DiseaseDetection": {
+                "1": "Disease Detection",
+                "2": "Instructions",
+                "3": "Please take a close-up photo of the diseased part of the plant from you mobile phone or gallery",
+                "4": "Upload it for disease detection",
+                "5": "An example photo",
+                "6": "Camera",
+                "7": "Gallery",
+                "8": "detected: ",
+                "9": " in this crop. Join now at this link: ",
+                "10": "Share",
+                "11": "Choose Crop",
+                "12": "Your Options are "
+            },
+            "FirstPage": {
+                "1": "Weather Condition: ",
+                "2": "Humditity: ",
+                "3": "Rice",
+                "4": "Variety: ",
+                "5": "Date of Seeding: ",
+                "6": "Date of Transplanting: ",
+                "7": "Location: ",
+                "8": "Without Location data, weather data is not available",
+                "9": "Join JaiKrishi now at this link: https://play.google.com/store/apps/details?id=com.jaikrishi.appjaikrishi",
+                "10": "Crop Profile",
+                "11": "Short",
+                "12": "Medium",
+                "13": "Long",
+                "14": "Enter Username"
+            },
+            "DetectRice": {
+                "1": "Detect",
+                "2": "Detected: ",
+                "3": "Disease Treatment"
+            },
+            "DetectRandomPicture": {
+                "1": "Detect",
+                "2": "Please send an image of Rice!"
+            },
+            "CropStatus": {
+                "1": "Crop Status",
+                "2": "Disease Predictions",
+                "3": "Based on the days from seeding, we highly recommend that you do the following steps to make sure that your crop is healthy",
+                "4": "Treat Seeds with 3 gm Carbendazim per kg seed for dry Nursery",
+                "5": "Soak seed in 1 gm Carbendazim per litre water per kg seed",
+                "6": "For 5 cents of Nursery size, apply 1 kg each of Nitrozen, Phosphorous, Potash fertilizer during ploughing",
+                "7": "See More",
+                "8": "Previous Disease Detections",
+                "9": "Disease: Brown Spot in your crop",
+                "10": "Learn More",
+                "11": "Did the treatment work?",
+                "12": "Yes",
+                "13": "No",
+                "14": "See More"
+            },
+            "PastDiseaseDetection": {
+                "1": "Disease: Brown Spot in your crop",
+                "2": "Learn More",
+                "3": "Did the treatment work?",
+                "4": "Yes",
+                "5": "No",
+                "6": "Disease: Healthy Rice Plant in your crop!",
+                "7": "Learn More!",
+                "8": "Did the treatment work?",
+                "9": "Yes",
+                "10": "No",
+                "11": "Disease: Bacterial Leaf Blight in your crop",
+                "12": "Learn More!",
+                "13": "Did the treatment work?",
+                "14": "Yes",
+                "15": "No"
+            },
+            "WelcometoJaikrishi": {
+                "1": "Welcome to JaiKrishi",
+                "2": "Your friend for  crop disease warning, detection and control.",
+                "3": "Select Crop",
+                "4": "Skip",
+                "5": "Next",
+                "6": "Choose Crop",
+                "7": "Your options are",
+                "8": "Rice"
+            },
+            "SeedingLocation": {
+                "1": "Seeding & Location",
+                "2": "Seeding and transplantation dates of your crop would give you timely crop disease alerts.",
+                "3": "Enter the date of seeding",
+                "4": "Enter the date of transplanting",
+                "5": "Skip",
+                "6": "Next"
+            },
+            "VarietyLocation": {
+                "1": "Variety & Location",
+                "2": "Enter your crop variety and  the location of your crop to get disease alerts.",
+                "3": "Select Rice Variety",
+                "4": "Edit the crop's location",
+                "5": "Done",
+                "6": "Drag the Marker to your crop's location",
+                "7": "The default location is your crop's device.",
+                "8": "Error:",
+                "9": "One or more fields were empty. Please fill them out.",
+                "10": "Choose Rice Variety",
+                "11": "Your options are",
+                "12": "Short Duration",
+                "13": "Medium Duration",
+                "14": "Long Duration",
+                "15": "Crop Location",
+                "16": "Drag to Move"
+            },
+            "SignUp": {
+                "1": "Get Started",
+                "2": "Phone Number",
+                "3": "Log In",
+                "4": "Error:",
+                "5": "Phone Number can not be empty.",
+                "6": "Username already in use.",
+                "7": "Country Code already specified.",
+                "8": "Unable to log in."
+            },
+            "Crops": {
+                "1": "Rice"
+            },
+            "Instructions": {
+                "1": "Video Instructions",
+                "2": "Learn More",
+                "3": "Step"
+            },
+            "History": {
+                "based": "Since it has been ",
+                "days": " days from sowing, ", 
+                "recomend": "we highly recommend that you do the following steps to make sure that your crop is healthy",
+                "glad": "Great to hear!",
+                "unfortunate": "Unfortunate, but we are still working",
+                "thankyou": "Thank you for your input, we will improve",
+                "noNotifications": "No notifications to display!",
+                "seeMore": "See More",
+                "highChance": "There is a high chance that ",
+                "present": " is present in your crop. Please check your crop as soon as possible. ",
+                "detected": "Crop Disease: ",
+                "yourCrop": " in your crop!",
+                "work": "Did the treatment work? ",
+                "noDetect": "No previous diseases detected",
+                "warning": " Disease Warnings",
+                "haventDetect": "Haven't detected any diseases yet! :)",
+                "ok": "Okay",
+                "warningNotif": " warns that you need to do the following steps to keep your crop healthy: ",
+                "warningDisease": " might be present in your crop. Please use our detection feature to check.",
+                "warns": " warns that "
+            },
+            "prevNotifications": {
+                "warning": "Past Disease Warning",
+                "noNotifications": "No notifications to display!"
+            },
+            "prevDetections": {
+                "noDetected": "No previous diseases detected",
+                "detected": "Past Diseases Detected",
+                "yes": "Yes",
+                "no": "No",
+                "thankyou": "Thank you for your input, we will improve",
+                "great": "Great to hear!",
+                "unfortunate": "Unfortunate, but we are still working"
+            }
+        }
+    }
 
 @app.route("/reminder", methods=["POST"])
 def reminder():
@@ -97,10 +424,170 @@ def reminder():
             communicate.send_notifications(tokens[key], 'अनुस्मारक', '* कृपया फोटो अपलोड करें यदि आपको लगता है कि आपकी फसल में कोई बीमारी है')
     return 'true'
 
-@app.route("/diseases", methods=["POST"])
-def diseases():
+@app.route("/newDiseases", methods=["POST"])
+def newDiseases():
     return {"hi" : 
             {
+            "Leaf Blast": {
+                "Disease": "लीफ ब्लास्ट (झौंका)",
+                "Step 1": " ट्राईसाइक्लाज़ोल @ 6ग्राम / 10 ली0  पानी की दर से छिड़काव करे।",
+                "Step 2": "यूरिया का प्रयोग बिलकुल न करें, यूरिया तभी डालॆ जब लीफ कलर कार्ड सुझाव दे  वह भी दवा डालने के 7 दिनों के बाद। ",
+                "Step 3": "फसल अवशेष नष्ट करें",
+                "Link": "https://youtu.be/QSSAr56AdD8",
+                "Image": "https://i1.wp.com/agfax.com/wp-content/uploads/rice-blast-leaf-lesions-lsu.jpg?fit=600%2C400&ssl=1"
+
+            },
+            "BLB": {
+                "Disease": "बैक्टीरियल लीफ ब्लाइट",
+                "Step 1": "स्ट्रेप्टोमाइसिन सल्फेट एवं टेट्रासाइक्लिन को (साथ मिलाकर) 300 ग्राम + कॉपर ऑक्सीक्लोराइड 1.25 किग्रा / हेक्टेयर की दर से छिड़काव करें। यदि आवश्यक हो तो 15 दिन बाद फिर दवा छिङकॆ।",
+                "Step 2": "गब्भा अवस्था के पहले यदि रोग हो, तो खेत से पानी निकाल दें",
+                "Step 3": "3-4 दिनों के लिए खेत को सूखने दें",
+                "Link": "https://youtu.be/C44FxCu7ubo",
+		"Image": "https://m.farms.com/Portals/0/bacterial-leaf-blight-300-1_1.png"
+            },
+            "False Smut": {
+                "Disease": " आभाषी कंड (कंडवा या हरदी)",
+                "Step 1": "7 दिनों के अंतराल पर हेक्साकोनाज़ोल @ 1.0 मिली / लीटर पानी का 2 बार छिङकाव करें",
+                "Step 2": "",
+                "Step 3": "",
+                "Link": "https://youtu.be/zxbcXWJ6cTA",
+		"Image": "https://www.lsuagcenter.com/~/media/system/9/4/a/e/94ae4909bab82f9b5def7eabc3bb6983/falsesmut4.jpg"
+            },
+            "Brown Spot": {
+                "Disease": " भूरा धब्बा ",
+                "Step 1": "पोटाश का छिङकाव  करॆ और  प्रोपिकोनाज़ोल @ 1.0 ग्राम या क्लोरोथालोनिल@2.0 ग्राम प्रति लीटर पानी में डालें या  ट्राइसाइक्लाजोल 18% + मानोकोजेब 62% WP 1.0 कि ग्रा  प्रति हेक्टेयर डालॆ,  और 10-12 दिनों के बाद दोहराएं यदि लक्षण बने रहें",
+                "Step 2": "",
+                "Step 3": "",
+                "Link": "https://youtu.be/AxFCqZFwDQo",
+		"Image": "https://www.indogulfbioag.com/Rice-Protect-Kits/images/brown-spot-big.jpg"
+
+            },
+            "Sheath Blight": {
+                "Disease": "शीथ ब्लाइट या पर्ण अंगमारी",
+                "Step 1": "यूरिया का प्रयोग बिलकुल न करें, यूरिया तभी डालॆ जब लीफ कलर कार्ड सुझाव दे  वह भी दवा डालने के 7 दिनों के बाद",
+                "Step 2": "कार्बेन्डाजिम @ 1.0 ग्राम या प्रोपिकोनाजोल @ 1.0 मिली या हेक्साकोनाजोल @ 1.0 मिली प्रति लीटर पर्ण स्प्रे के रूप में। अगर लक्षण बने रहें तो 10-15 दिन बाद दोहराएं",
+                "Step 3": "",
+                "Link": "https://youtu.be/gLPX_2QcdqM",
+		"Image": "https://www.apsnet.org/edcenter/disandpath/fungalasco/pdlessons/Article%20Images/RiceSheathFig5.jpg"
+            },
+            "ZnDf": {
+                "Disease": "खैरा",
+                "Step 1": "0.5% जिंक सल्फेट का छिङकाव (10 लीटर पानी में 25 ग्राम जिंक सल्फेट)। जिंक सल्फेट हेक्टाहाइड्रेट के 25 किग्रा / हेक्टेयर या 16 किलोग्राम / हेक्टेयर जिंक सल्फेट मोनोहाइड्रेट का प्रयोग करें।",
+                "Step 2": "0.5% जिंक सल्फेट का छिङकाव (10 लीटर पानी में 25 ग्राम जिंक सल्फेट)",
+                "Step 3": "",
+                "Link": "https://youtu.be/tbsOs9POhVk",
+		"Image": "https://lariceman.files.wordpress.com/2010/06/bronzing-6-10-2.jpg"
+            },
+
+            "Sheath Rot": {
+                "Disease": "शीथ रोट",
+                "Step 1": "कार्बेन्डाजिम @ 250 ग्राम या प्रोपिकोनाजोल @ 2.0 मिली या क्लोरोथैलोनिल @ 1.0 किलोग्राम या इडिफेनफोस प्रति लीटर  प्रति हेक्टेयर का छिङकाव करॆ। अगर लक्षण बने रहें तो 10-15 दिन बाद दोहराएं",
+                "Step 2": "",
+                "Step 3": "",
+                "Link": "https://www.youtube.com/watch?v=Dqv1jAGLViU",
+                "Image": "https://www.gardeningknowhow.com/wp-content/uploads/2019/07/sheath-rot.jpg"
+            },
+            "This is not rice": {
+                "Disease": "कृपया धान की एक फोटो भेजें!",
+                "Step 1": "",
+                "Step 2": "",
+                "Step 3": "",
+                "Link": ""
+            },
+            "Image is unclear. Please try again": {
+                "Disease": "छवि अस्पष्ट है। कृपया पुनः प्रयास करें"
+            },
+            "Healthy": {
+                "Disease": "स्वस्थ धान का पौधा!"
+            }
+        },
+    
+        "en": {
+            "Leaf Blast": {
+                "Disease": "Leaf Blast",
+                "Step 1": "Apply Tricyclazole @ 6gm/10L water",
+                "Step 2": "Do not apply urea. Apply after 7 days of blast treatment, only if LCC recommends",
+                "Step 3": "Destroy debris post harvest",
+                "Link": "https://youtu.be/QSSAr56AdD8",
+                "Image": "https://i1.wp.com/agfax.com/wp-content/uploads/rice-blast-leaf-lesions-lsu.jpg?fit=600%2C400&ssl=1"
+            },
+            "BLB": {
+                "Disease": "Bacterial Leaf Blight",
+                "Step 1": "Spray Streptomycin sulphate + Tetracycline combination 300 g + Copper oxychloride 1.25kg/ha. If necessary repeat 15 days later.",
+                "Step 2": "Drain the field if in vegetative stage",
+                "Step 3": "Leave the field dry for 3-4 days",
+                "Link": "https://youtu.be/C44FxCu7ubo",
+		"Image": "https://m.farms.com/Portals/0/bacterial-leaf-blight-300-1_1.png"
+            },
+            "False Smut": {
+                "Disease": "FalseSmut",
+                "Step 1": "2 times spray of hexaconazole @ 1.0ml/ litre water at 7 days interval",
+                "Step 2": "",
+                "Step 3": "",
+                "Link": "https://youtu.be/zxbcXWJ6cTA",
+		"Image": "https://www.lsuagcenter.com/~/media/system/9/4/a/e/94ae4909bab82f9b5def7eabc3bb6983/falsesmut4.jpg"
+            },
+            "Brown Spot": {
+                "Disease": "Brown Spot",
+                "Step 1": "Apply PotashSpray Propiconazole@1.0 gm or Chlorothalonil@2.0 gm per litre of water or Tricyclazole 18% + Manocozeb 62% WP 1000- 1250 gm per Hectare and repeat after 10-12 days if symptoms persist",
+                "Step 2": "",
+                "Step 3": "",
+                "Link": "https://youtu.be/AxFCqZFwDQo",
+		"Image": "https://www.indogulfbioag.com/Rice-Protect-Kits/images/brown-spot-big.jpg"
+            },
+            "Sheath Blight": {
+                "Disease": "Sheath Blight",
+                "Step 1": "Do not apply urea after detection till recommended by LCC",
+                "Step 2": "Carbendazim @ 1.0 gm or Propiconazole @ 1.0 ml or Hexaconazole @ 1.0 ml per itre as foliar spray. Repeat after 15 days",
+                "Step 3": "",
+                "Link": "https://youtu.be/gLPX_2QcdqM",
+		"Image": "https://www.apsnet.org/edcenter/disandpath/fungalasco/pdlessons/Article%20Images/RiceSheathFig5.jpg"
+            },
+            "ZnDf": {
+                "Disease": "Khaira",
+                "Step 1": "25 kg/Hectare of Zinc Sulphate HectaHydrate or 16 Kg/ Hectare Zinc Sulphate Monohydrate.",
+                "Step 2": "Spray of 0.5% Zinc Sulphate (25 gm Zinc Sulphate in 10 lit of water)",
+                "Step 3": "",
+                "Link": "https://youtu.be/tbsOs9POhVk",
+		"Image":"https://lariceman.files.wordpress.com/2010/06/bronzing-6-10-2.jpg"
+            },
+
+            "Sheath Rot": {
+                "Disease": "Sheath Rot",
+                "Step 1": "Sprinkle carbendazim @ 250 g or propiconazole @ 2.0 ml or chlorothalonil @ 1.0 kg or idiphenphos   per liter per hectare. Repeat after 10-15 days if symptoms persist.",
+                "Step 2": "",
+                "Step 3": "",
+                "Link": "https://www.youtube.com/watch?v=Dqv1jAGLViU",
+                "Image": "https://www.gardeningknowhow.com/wp-content/uploads/2019/07/sheath-rot.jpg"   
+            },
+            "This is not rice": {
+                "Disease": "Please send an image of Rice!",
+                "Step 1": "",
+                "Step 2": "",
+                "Step 3": "",
+                "Link": ""
+            },
+            "Image is unclear. Please try again": {
+                "Disease": "Image is unclear. Please try again"
+            },
+            "Healthy": {
+                "Disease": "Healthy Rice Plant!"
+            }
+        }
+    }
+
+
+@app.route("/diseases", methods=["POST"])
+def diseases():
+    lang = request.args["loc"]
+    uid = request.args['uid']
+    if uid != "":
+        user = communicate.get_user(uid)
+        communicate.update_document(user, {
+            "lang": lang
+        })
+    if lang == "hi":
+        return {
             "Leaf Blast": {
                 "Disease": "लीफ ब्लास्ट (झौंका)",
                 "Step 1": " ट्राईसाइक्लाज़ोल @ 6ग्राम / 10 ली0  पानी की दर से छिड़काव करे।",
@@ -175,9 +662,9 @@ def diseases():
             "Healthy": {
                 "Disease": "स्वस्थ धान का पौधा!"
             }
-        },
-    
-        "en": {
+        }
+    elif lang == "en":
+        return {
             "Leaf Blast": {
                 "Disease": "Leaf Blast",
                 "Step 1": "Apply Tricyclazole @ 6gm/10L water",
@@ -249,7 +736,6 @@ def diseases():
                 "Disease": "Healthy Rice Plant!"
             }
         }
-    }
 
 
 if __name__ == "__main__":
