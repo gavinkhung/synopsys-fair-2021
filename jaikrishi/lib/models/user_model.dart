@@ -14,6 +14,7 @@ class UserModel extends ChangeNotifier {
   LatLng _loc;
   Map _data;
   String _address;
+  String _tutLink;
 
   String get phoneNumber => _phoneNumber;
   String get url => _url;
@@ -25,6 +26,11 @@ class UserModel extends ChangeNotifier {
   LatLng get loc => _loc;
   Map get data => _data;
   String get address => _address;
+  String get tutLink => _tutLink;
+
+  set tutLink(String val) {
+    _tutLink = val;
+  }
 
   set address(String val) {
     _address = val;

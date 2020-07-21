@@ -195,12 +195,15 @@ StreamBuilder autoLogin(BuildContext cont) {
         FirebaseUser user = snapshot.data;
 
         if (user == null) {
-          return FutureBuilder<String>(
-            future: getUrl(),
+          return FutureBuilder<List<String>>(
+            future: getUrlAndLink(),
             builder: (context, data) {
               if (data.hasData) {
-                Provider.of<UserModel>(context, listen: false).url = data.data;
-                DemoLocalizations.of(cont).firstSet(data.data);
+                Provider.of<UserModel>(context, listen: false).url =
+                    data.data.first;
+                DemoLocalizations.of(cont).firstSet(data.data.first);
+                Provider.of<UserModel>(context, listen: false).tutLink =
+                    data.data.last;
                 justSignedUp = true;
                 return FutureBuilder(
                     future: DemoLocalizations.of(cont).setVals(),
@@ -264,6 +267,15 @@ Future<String> getUrl() async {
   var ref =
       await Firestore.instance.collection("data").document("backend").get();
   return ref["newIP"];
+}
+
+Future<List<String>> getUrlAndLink() async {
+  List<String> list = new List<String>();
+  var url =
+      await Firestore.instance.collection("data").document("backend").get();
+  list.add(url["newIP"]);
+  list.add(url["tutorialLink"]);
+  return list;
 }
 
 Future<bool> setVals(BuildContext context, FirebaseUser user) async {

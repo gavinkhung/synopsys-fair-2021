@@ -58,6 +58,14 @@ class _Onboard extends State<Onboard> {
     // getLocation().then((_locationData) {
     //   userLoc = new LatLng(_locationData.latitude, _locationData.longitude);
     // });
+    _youtubePlayerController = YoutubePlayerController(
+      flags: YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+      ),
+      initialVideoId: YoutubePlayer.convertUrlToId(
+          Provider.of<UserModel>(context, listen: false).tutLink),
+    );
   }
 
   @override
@@ -67,14 +75,7 @@ class _Onboard extends State<Onboard> {
   }
 
   Completer<GoogleMapController> _controller = Completer();
-  YoutubePlayerController _youtubePlayerController = YoutubePlayerController(
-    flags: YoutubePlayerFlags(
-      autoPlay: true,
-      mute: false,
-    ),
-    initialVideoId: YoutubePlayer.convertUrlToId(
-        "https://www.youtube.com/watch?v=GjAFSd9zcAY"),
-  );
+  YoutubePlayerController _youtubePlayerController;
 
   static LatLng _center = LatLng(20.0, 79.0);
   final PermissionHandler _permissionHandler = PermissionHandler();
@@ -110,7 +111,7 @@ class _Onboard extends State<Onboard> {
         decoration: PageDecoration(
             pageColor: myGreen, contentPadding: EdgeInsets.all(20)),
         titleWidget: Container(
-          height: MediaQuery.of(context).size.height / 2.75,
+          height: MediaQuery.of(context).size.height / 4,
           width: MediaQuery.of(context).size.width,
           child: FittedBox(
             fit: BoxFit.contain,
@@ -140,6 +141,11 @@ class _Onboard extends State<Onboard> {
             //         TextStyle(color: Colors.white, fontSize: 18.0, height: 1.2),
             //   ),
             // ),
+            Text(DemoLocalizations.of(context).vals["Instructions"]["1"],
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 50,
+                    fontWeight: FontWeight.bold)),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: YoutubePlayer(
