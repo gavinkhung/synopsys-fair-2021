@@ -19,7 +19,7 @@ import 'package:http/http.dart' as http;
 final PermissionHandler _permissionHandler = PermissionHandler();
 
 Future<loc.LocationData> getLocation() async {
-  await requestLocationPermission();
+  bool check = await requestLocationPermission();
   loc.Location location = new loc.Location();
 
   bool _serviceEnabled;
@@ -36,23 +36,14 @@ Future<loc.LocationData> getLocation() async {
     _permissionGranted = await location.requestPermission();
     if (_permissionGranted != PermissionStatus.granted) {}
   }
-  // if (check) {
-  //   BuildContext c;
-  //   showDialog<void>(
-  //     context: context, // user must tap button!
-  //     builder: (BuildContext context) {
-  //       c = context;
-  //       return CupertinoAlertDialog(
-  //         title: LinearProgressIndicator(),
-  //       );
-  //     },
-  //   );
-  //   await Future.delayed(Duration(seconds: 5));
-  //   Navigator.pop(c);
-  //   print("popped");
-  // }
 
-  _locationData = await location.getLocation();
+  if (check)
+    _locationData = await location.getLocation();
+  else {
+    analytics.logEvent(name: "denied_loc_permission");
+    _locationData =
+        new loc.LocationData.fromMap({"latitude": 20, "longitude": 79});
+  }
   return _locationData;
 }
 

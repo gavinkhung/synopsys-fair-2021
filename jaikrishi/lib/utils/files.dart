@@ -21,7 +21,7 @@ Future<void> setupLocalData(String url) async {
 }
 
 Future<String> getData(String url) async {
-  String path = url.toString() + "/diseases";
+  String path = url.toString() + "/newDiseases";
   var request = await http.post(path);
   return request.body;
 }
@@ -50,7 +50,6 @@ Future<Map> loadJson(String url, BuildContext context, String lang) async {
         },
       );
       print(e.toString());
-      data = await tempJson(url, context);
     }
   }
 
