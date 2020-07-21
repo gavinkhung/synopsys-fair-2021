@@ -13,20 +13,22 @@ import 'package:provider/provider.dart';
 
 class Auth extends StatefulWidget {
   bool error = false;
+  bool check = false;
 
-  Auth(this.error);
+  Auth(this.error, this.check);
 
   @override
-  _Auth createState() => _Auth(this.error);
+  _Auth createState() => _Auth(this.error, this.check);
 }
 
 class _Auth extends State<Auth> {
   bool error = false;
+  bool check = false;
   String code = "+91";
   final phoneController = TextEditingController();
   Color myGreen = Color.fromRGBO(24, 165, 123, 1);
 
-  _Auth(this.error);
+  _Auth(this.error, this.check);
 
   @override
   void initState() {
@@ -38,9 +40,14 @@ class _Auth extends State<Auth> {
           LatLng(value.latitude, value.longitude);
     });
     super.initState();
-    Future.delayed(Duration.zero, () {
-      pickLang(context, "");
-    });
+    if (!check) {
+      Future.delayed(Duration.zero, () {
+        pickLang(context, "").then((value) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => Auth(false, true)));
+        });
+      });
+    }
   }
 
   @override

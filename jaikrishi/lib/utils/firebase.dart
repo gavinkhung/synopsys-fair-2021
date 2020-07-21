@@ -209,7 +209,7 @@ StreamBuilder autoLogin(BuildContext cont) {
                     future: DemoLocalizations.of(cont).setVals(),
                     builder: (context, data) {
                       if (data.hasData) {
-                        return Auth(false);
+                        return Auth(false, false);
                       } else {
                         return CircularProgressIndicator();
                       }

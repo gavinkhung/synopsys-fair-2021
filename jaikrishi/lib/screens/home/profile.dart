@@ -92,7 +92,8 @@ class _profile extends State<profile> {
                               child: Material(
                                 color: Color.fromRGBO(196, 243, 220, 1),
                                 child: FlatButton.icon(
-                                  label: Text("Language"),
+                                  label: Text(DemoLocalizations.of(context)
+                                      .vals["FirstPage"]["15"]),
                                   padding: EdgeInsets.only(left: 3),
                                   icon: Icon(Icons.language),
                                   onPressed: () async {
