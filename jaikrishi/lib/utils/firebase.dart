@@ -445,6 +445,7 @@ void setUpNotifs(BuildContext context) {
 
   _fcm.configure(
     onMessage: (Map<String, dynamic> message) async {
+      analytics.logEvent(name: "notification_receibed");
       showDialog<void>(
         context: context, // user must tap button!
         builder: (BuildContext context) {

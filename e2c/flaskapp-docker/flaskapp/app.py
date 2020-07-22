@@ -60,11 +60,13 @@ def send():
             communicate.add_daily_disease(user.id, data, 3) 
         except Exception as e:
             print(e)
-    for key, val in tokens.items():
-        if key == 'en':
-            communicate.send_notifications(tokens[key]["token"], "Please Watch Video", "* It is highly recommended you watch the video we have sent. You will find it in the notification section. ")
-        elif key == "hi": 
-            communicate.send_notifications(tokens[key]["token"], "वीडियो जरूर देखें", "* यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।")
+    
+    return True; 
+    # for key, val in tokens.items():
+    #     if key == 'en':
+    #         communicate.send_notifications(tokens[key]["token"], "Please Watch Video", "* It is highly recommended you watch the video we have sent. You will find it in the notification section. ")
+    #     elif key == "hi": 
+    #         communicate.send_notifications(tokens[key]["token"], "वीडियो जरूर देखें", "* यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।")
        
 @app.route("/text", methods=["POST"])
 def text():
