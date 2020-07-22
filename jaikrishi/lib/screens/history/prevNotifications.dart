@@ -29,20 +29,53 @@ class _notifications extends State<Notifications> {
     try {
       List<Widget> widgets = new List<Widget>();
       dynamic qs = await getPrevNotifs(_uid);
-      var docs = qs.documents;
+      List<dynamic> docs = qs.documents;
       docs.sort((a, b) {
         var aDT = DateTime.parse(a.data["time"].replaceAll("/", "-") + "Z");
         var bDT = DateTime.parse(b.data["time"].replaceAll("/", "-") + "Z");
         return bDT.compareTo(aDT);
       });
+      // print(docs.length);
+      // print(docs[0].data["steps"] == docs[1].data["steps"]);
       for (var i in docs) {
+        // print(widgets);
+        // print(i.data["steps"][DemoLocalizations.of(context).locale.languageCode]
+        //     .toString());
         DateTime dt = DateTime.parse(i["time"] + "Z").toLocal();
         String link = "";
 
-        if (i["steps"] != null && i["steps"][0]["Link"] != "")
-          link = i["steps"][0]["Link"];
-        else if (i["data"] != null && i["data"]["Link"] != null)
-          link = i["data"]["Link"];
+        try {
+          // print(i.data["steps"]);
+          // print(DemoLocalizations.of(context).locale.languageCode);
+          // print(i.data["steps"]["en"]);
+          // print(i.data["steps"]["hi"]);
+          // print(i.data["steps"]
+          // [DemoLocalizations.of(context).locale.languageCode]);
+          if (i["steps"] != null &&
+              i["steps"][DemoLocalizations.of(context).locale.languageCode][0]
+                      ["Link"] !=
+                  "") {
+            link = i["steps"][DemoLocalizations.of(context).locale.languageCode]
+                [0]["Link"];
+          } else if (i["data"] != null && i["data"]["Link"] != null)
+            link = i["data"]["Link"];
+        } catch (e, st) {
+          print(e.toString());
+          analytics.logEvent(name: "old_notif_error");
+          // print(i.data["steps"]
+          //         [DemoLocalizations.of(context).locale.languageCode]
+          //     .toString());
+          // if (i["steps"] != null && i["steps"][0]["Link"] != "")
+          //   link = i["steps"][0]["Link"];
+          // else if (i["data"] != null && i["data"]["Link"] != null)
+          //   link = i["data"]["Link"];
+        }
+
+        // if (i["steps"] != null && i["steps"][0]["Link"] != "") {
+        //   link = i["steps"][0]["Link"];
+        // } else if (i["data"] != null && i["data"]["Link"] != null)
+        //   link = i["data"]["Link"];
+
         try {
           widgets.add(card(
               context,
@@ -77,7 +110,7 @@ class _notifications extends State<Notifications> {
       }
       return widgets;
     } catch (e) {
-      print(e);
+      print(e.toString());
       throw e;
     }
   }

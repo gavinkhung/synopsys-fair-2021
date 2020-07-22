@@ -228,6 +228,7 @@ StreamBuilder autoLogin(BuildContext cont) {
         } else {
           if (_auth.currentUser() != null && !justSignedUp) {
             analytics.logLogin();
+            print(user.uid);
             return FutureBuilder(
               future: setVals(cont, user),
               builder: (context, data) {

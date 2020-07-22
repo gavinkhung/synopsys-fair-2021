@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/imageProcessing.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/widgets/buttons.dart';
@@ -135,18 +136,62 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
     String step2 = "";
     String step3 = "";
     String days = "";
-    notifs["steps"][0]["Step 1"] != null && notifs["steps"][0]["Step 1"] != ""
-        ? step1 = "1. " + notifs["steps"][0]["Step 1"]
-        : "";
-    notifs["steps"][0]["Step 2"] != null && notifs["steps"][0]["Step 2"] != ""
-        ? step2 = "2. " + notifs["steps"][0]["Step 2"]
-        : "";
-    notifs["steps"][0]["Step 3"] != null && notifs["steps"][0]["Step 3"] != ""
-        ? step3 = "3. " + notifs["steps"][0]["Step 3"]
-        : "";
-    notifs["steps"][0]["Days"] != null && notifs["steps"][0]["Days"] != ""
-        ? days = notifs["steps"][0]["Days"]
-        : "";
+    try {
+      notifs["steps"][DemoLocalizations.of(context).locale.languageCode][0]
+                      ["Step 1"] !=
+                  null &&
+              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
+                      [0]["Step 1"] !=
+                  ""
+          ? step1 = "1. " +
+              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
+                  [0]["Step 1"]
+          : "";
+      notifs["steps"][DemoLocalizations.of(context).locale.languageCode][0]
+                      ["Step 2"] !=
+                  null &&
+              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
+                      [0]["Step 2"] !=
+                  ""
+          ? step2 = "2. " +
+              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
+                  [0]["Step 2"]
+          : "";
+      notifs["steps"][DemoLocalizations.of(context).locale.languageCode][0]
+                      ["Step 3"] !=
+                  null &&
+              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
+                      [0]["Step 3"] !=
+                  ""
+          ? step3 = "3. " +
+              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
+                  [0]["Step 3"]
+          : "";
+      notifs["steps"][DemoLocalizations.of(context).locale.languageCode][0]
+                      ["Days"] !=
+                  null &&
+              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
+                      [0]["Days"] !=
+                  ""
+          ? days = notifs["steps"]
+              [DemoLocalizations.of(context).locale.languageCode][0]["Days"]
+          : "";
+    } catch (e) {
+      print(e);
+      analytics.logEvent(name: "old_notif_error");
+      notifs["steps"][0]["Step 1"] != null && notifs["steps"][0]["Step 1"] != ""
+          ? step1 = "1. " + notifs["steps"][0]["Step 1"]
+          : "";
+      notifs["steps"][0]["Step 2"] != null && notifs["steps"][0]["Step 2"] != ""
+          ? step2 = "2. " + notifs["steps"][0]["Step 2"]
+          : "";
+      notifs["steps"][0]["Step 3"] != null && notifs["steps"][0]["Step 3"] != ""
+          ? step3 = "3. " + notifs["steps"][0]["Step 3"]
+          : "";
+      notifs["steps"][0]["Days"] != null && notifs["steps"][0]["Days"] != ""
+          ? days = notifs["steps"][0]["Days"]
+          : "";
+    }
 
     return Column(children: [
       Text(DemoLocalizations.of(context).vals["History"]["based"].toString() +
