@@ -315,8 +315,6 @@ def batch_process(communicate):
     }
 
     for i in users:
-        if i != "5f0Qyw4Y31RIBDBIoKcnj623Xp53": 
-            continue 
         try:
             user = users[i]
             currentLang = user["lang"]
