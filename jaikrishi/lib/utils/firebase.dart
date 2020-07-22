@@ -127,6 +127,9 @@ Future pickLang(BuildContext cont, String uid) {
                             Provider.of<UserModel>(cont, listen: false).data =
                                 await loadJson(url, cont, "hi");
                             if (uid != "") {
+                              analytics.logEvent(
+                                  name: "lang_switched",
+                                  parameters: {"lang": "Hindi"});
                               Map<String, dynamic> temp = {"lang": "hi"};
                               updateUser(uid, temp);
                             }
@@ -150,6 +153,9 @@ Future pickLang(BuildContext cont, String uid) {
                             Provider.of<UserModel>(cont, listen: false).data =
                                 await loadJson(url, cont, "en");
                             if (uid != "") {
+                              analytics.logEvent(
+                                  name: "lang_switched",
+                                  parameters: {"lang": "English"});
                               Map<String, dynamic> temp = {"lang": "en"};
                               updateUser(uid, temp);
                             }
