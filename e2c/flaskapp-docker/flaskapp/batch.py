@@ -74,7 +74,9 @@ def get_data(docs):
 
 
 def batch_process(communicate):
+    print("getting users")
     users = get_data(communicate.get_users())
+    print("got users")
     notifications = {
         "hi": {
             "diseases": {
@@ -324,18 +326,10 @@ def batch_process(communicate):
 
             for disease in diseases:
                 notifications[currentLang]["diseases"][disease]["tokens"].append(currentToken)
-                dt = {
-                    "en": notifications["en"]["diseases"][treatment]["body"], 
-                    "hi": notifications["hi"]["diseases"][treatment]["body"]
-                }
-                communicate.add_daily_disease(i, dt, 2)
+                communicate.add_daily_disease(i, notifications[currentLang]["diseases"][treatment]["body"], 2)
 
             notifications[currentLang]["treatments"][treatment]["tokens"].append(currentToken)
-            data = {
-                "en": notifications["en"]["treatments"][treatment]["body"], 
-                "hi": notifications["hi"]["treatments"][treatment]["body"]
-            }
-            communicate.add_daily_disease(i, data, 1)
+            communicate.add_daily_disease(i, notifications[currentLang]["treatments"][treatment]["body"], 1)
         except Exception as e:
             print(e)
 

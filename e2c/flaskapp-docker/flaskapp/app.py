@@ -60,13 +60,11 @@ def send():
             communicate.add_daily_disease(user.id, data, 3) 
         except Exception as e:
             print(e)
-    
-    return True; 
-    # for key, val in tokens.items():
-    #     if key == 'en':
-    #         communicate.send_notifications(tokens[key]["token"], "Please Watch Video", "* It is highly recommended you watch the video we have sent. You will find it in the notification section. ")
-    #     elif key == "hi": 
-    #         communicate.send_notifications(tokens[key]["token"], "वीडियो जरूर देखें", "* यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।")
+    for key, val in tokens.items():
+        if key == 'en':
+            communicate.send_notifications(tokens[key]["token"], "Please Watch Video", "* It is highly recommended you watch the video we have sent. You will find it in the notification section. ")
+        elif key == "hi": 
+            communicate.send_notifications(tokens[key]["token"], "वीडियो जरूर देखें", "* यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।")
        
 @app.route("/text", methods=["POST"])
 def text():
@@ -107,7 +105,7 @@ def text():
             },
             "DetectRice": {
                 "1": "पता लगाएँ",
-                "2": "हमने पता लगाया: ",
+                "2": "फोटो से हमने जो  फसल रोग का पता लगाया वह था: ",
                 "3": "रोग की रोक-थाम"
             },
             "DetectRandomPicture": {
@@ -195,6 +193,19 @@ def text():
                 "7": "देश कोड पहले से ही निर्दिष्ट है।",
                 "8": "लॉग इन करने में असमर्थ।"
             },
+            "edit" : {
+                "question" : "अाप क्या बदलना चाहते हैं।",
+                "select": "बदलने के लिये इनमॆ से चुनॆ।",
+                "loc": "फसल स्थान",
+                "variety": "प्रजात", 
+                "trans": "रोपाई की तिथि",
+                "seed": "बोवाई की तिथि",
+                "crop" : "फसल"
+            },
+            "error": {
+                "Address": "पता उपलब्ध नहीं है",
+                "loc": "कृपया स्थान जानने की अनुमति दॆ"
+            },
             "Crops": {
                 "1": "धान"
             },
@@ -223,7 +234,9 @@ def text():
                 "ok": "ठीक है",
                 "warningNotif": " चेतावनी देते हैं कि आपको अपनी फसल को स्वस्थ रखने के लिए निम्नलिखित कदम उठाने की आवश्यकता है: ",
                 "warningDisease": " आपकी फसल में मौजूद हो सकता है। कृपया जाँचने के लिए हमारी पहचान सुविधा का उपयोग करें।",
-                "warns": " चेतावनी दी है कि "
+                "warns": " चेतावनी दी है कि ",
+                "suggestLink": "हमारा सूझाव है कि अाप यह वीडियो देखॆ” वीडियो देखने के लिये कृपया दबायॆ \"अौर देखॆ\"", 
+                "suggestLinkOnPrev": "हमारा सूझाव है कि अाप यह वीडियो देखॆ"
             },
             "prevNotifications": {
                 "warning": "विगत रोग चेतावनी",
@@ -361,6 +374,19 @@ def text():
             "Crops": {
                 "1": "Rice"
             },
+            "edit" : {
+                "question" : "What would you like to edit?",
+                "select": "Select something to edit",
+                "loc": "Crop Location", 
+                "variety": "Variety", 
+                "trans": "Date of Transplanting",
+                "seed": "Date of Seeding",
+                "crop" :"Crop"
+            },
+            "error": {
+                "Address": "Address is not currently available",
+                "loc": "Enable Location Permissions: "
+            },
             "Instructions": {
                 "1": "Video Instructions",
                 "2": "Learn More",
@@ -386,7 +412,9 @@ def text():
                 "ok": "Okay",
                 "warningNotif": " warns that you need to do the following steps to keep your crop healthy: ",
                 "warningDisease": " might be present in your crop. Please use our detection feature to check.",
-                "warns": " warns that "
+                "warns": " warns that ",
+                "suggestLink": "We highly recommend that you watch the following video. To view the video in app please click \"See More\"", 
+                "suggestLinkOnPrev": "We highly recommend that you watch the following video"
             },
             "prevNotifications": {
                 "warning": "Past Disease Warning",
@@ -489,6 +517,14 @@ def newDiseases():
                 "Link": "https://www.youtube.com/watch?v=Dqv1jAGLViU",
                 "Image": "https://www.gardeningknowhow.com/wp-content/uploads/2019/07/sheath-rot.jpg"
             },
+	   "PaddyField": {
+		"Disease" : "कृपया रोगी पौधे की पास से फोटो लॆ।",
+		"Step 1" : "", 
+		"Step 2": "", 
+		"Step 3": "",
+		"Link" : "",
+		"Image": "",
+	   },
             "This is not rice": {
                 "Disease": "कृपया धान की एक फोटो भेजें!",
                 "Step 1": "",
@@ -562,6 +598,14 @@ def newDiseases():
                 "Link": "https://www.youtube.com/watch?v=Dqv1jAGLViU",
                 "Image": "https://www.gardeningknowhow.com/wp-content/uploads/2019/07/sheath-rot.jpg"   
             },
+	"PaddyField": {
+                "Disease" : "Please take a close-up photo of the affected plant part",
+                "Step 1" : "", 
+                "Step 2": "", 
+                "Step 3": "",
+                "Link" : "",
+                "Image": "",
+           },
             "This is not rice": {
                 "Disease": "Please send an image of Rice!",
                 "Step 1": "",
@@ -651,6 +695,14 @@ def diseases():
                 "Link": "https://www.youtube.com/watch?v=Dqv1jAGLViU",
                 "Image": "https://www.gardeningknowhow.com/wp-content/uploads/2019/07/sheath-rot.jpg"
             },
+"PaddyField": {
+                "Disease" : "कृपया रोगी पौधे की पास से फोटो लॆ।",
+                "Step 1" : "", 
+                "Step 2": "", 
+                "Step 3": "",
+                "Link" : "",
+                "Image": "",
+           },
             "This is not rice": {
                 "Disease": "कृपया धान की एक फोटो भेजें!",
                 "Step 1": "",
@@ -724,6 +776,14 @@ def diseases():
                 "Link": "https://www.youtube.com/watch?v=Dqv1jAGLViU",
                 "Image": "https://www.gardeningknowhow.com/wp-content/uploads/2019/07/sheath-rot.jpg"
             },
+	"PaddyField": {
+                "Disease" : "Please take a close-up photo of the affected plant part",
+                "Step 1" : "", 
+                "Step 2": "", 
+                "Step 3": "",
+                "Link" : "",
+                "Image": "",
+           },
             "This is not rice": {
                 "Disease": "Please send an image of Rice!",
                 "Step 1": "",

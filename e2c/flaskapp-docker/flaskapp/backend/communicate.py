@@ -126,4 +126,3 @@ class Communicate:
 if __name__ == "__main__":
     communicate = Communicate()
     communicate.send_notifications(['dy2EZGDOHuc:APA91bFQ3CbPps5z9gKcaL4c7KdRw4ifebzE5Hi2BC8Dd8cOl7M7UdhvRdo-XZCjjSymuJR83ADa-jPBi1vnNcj7aRDhJDGxBUZnZX9NdtMj52vrUcD5mVkNCjWuLzzb9SgfjY8YjW94'], 'title from python', 'body from python')
-
