@@ -5,12 +5,18 @@ from matplotlib.colors import hsv_to_rgb
 
 import numpy as np
 
-image = cv2.imread('./blb.png')
+image = cv2.imread('./LCC5.jpeg')
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 hsv_image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
 
+print(hsv_image.shape)
+
+plt.imshow(image)
+plt.show()
+
 # masking range in hsv
-lower_bound = (40, 60, 100)
-upper_bound = (90, 255, 170)
+lower_bound = (30, 45, 65)
+upper_bound = (80, 190, 185)
 
 # show image from masking range
 lower_square = np.full((10, 10, 3), lower_bound, dtype=np.uint8) / 255.0
@@ -27,5 +33,3 @@ result = cv2.bitwise_and(image, image, mask=mask)
 
 plt.imshow(result)
 plt.show()
-
-print(type(result))
