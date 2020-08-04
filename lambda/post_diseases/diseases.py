@@ -7,12 +7,11 @@ def lambda_handler(event, context):
             "hi" : {
                 "Leaf Blast": {
                     "Disease": "लीफ ब्लास्ट (झौंका)",
-                    "Step 1": "ट्राईसाइक्लाज़ोल 75 WP @ 6ग्राम / 10 ली0  पानी की दर से छिड़काव करे",
+                    "Step 1": " ट्राईसाइक्लाज़ोल @ 6ग्राम / 10 ली0  पानी की दर से छिड़काव करे।",
                     "Step 2": "यूरिया का प्रयोग बिलकुल न करें, यूरिया तभी डालॆ जब लीफ कलर कार्ड सुझाव दे  वह भी दवा डालने के 7 दिनों के बाद। ",
                     "Step 3": "फसल अवशेष नष्ट करें",
                     "Link": "https://youtu.be/QSSAr56AdD8",
                     "Image": "https://i1.wp.com/agfax.com/wp-content/uploads/rice-blast-leaf-lesions-lsu.jpg?fit=600%2C400&ssl=1"
-
                 },
                 "BLB": {
                     "Disease": "बैक्टीरियल लीफ ब्लाइट",
@@ -24,7 +23,7 @@ def lambda_handler(event, context):
                 },
                 "False Smut": {
                     "Disease": " आभाषी कंड (कंडवा या हरदी)",
-                    "Step 1" : "7 - 10 दिनों के अंतराल पर हेक्साकोनाज़ोल @ 1.0 मिली / लीटर पानी या प्रोपिकोनाज़ोल  25 WP @ 2.0 मिली / लीटर पानी  का 2 बार छिङकाव करें",
+                    "Step 1": "7 दिनों के अंतराल पर हेक्साकोनाज़ोल @ 1.0 मिली / लीटर पानी का 2 बार छिङकाव करें",
                     "Step 2": "",
                     "Step 3": "",
                     "Link": "https://youtu.be/zxbcXWJ6cTA",
@@ -57,8 +56,7 @@ def lambda_handler(event, context):
                     "Link": "https://youtu.be/tbsOs9POhVk",
                     "Image": "data:image/jpeg;base64,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"
                 },
-
-                "Sheath Rot": {
+                    "Sheath Rot": {
                     "Disease": "शीथ रोट",
                     "Step 1": "कार्बेन्डाजिम @ 250 ग्राम या प्रोपिकोनाजोल @ 2.0 मिली या क्लोरोथैलोनिल @ 1.0 किलोग्राम या इडिफेनफोस प्रति लीटर  प्रति हेक्टेयर का छिङकाव करॆ। अगर लक्षण बने रहें तो 10-15 दिन बाद दोहराएं",
                     "Step 2": "",
@@ -66,15 +64,23 @@ def lambda_handler(event, context):
                     "Link": "https://www.youtube.com/watch?v=Dqv1jAGLViU",
                     "Image": "https://www.gardeningknowhow.com/wp-content/uploads/2019/07/sheath-rot.jpg"
                 },
+                "PaddyField": {
+                    "Disease" : "कृपया रोगी पौधे की पास से फोटो लॆ।",
+                    "Step 1" : "", 
+                    "Step 2": "", 
+                    "Step 3": "",
+                    "Link" : "",
+                    "Image": "",
+                },
                 "This is not rice": {
-                    "Disease": "कृपया दूसरी फोटो भेजॆ, केवल धान की फोटो ही भेजॆ जिसमॆ रोग के लक्षण साफ दिखते हैं।",
+                    "Disease": "कृपया धान की एक फोटो भेजें!",
                     "Step 1": "",
                     "Step 2": "",
                     "Step 3": "",
                     "Link": ""
                 },
                 "Image is unclear. Please try again": {
-                    "Disease":"कृपया दूसरी फोटो भेजॆ, केवल धान की फोटो ही भेजॆ जिसमॆ रोग के लक्षण साफ दिखते हैं।"
+                    "Disease": "छवि अस्पष्ट है। कृपया पुनः प्रयास करें"
                 },
                 "Healthy": {
                     "Disease": "स्वस्थ धान का पौधा!"
@@ -83,7 +89,7 @@ def lambda_handler(event, context):
             "en": {
                 "Leaf Blast": {
                     "Disease": "Leaf Blast",
-                    "Step 1": "Apply Tricyclazole 75 WP @ 6gm/10L water",
+                    "Step 1": "Apply Tricyclazole @ 6gm/10L water",
                     "Step 2": "Do not apply urea. Apply after 7 days of blast treatment, only if LCC recommends",
                     "Step 3": "Destroy debris post harvest",
                     "Link": "https://youtu.be/QSSAr56AdD8",
@@ -99,7 +105,7 @@ def lambda_handler(event, context):
                 },
                 "False Smut": {
                     "Disease": "FalseSmut",
-                    "Step 1": " Spray of hexaconazole @ 1.0ml/ litre water or Propiconazole 25% WP  @ 2.0ml/ litre water at 7 -10  days interval two times.",
+                    "Step 1": "2 times spray of hexaconazole @ 1.0ml/ litre water at 7 days interval",
                     "Step 2": "",
                     "Step 3": "",
                     "Link": "https://youtu.be/zxbcXWJ6cTA",
@@ -138,15 +144,23 @@ def lambda_handler(event, context):
                     "Link": "https://www.youtube.com/watch?v=Dqv1jAGLViU",
                     "Image": "https://www.gardeningknowhow.com/wp-content/uploads/2019/07/sheath-rot.jpg"
                 },
+                "PaddyField": {
+                    "Disease" : "Please take a close-up photo of the affected plant part",
+                    "Step 1" : "", 
+                    "Step 2": "", 
+                    "Step 3": "",
+                    "Link" : "",
+                    "Image": "",
+                },
                 "This is not rice": {
-                    "Disease": "Please upload another Image. Please upload only image of rice plant with clearly visible diseased part.",
+                    "Disease": "Please send an image of Rice!",
                     "Step 1": "",
                     "Step 2": "",
                     "Step 3": "",
                     "Link": ""
                 },
                 "Image is unclear. Please try again": {
-                    "Disease": "Please upload another Image. Please upload only image of rice plant with clearly visible diseased part."
+                    "Disease": "Image is unclear. Please try again"
                 },
                 "Healthy": {
                     "Disease": "Healthy Rice Plant!"
