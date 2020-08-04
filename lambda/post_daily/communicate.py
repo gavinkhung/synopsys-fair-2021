@@ -57,25 +57,33 @@ class Communicate:
             'type': disease
         })
 
-    def add_daily_disease(self, uid, disease, typeOf):
+    def add_daily_disease(self, uid, disease, tp):
         time = self.getTime()
-        if typeOf: 
+        if tp == 2 : 
             title = f'{disease}:{time}'
             doc_ref = self.store.document(f'users/{uid}/daily_diseases/{title}')
             doc_ref.set({
-                'status': 'unchecked',
                 'time': time,
-                'type': disease
+                'type': 'disease_notif', 
+                'disease': disease, 
+
             })
-        else: 
+        elif tp == 1: 
             title = f'DateNotif:{time}'
             doc_ref = self.store.document(f'users/{uid}/daily_diseases/{title}')
             doc_ref.set({
-              'status': 'unchecked', 
               'time': time, 
               'type': 'date_notif', 
               'steps':  disease
            })
+        else : 
+            title = f'Misceallaneos:{time}'
+            doc_ref = self.store.document(f'users/{uid}/daily_diseases/{title}')
+            doc_ref.set({
+                'time': time, 
+                'type': 'misc', 
+                'data': disease
+            })
 
     
     def getTime(self):
