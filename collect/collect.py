@@ -15,7 +15,7 @@ def download_image(url, disease, filename):
 
 def download_images(firebase, users):
     for user in users:
-        user_doc = firebase.get_users_collection().document(user.id
+        user_doc = firebase.get_users_collection().document(user.id)
         imgs = user_doc.collection(u'image_diseases').get()
         for img in imgs:
             filename = str(img.id)

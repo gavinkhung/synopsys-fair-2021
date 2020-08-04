@@ -13,9 +13,9 @@ def maskedImage(filename):
     plt.imshow(image)
     plt.show()
     hsv_image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
-
     # masking range in hsv
-    lower_bound = (35, 60, 35)
+    # lower_bound = (35, 60, 35)
+    lower_bound = (20, 60, 35)
     upper_bound = (100, 255, 255)
 
     # create the mask
@@ -55,21 +55,26 @@ def convertToLABAndMask(filename):
 
 # iterates through the image and quotient of the sum of the differents and the length
 def total_difference(L1, a1, b1, L2, a2, b2):
-    length = min(L1.shape[0], L2.shape[0])
+    length = L1.shape[0]
+    lccLength = L2.shape[0]
     trueLength = 0
     diff = 0
     for i in range(length):
-        # do not count black pixels 
+        # wrap the lcc chart, if the image is larger than the lcc image
+        lccIndex = i % lccLength
+        # do not count black pixels
         if L1[i] != 0.0 and a1[i]!=0.0 and b1[i]!=0.0:
-            diff += CIEDE2000((L1[i], a1[i], b1[i]), (L2[i], a2[i], b2[i]))
+            diff += CIEDE2000((L1[i], a1[i], b1[i]), (L2[lccIndex], a2[lccIndex], b2[lccIndex]))
             trueLength += 1
+    if(trueLength == 0):
+        return 0
     return diff/trueLength
 
 
 if __name__ == "__main__":
 
     # REPLACE THE NAME OF THE IMAGE
-    filename = 'leafblast.png'
+    filename = 'ndef3.jpg'
 
 
     LCC2 = 'LCC2.jpeg'

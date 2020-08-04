@@ -15,8 +15,8 @@ plt.imshow(image)
 plt.show()
 
 # masking range in hsv
-lower_bound = (30, 45, 65)
-upper_bound = (80, 190, 185)
+lower_bound = (20, 60, 35)
+upper_bound = (100, 255, 255)
 
 # show image from masking range
 lower_square = np.full((10, 10, 3), lower_bound, dtype=np.uint8) / 255.0
