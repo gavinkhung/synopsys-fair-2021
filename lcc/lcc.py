@@ -12,9 +12,16 @@ def maskedImage(filename):
 
     w, h, _ = image.shape
     print('old size', w, h, w*h)
-    while(w * h >= 50000):
-        image = cv2.resize(image, None, fx=0.5, fy=0.5)
-        w, h, _ = image.shape
+    # while(w * h >= 50000):
+    #     image = cv2.resize(image, None, fx=0.5, fy=0.5)
+    #     w, h, _ = image.shape
+
+    # change these values
+    width = 224
+    height = 224
+
+    dim = (width, height)
+    image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
 
     print('new size', w, h, w*h)
 
