@@ -9,6 +9,15 @@ from ciede2000 import CIEDE2000
 def maskedImage(filename):
     # load image
     image = cv2.imread(filename)
+
+    w, h, _ = image.shape
+    print('old size', w, h, w*h)
+    while(w * h >= 50000):
+        image = cv2.resize(image, None, fx=0.5, fy=0.5)
+        w, h, _ = image.shape
+
+    print('new size', w, h, w*h)
+
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     plt.imshow(image)
     plt.show()
@@ -74,7 +83,7 @@ def total_difference(L1, a1, b1, L2, a2, b2):
 if __name__ == "__main__":
 
     # REPLACE THE NAME OF THE IMAGE
-    filename = 'ndef3.jpg'
+    filename = 'leaf3.jpeg'
 
 
     LCC2 = 'LCC2.jpeg'
