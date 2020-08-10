@@ -120,7 +120,10 @@ class Communicate:
                 if not resp.success:
                     # The order of responses corresponds to the order of the registration tokens.
                     failed_tokens.append(registration_tokens[idx])
-            print('List of tokens that caused failures: {0}'.format(failed_tokens))
+            # print('List of tokens that caused failures: {0}'.format(failed_tokens))
+            return response.failure_count
+        else: 
+            return response.failure_count 
 
 
 if __name__ == "__main__":

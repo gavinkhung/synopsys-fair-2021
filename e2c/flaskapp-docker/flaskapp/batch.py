@@ -36,7 +36,7 @@ def get_data(docs):
             lon = float(loc[1])
             utc_timestamp = 1590537600 + 86400 * \
                 (int((int(time.time())-1590537600)/86400)-1)
-            api_key = "b8e57c2f739e789baa6832069b18933b"
+            api_key = "f436b14e3174387a43e778d21509d07c"
             data = [0, 0, 0]
             params = {'lat': lat, 'lon': lon,  'dt': utc_timestamp,
                       'appid': api_key, 'units': 'metric'}
@@ -44,13 +44,11 @@ def get_data(docs):
                        86400, 'appid': api_key, 'units': 'metric'}
             params3 = {'lat': lat, 'lon': lon,  'dt': utc_timestamp -
                        2*86400, 'appid': api_key, 'units': 'metric'}
-            data[0] = requests.get(
-                url="http://api.openweathermap.org/data/2.5/onecall/timemachine", params=params).json()
-            data[1] = requests.get(
-                url="http://api.openweathermap.org/data/2.5/onecall/timemachine", params=params2).json()
-            data[2] = requests.get(
-                url="http://api.openweathermap.org/data/2.5/onecall/timemachine", params=params3).json()
+            data[0] = requests.get(url="http://api.openweathermap.org/data/2.5/onecall/timemachine", params=params).json()
+            data[1] = requests.get(url="http://api.openweathermap.org/data/2.5/onecall/timemachine", params=params2).json()
+            data[2] = requests.get(url="http://api.openweathermap.org/data/2.5/onecall/timemachine", params=params3).json()
 
+            print(data)
             
             avgD, avgN = calc_avg_temps(data)
 
@@ -68,7 +66,7 @@ def get_data(docs):
             users[doc.id]["rain"] = avgR
 
         except Exception as e:
-            print(e)
+            pass
 
     return users
 
@@ -83,37 +81,37 @@ def batch_process(communicate):
                 "Leaf Blast": {
                     "tokens":[],
                     "body": [{
-                        "Message": "Leaf Blast"
+                        "message": "Leaf Blast"
                     }]
                 },
                 "BLB": {
                     "tokens":[],
                     "body": [{
-                        "Message": "BLB"
+                        "message": "BLB"
                     }]
                 },
                 "Brown Spot": {
                     "tokens":[],
                     "body": [{
-                        "Message": "Brown Spot"
+                        "message": "Brown Spot"
                     }]
                 },
                 "Sheath Blight": {
                     "tokens":[],
                     "body": [{
-                        "Message": "Sheath Blight"
+                        "message": "Sheath Blight"
                     }]
                 },
                 "False Smut": {
                     "tokens":[],
                     "body": [{
-                        "Message": "False Smut"
+                        "message": "False Smut"
                     }]
                 },
                 "Sheath Rot": {
                     "tokens":[],
                     "body": [{
-                        "Message": "Sheath Rot"
+                        "message": "Sheath Rot"
                     }]
                 }
             },
@@ -201,37 +199,37 @@ def batch_process(communicate):
                 "Leaf Blast": {
                     "tokens":[],
                     "body": [{
-                        "message": "Leaf Blast"
+                        "message": "We believe that based on the weather, you are likely to have this disease in your crop: Leaf Blast"
                     }]
                 },
                 "BLB": {
                     "tokens":[],
                     "body": [{
-                        "message": "BLB"
+                        "message": "We believe that based on the weather, you are likely to have this disease in your crop: BLB"
                     }]
                 },
                 "Brown Spot": {
                     "tokens":[],
                     "body": [{
-                        "message": "Brown Spot"
+                        "message": "We believe that based on the weather, you are likely to have this disease in your crop: Brown Spot"
                     }]
                 },
                 "Sheath Blight": {
                     "tokens":[],
                     "body": [{
-                        "message": "Sheath Blight"
+                        "message": "We believe that based on the weather, you are likely to have this disease in your crop: Sheath Blight"
                     }]
                 },
                 "False Smut": {
                     "tokens":[],
                     "body": [{
-                        "message": "False Smut"
+                        "message": "We believe that based on the weather, you are likely to have this disease in your crop: False Smut"
                     }]
                 },
                 "Sheath Rot": {
                     "tokens":[],
                     "body": [{
-                        "message": "Sheath Rot"
+                        "message": "We believe that based on the weather, you are likely to have this disease in your crop: Sheath Rot"
                     }]
                 }
             },
@@ -244,7 +242,7 @@ def batch_process(communicate):
                         "Step 3": "For 5 cents of Nursery size, apply 1 kg each of  Nitrozen, Phosphorous, Potash fertilizer during ploughing",
                         "Link": "https://youtu.be/v2Za4IMxs6s",
                         "Days": "0",
-                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                        "message": "Based on the current date, we highly reccomend that you perform treatment for your crop. Please go to the notifications section for more information."
                     }]
                 },
                 "14": {
@@ -254,7 +252,7 @@ def batch_process(communicate):
                         "Step 2": "5 सेन्ट नर्सरी के लिए, 1 किलोग्राम नाइट्रोजेन उर्वरक डालें।",
                         "Link": "",
                         "Days": "14",
-                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                        "message": "Based on the current date, we highly reccomend that you perform treatment for your crop. Please go to the notifications section for more information."
                     }]
                 },
                 "20": {
@@ -263,7 +261,7 @@ def batch_process(communicate):
                         "Step 1": "Prevention of early fungal diseases in rice crop",
                         "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw",
                         "Days": "20",
-                        "message": ""
+                        "message": "Based on the current date, we highly reccomend that you perform treatment for your crop. Please go to the notifications section for more information."
                     }]
                 },
                 "21": {
@@ -272,7 +270,7 @@ def batch_process(communicate):
                         "Step 1": "Apply 400 gm Carbofuran 3G granules mixed in a Kg of sand for 5 cent Nursey. Ensure thin layer of water is maintained at the time of application.",
                         "Link": "",
                         "Days": "21",
-                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                        "message": "Based on the current date, we highly reccomend that you perform treatment for your crop. Please go to the notifications section for more information."
                     }]
                 },
                 "26": {
@@ -281,7 +279,7 @@ def batch_process(communicate):
                         "Step 1": "Transplant seedlings maintaining a population of 33 hills per sq mt of land for hybrid rice and 44 hills per sq mt for traditional variety.",
                         "Link": "https://youtu.be/9LpSN1TWUUI",
                         "Days": "26",
-                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                        "message": "Based on the current date, we highly reccomend that you perform treatment for your crop. Please go to the notifications section for more information."
                     }]
                 },
                 "27": {
@@ -290,7 +288,7 @@ def batch_process(communicate):
                         "Step 1": "Prevention of early fungal diseases in rice crop",
                         "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw",
                         "Days": "27",
-                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                        "message": "Based on the current date, we highly reccomend that you perform treatment for your crop. Please go to the notifications section for more information."
                     }]
                 },
                 "34": {
@@ -299,7 +297,7 @@ def batch_process(communicate):
                         "Step 1": "Prevention of early fungal diseases in rice crop",
                         "Link": "https://www.youtube.com/watch?v=MUbXbTeSlmw",
                         "Days": "34",
-                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                        "message": "Based on the current date, we highly reccomend that you perform treatment for your crop. Please go to the notifications section for more information."
                     }]
                 },
                 "40": {
@@ -309,36 +307,41 @@ def batch_process(communicate):
                         "Step 2": "Spray of 0.5% Zinc Sulphate (25 gm Zinc Sulphate in 10 lit of water)",
                         "Link": "https://youtu.be/tbsOs9POhVk",
                         "Days": "40",
-                        "message": "It is highly recommended you watch the video we have sent. You will find it in the notification section."
+                        "message": "Based on the current date, we highly reccomend that you perform treatment for your crop. Please go to the notifications section for more information."
                     }]
                 }
             }
         }
     }
 
+    print(len(users))
     for i in users:
         try:
             user = users[i]
             currentLang = user["lang"]
             currentToken = user["token"]
-            diseases = get_diseases(user)
+            # diseases = get_diseases(user)
             treatment = str(user["seed"])
 
-            for disease in diseases:
-                notifications[currentLang]["diseases"][disease]["tokens"].append(currentToken)
-                communicate.add_daily_disease(i, notifications[currentLang]["diseases"][treatment]["body"], 2)
+            # for disease in diseases:
+            #     notifications[currentLang]["diseases"][disease]["tokens"].append(currentToken)
+            #     communicate.add_daily_disease(i, notifications[currentLang]["diseases"][treatment]["body"], 2)
 
             notifications[currentLang]["treatments"][treatment]["tokens"].append(currentToken)
             communicate.add_daily_disease(i, notifications[currentLang]["treatments"][treatment]["body"], 1)
         except Exception as e:
             print(e)
 
+    print(notifications)
+
     try:
         for lang in notifications:
             for types in notifications[lang]:
                 for name in notifications[lang][types]:
                     notification = notifications[lang][types][name]
-                    communicate.send_notifications(notification["tokens"], "Disease Prediction", str(notification["body"][0]["message"]))
+                    worked = communicate.send_notifications(notification["tokens"], "Disease Prediction", str(notification["body"][0]["message"]))
+                    print(len(notification["tokens"]))
+                    print(worked)
     except Exception as e2:
         print(e2)
 

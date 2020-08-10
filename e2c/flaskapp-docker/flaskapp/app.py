@@ -57,14 +57,27 @@ def send():
             data = {
                 "Link" : link
             }
-            communicate.add_daily_disease(user.id, data, 3) 
+            # communicate.add_daily_disease(user.id, data, 3) 
         except Exception as e:
-            print(e)
-    for key, val in tokens.items():
-        if key == 'en':
-            communicate.send_notifications(tokens[key]["token"], "Please Watch Video", "* It is highly recommended you watch the video we have sent. You will find it in the notification section. ")
-        elif key == "hi": 
-            communicate.send_notifications(tokens[key]["token"], "वीडियो जरूर देखें", "* यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।")
+            pass
+    
+    english = communicate.send_notifications(tokens["en"], "Please Watch Video", "* It is highly recommended you watch the video we have sent. You will find it in the notification section. ")
+      
+    hindi = communicate.send_notifications(tokens["hi"], "वीडियो जरूर देखें", "* यह अत्यधिक अनुशंसा है कि आप हमारे द्वारा भेजे गए वीडियो को देखें। यह आपको नोटिफिकेशन सेक्शन में मिलेगा।")
+
+    if english == 0: 
+        print("worked")
+    else:
+        print(len(tokens["en"]))
+        print(english)
+
+    if hindi == 0: 
+        print("worked")
+    else:
+        print(len(tokens["hi"]))
+        print(hindi)
+
+    return "true"
        
 @app.route("/text", methods=["POST"])
 def text():
@@ -235,8 +248,8 @@ def text():
                 "warningNotif": " चेतावनी देते हैं कि आपको अपनी फसल को स्वस्थ रखने के लिए निम्नलिखित कदम उठाने की आवश्यकता है: ",
                 "warningDisease": " आपकी फसल में मौजूद हो सकता है। कृपया जाँचने के लिए हमारी पहचान सुविधा का उपयोग करें।",
                 "warns": " चेतावनी दी है कि ",
-                "suggestLink": "हमारा सूझाव है कि अाप यह वीडियो देखॆ” वीडियो देखने के लिये कृपया दबायॆ \"अौर देखॆ\"", 
-                "suggestLinkOnPrev": "हमारा सूझाव है कि अाप यह वीडियो देखॆ"
+                "suggestLink": "हमारा सूझाव है कि आप यह वीडियो देखॆ” वीडियो देखने के लिये कृपया दबायॆ \"और देखॆ\"", 
+                "suggestLinkOnPrev": "हमारा सूझाव है कि आप यह वीडियो देखॆ"
             },
             "prevNotifications": {
                 "warning": "विगत रोग चेतावनी",
@@ -449,9 +462,12 @@ def reminder():
             pass
     for key, value in tokens.items():
         if key == 'en':
-            communicate.send_notifications(tokens[key], 'Reminder', '*Please upload photo if you think your crop has some disease')
+            english = communicate.send_notifications(tokens[key], 'Reminder', '*Please upload photo if you think your crop has some disease')
+            print(english/len(tokens[key]))
         elif key =='hi':
-            communicate.send_notifications(tokens[key], 'अनुस्मारक', '* कृपया फोटो अपलोड करें यदि आपको लगता है कि आपकी फसल में कोई बीमारी है')
+            hindi = communicate.send_notifications(tokens[key], 'अनुस्मारक', '* कृपया फोटो अपलोड करें यदि आपको लगता है कि आपकी फसल में कोई बीमारी है')
+            print(hindi/len(tokens[key]))
+
     return 'true'
 
 @app.route("/newDiseases", methods=["POST"])
