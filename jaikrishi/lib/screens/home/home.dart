@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:leaf_problem_detection/screens/chat/chat.dart';
 import 'package:leaf_problem_detection/screens/history/history.dart';
 import 'package:leaf_problem_detection/screens/home/profile.dart';
 import 'package:leaf_problem_detection/screens/upload/upload.dart';
@@ -122,13 +123,14 @@ class _Home extends State<Home> {
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case "0":
-        return MaterialPageRoute(builder: (context) => Upload(null, null));
+        //return MaterialPageRoute(builder: (context) => Upload(null, null));
+        return MaterialPageRoute(builder: (context) => Chat());
       case "1":
         return MaterialPageRoute(builder: (context) => History());
       case "2":
         return MaterialPageRoute(builder: (context) => profile());
       default:
-        return MaterialPageRoute(builder: (context) => Upload(null, null));
+        return MaterialPageRoute(builder: (context) => Chat());
     }
   }
 }
