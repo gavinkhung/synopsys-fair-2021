@@ -62,8 +62,11 @@ class Communicate:
         })
 
     def add_daily_disease(self, uid, disease, tp):
+        disease = disease[0]
         time = self.getTime()
+        messgae = ''
         if tp == 2 : 
+            message = disease["message"]
             title = f'{disease}:{time}'
             doc_ref = self.store.document(f'users/{uid}/daily_diseases/{title}')
             doc_ref.set({
@@ -73,6 +76,14 @@ class Communicate:
 
             })
         elif tp == 1: 
+            steps = ''
+            if(disease["Step 1"]):
+                steps += "Step 1: " + disease["Step 1"] + "\n"
+            if(disease["Step 2"]):
+                steps += "Step 2: " + disease["Step 2"] + "\n"
+            if(disease["Step 3"]):
+                steps += "Step 3" +  disease["Step 3"] + "\n"
+            message = 'Since it has been '+ disease["Days"] +' days since sowing we believe that you should take the following steps to ensure that your crop is healhty:' +  steps
             title = f'DateNotif:{time}'
             doc_ref = self.store.document(f'users/{uid}/daily_diseases/{title}')
             doc_ref.set({
@@ -88,6 +99,19 @@ class Communicate:
                 'type': 'misc', 
                 'data': disease
             })
+
+        time_send = int(datetime.now().timestamp()*1000)
+        message_ref = self.store.document(f'users/{uid}/messages/{time_send}')
+        print("hi" + message); 
+        message_ref.set({
+            'createdAt': time_send,
+            'text': message, 
+            'user': {
+                'name': "JaiKrishi", 
+                'uid': 'US'
+            }
+
+        })
 
     
     def getTime(self):

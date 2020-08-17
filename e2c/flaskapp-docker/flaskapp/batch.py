@@ -48,7 +48,7 @@ def get_data(docs):
             data[1] = requests.get(url="http://api.openweathermap.org/data/2.5/onecall/timemachine", params=params2).json()
             data[2] = requests.get(url="http://api.openweathermap.org/data/2.5/onecall/timemachine", params=params3).json()
 
-            print(data)
+            # print(data)
             
             avgD, avgN = calc_avg_temps(data)
 
@@ -328,11 +328,14 @@ def batch_process(communicate):
             #     communicate.add_daily_disease(i, notifications[currentLang]["diseases"][treatment]["body"], 2)
 
             notifications[currentLang]["treatments"][treatment]["tokens"].append(currentToken)
+            print(notifications[currentLang]["treatments"][treatment]["body"])
             communicate.add_daily_disease(i, notifications[currentLang]["treatments"][treatment]["body"], 1)
+            communicate.add_daily_disease(i, notifications[currentLang]["diseases"]["Leaf Blast"]["body"], 2)
+
         except Exception as e:
             print(e)
 
-    print(notifications)
+    # print(notifications)
 
     try:
         for lang in notifications:
@@ -340,8 +343,8 @@ def batch_process(communicate):
                 for name in notifications[lang][types]:
                     notification = notifications[lang][types][name]
                     worked = communicate.send_notifications(notification["tokens"], "Disease Prediction", str(notification["body"][0]["message"]))
-                    print(len(notification["tokens"]))
-                    print(worked)
+                    # print(len(notification["tokens"]))
+                    # print(worked)
     except Exception as e2:
         print(e2)
 
