@@ -18,7 +18,8 @@ const MessageDetail = (props) => {
                 const messageData = messsage.data();
                 threadMessages.push({
                     text: messageData["text"],
-                    time: messageData["createdAt"]
+                    time: messageData["createdAt"],
+                    image: messageData["image"]
                 });
             });
             setMessages(threadMessages);
@@ -46,8 +47,8 @@ const MessageDetail = (props) => {
                 customProperties: null,
                 firstName: null,
                 lastName: null,
-                name: "",
-                uid: uid
+                name: "JaiKrishi",
+                uid: "US"
             },
             video: null
         }
@@ -66,6 +67,11 @@ const MessageDetail = (props) => {
                                 <div className="content">
                                     <div className="text">
                                         {message["text"]}
+                                    </div>
+                                    <div className="image">
+                            
+                                          <img src = {message["image"]}></img> 
+                                        
                                     </div>
                                 </div>
                             </div>
