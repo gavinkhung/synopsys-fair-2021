@@ -87,5 +87,5 @@ export const getThreadRef = (uid) => {
 
 export const sendMessage = async (uid, message) => {
     const threadRef = getThreadRef(uid);
-    threadRef.doc(`${Math.floor(Math.random() * Math.floor(1000))}`).set(message);
+    threadRef.doc(`${Date.now()}`).set(message);
 }
