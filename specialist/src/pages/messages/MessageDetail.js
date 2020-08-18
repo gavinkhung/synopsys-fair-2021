@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
 import { useParams, Link } from 'react-router-dom';
+
+import { v4 as uuidv4 } from 'uuid';
 
 import { getThreadRef, sendMessage } from '../../services/firebase';
 
@@ -32,9 +33,9 @@ const MessageDetail = (props) => {
         event.preventDefault();
         const { text } = event.target.elements;
         const message = {
-            createdAt: 0,
+            createdAt: Date.now(),
             customProperties: null,
-            id: "",
+            id: uuidv4(),
             image: null,
             quickReplies: null,
             text: text.value,
@@ -46,7 +47,7 @@ const MessageDetail = (props) => {
                 firstName: null,
                 lastName: null,
                 name: "",
-                uid: ""
+                uid: uid
             },
             video: null
         }
