@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import global from '../../services/global';
-import { getThreads } from '../../services/firebase';
+import { getThreadNames } from '../../services/firebase';
 
 const MessageList = (props) => {
 
@@ -12,7 +12,7 @@ const MessageList = (props) => {
 
     useEffect(() => {
         const fetchMessages = async () => {
-            const fetchedThreads = await getThreads();
+            const fetchedThreads = await getThreadNames();
             await setThreads(fetchedThreads);
         }
         fetchMessages();
