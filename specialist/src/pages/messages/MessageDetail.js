@@ -68,11 +68,9 @@ const MessageDetail = (props) => {
                                     <div className="text">
                                         {message["text"]}
                                     </div>
-                                    <div className="image">
-                            
-                                          <img src = {message["image"]}></img> 
-                                        
-                                    </div>
+                                    {message["image"] && <div className="image">
+                                          <img src={message["image"]} />
+                                    </div>}
                                 </div>
                             </div>
                         )}
