@@ -15,7 +15,7 @@ class UserModel extends ChangeNotifier {
   Map _data;
   String _address;
   String _tutLink;
-  List<Widget> _messages;
+  List<String> _crops;
 
   String get phoneNumber => _phoneNumber;
   String get url => _url;
@@ -28,7 +28,7 @@ class UserModel extends ChangeNotifier {
   Map get data => _data;
   String get address => _address;
   String get tutLink => _tutLink;
-  List<Widget> get messages => _messages;
+  List<String> get crops => _crops;
 
   set tutLink(String val) {
     _tutLink = val;
@@ -83,8 +83,8 @@ class UserModel extends ChangeNotifier {
     //notifyListeners();
   }
 
-  set messages(List<Widget> val) {
-    _messages = messages;
+  set crops(List<String> val) {
+    _crops = val;
     notifyListeners();
   }
 }
