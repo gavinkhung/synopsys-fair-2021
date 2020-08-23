@@ -1,6 +1,8 @@
 import * as firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/storage';
+import admin from 'firebase-admin';
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyDpX14fp6s_0RzJaPl4P6gs3qYTT0t6UX0",
@@ -63,6 +65,24 @@ const db = app.firestore();
 //     return threads;
 // }
 
+export const sendNotif = async (message) => {
+    // messaging.send(message).then((resp) => {
+    //     console.log(resp); 
+    // })
+    // .catch((err) => {
+    //     console.log(err); 
+    // })
+    console.log(message);
+    fetch("https://us-central1-jaikrishi-dev.cloudfunctions.net/sendNotif", {
+        method: "POST", 
+        headers: {
+            "Content-Type": "application/json"
+        }, 
+        body: JSON.stringify(message),
+        mode: "no-cors"
+    }).then((resp) => console.log(resp)).catch((err) => console.log(err)); 
+}
+
 export const getThreadNames = async () => {
     const allUsers = db.collection('users');
     const threads = [];
@@ -70,8 +90,10 @@ export const getThreadNames = async () => {
         const usersSnapshot = await allUsers.get();
         usersSnapshot.forEach(async (userSnapshot) => {
             const uid = userSnapshot.id;
+            console.log(userSnapshot.data()["token"]); 
             threads.push({
-                uid: uid
+                uid: uid,
+                token: userSnapshot.data()["token"]
             });
         });
     } catch(error){

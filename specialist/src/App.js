@@ -9,7 +9,7 @@ const App = () => {
         <Router>
             <Switch>
                 <Route exact path="/" component={MessageList} />
-                <Route exact path="/:uid" component={MessageDetail} />
+                <Route exact path="/:uid/:token" component={MessageDetail} />
             </Switch>
         </Router>
     );

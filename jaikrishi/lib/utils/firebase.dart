@@ -452,37 +452,37 @@ void setUpNotifs(BuildContext context) {
 
   _fcm.configure(
     onMessage: (Map<String, dynamic> message) async {
-      analytics.logEvent(name: "notification_receibed");
-      showDialog<void>(
-        context: context, // user must tap button!
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: Column(
-              children: [
-                Text(message['notification']['title']),
-                Divider(
-                  color: Color.fromRGBO(24, 165, 123, 1),
-                )
-              ],
-            ),
-            content: Container(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.height / 40),
-              child: Column(children: [Text(message['notification']['body'])]),
-            ),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Icon(
-                  Icons.check,
-                  color: Color.fromRGBO(24, 165, 123, 1),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+      analytics.logEvent(name: "notification_received");
+      // showDialog<void>(
+      //   context: context, // user must tap button!
+      //   builder: (BuildContext context) {
+      //     return CupertinoAlertDialog(
+      //       title: Column(
+      //         children: [
+      //           Text(message['notification']['title']),
+      //           Divider(
+      //             color: Color.fromRGBO(24, 165, 123, 1),
+      //           )
+      //         ],
+      //       ),
+      //       content: Container(
+      //         padding: EdgeInsets.all(MediaQuery.of(context).size.height / 40),
+      //         child: Column(children: [Text(message['notification']['body'])]),
+      //       ),
+      //       actions: <Widget>[
+      //         CupertinoDialogAction(
+      //           child: Icon(
+      //             Icons.check,
+      //             color: Color.fromRGBO(24, 165, 123, 1),
+      //           ),
+      //           onPressed: () {
+      //             Navigator.of(context).pop();
+      //           },
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // );
     },
     onLaunch: (Map<String, dynamic> message) async {},
     onResume: (Map<String, dynamic> message) async {},
