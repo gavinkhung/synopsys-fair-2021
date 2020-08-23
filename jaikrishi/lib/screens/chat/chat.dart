@@ -122,11 +122,12 @@ class _Chat extends State<Chat> {
         .document(Provider.of<UserModel>(context, listen: false).uid)
         .collection("messages")
         .document(DateTime.now().millisecondsSinceEpoch.toString());
-
+    Map<String, dynamic> map = message.toJson();
+    map["type"] = crop;
     await Firestore.instance.runTransaction((transaction) async {
       await transaction.set(
         documentReference,
-        message.toJson(),
+        map,
       );
     });
     /* setState(() {
@@ -350,12 +351,13 @@ class _Chat extends State<Chat> {
                                   .document(DateTime.now()
                                       .millisecondsSinceEpoch
                                       .toString());
-
+                              Map<String, dynamic> map = message.toJson();
+                              map["type"] = crop;
                               Firestore.instance
                                   .runTransaction((transaction) async {
                                 await transaction.set(
                                   documentReference,
-                                  message.toJson(),
+                                  map,
                                 );
                               });
                             }
@@ -409,12 +411,13 @@ class _Chat extends State<Chat> {
                                   .document(DateTime.now()
                                       .millisecondsSinceEpoch
                                       .toString());
-
+                              Map<String, dynamic> map = message.toJson();
+                              map["type"] = crop;
                               Firestore.instance
                                   .runTransaction((transaction) async {
                                 await transaction.set(
                                   documentReference,
-                                  message.toJson(),
+                                  map,
                                 );
                               });
                             }
