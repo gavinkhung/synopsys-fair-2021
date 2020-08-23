@@ -3,17 +3,29 @@ import { useParams, Link } from 'react-router-dom';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { getThreadRef, sendMessage, sendNotif } from '../../services/firebase';
+import { getThreadRef, getPresetResponses, sendMessage, sendNotif, updateRead } from '../../services/firebase';
 
 const MessageDetail = (props) => {
 
+    const reducer = (state, action) => {
+        switch(action.type){
+            case 'filter':
+                return messages.filter(visibleMessage => visibleMessage.type === action.payload );
+            default:
+                return state;
+        }
+    }
+
     const { uid , token} = useParams();
 
-    const [lastSelected, setLastSelected] = useState("");
     const [messages, setMessages] = useState([]);
+    const [presetResponses, setPresetResponses] = useState([]);
     const [text, setText] = useState("");
 
     const [visibleMessages, dispatch] = useReducer(reducer, []);
+
+    const [lastSelected, setLastSelected] = useState("");
+    const [selectedDisease, setSelectedDisease] = useState("");
     
     useEffect(() => {
         const unsubscribe = getThreadRef(uid).onSnapshot(querySnapshot => {
@@ -24,11 +36,19 @@ const MessageDetail = (props) => {
                     text: messageData["text"],
                     time: messageData["createdAt"],
                     image: messageData["image"],
-                    type: "hello"
+                    name: messageData["user"]["name"],
+                    type: messageData["type"],
                 });
             });
             setMessages(threadMessages);
         });
+
+        const setup = async () => {
+            await updateRead(uid);
+            const preset = await getPresetResponses();
+            setPresetResponses(preset);
+        }
+        setup();
 
         return () => {
             unsubscribe();
@@ -63,60 +83,71 @@ const MessageDetail = (props) => {
                 name: "JaiKrishi",
                 uid: "US"
             },
-            video: null
+            video: null,
+            type: lastSelected
         }
         await sendMessage(uid, message);
-        sendNotif( {
+        await sendNotif({
             notification : {
                 title: "Message From JaiKrishi!", 
                 body: text.value
             }, 
             token: token
-        }
-            
-           ); 
+        });
+        setText("");
     }
+
+    console.log(presetResponses);
 
     return (
         <>
-            <Link to={"/"}>Back home</Link>
-            {/* <button onClick={() => dispatch(rice)}></button> */}
             <div className="ui container">
+                <Link to={"/"}><i className="arrow left icon"></i>Back home</Link>
+                <br/>
                 <>
-                    <button onClick={() => setLastSelected('hello')}>set to hello</button>
-                    <button onClick={() => setLastSelected('')}>set to ""</button>
+                    {presetResponses && Object.keys(presetResponses).map(presetResponse => 
+                        <button className="ui button" onClick={() => setLastSelected(presetResponse)} key={presetResponse}>{presetResponse}</button>
+                    )}
                 </>
                 {visibleMessages.length ?
                     <div className="ui comments">
                         <h3 className="ui dividing header">Messages with {uid}</h3>
-                        {/* {messages.map(message => 
-                            <div className="comment" key={message["time"]}>
-                                <div className="content">
-                                    <div className="text">
-                                        {message["text"]}
-                                    </div>
-                                    {message["image"] && <div className="image">
-                                        <img src={message["image"]} />
-                                    </div>}
-                                </div>
-                            </div>
-                        )} */}
-                        {visibleMessages.map(visibleMessage => 
+                        {visibleMessages.map(visibleMessage =>
                             <div className="comment" key={visibleMessage["time"]}>
                                 <div className="content">
-                                    <div className="text">
+                                    <div className={visibleMessage["name"] === 'JaiKrishi' ? "right": "left"}>
+                                        <div className="text">
                                         {visibleMessage["text"]}
+                                        </div>
                                     </div>
-                                    {visibleMessage["image"] && <div className="image">
-                                        <img src={visibleMessage["image"]} />
-                                    </div>}
                                 </div>
+                                {visibleMessage["image"] && <div className="image">
+                                    <img src={visibleMessage["image"]} />
+                                </div>}
+                                <br />
                             </div>
                         )}
                         <form className="ui reply form" onSubmit={handleSubmit}>
                             <input name="text" type="text" placeholder="Reply..." value={text} onChange={e => setText(e.target.value)} />
-                            <button>Send</button>
+                            <button className="ui button">Send</button>
                         </form>
+                        <div className="menu">
+                            <div className="ui simple dropdown item">
+                                Preset Reponses <i className="dropdown icon"></i>
+                                <div className="menu">
+                                    {presetResponses && presetResponses[lastSelected] && Object.keys(presetResponses[lastSelected]).map(disease => 
+                                        <p className="item" key={disease} onClick={() => setSelectedDisease(disease)}>{disease}</p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="ui relaxed divided list">
+                            {presetResponses[lastSelected][selectedDisease] && presetResponses[lastSelected][selectedDisease].map(diseaseResponse => 
+                                <p className="item" key={diseaseResponse} onClick={() => setText(diseaseResponse)}>
+                                    {diseaseResponse}
+                                </p>
+                            )}
+                        </div>
                     </div>
                 :
                     <>

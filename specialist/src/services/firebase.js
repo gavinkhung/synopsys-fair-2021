@@ -1,8 +1,8 @@
 import * as firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/storage';
-import admin from 'firebase-admin';
 
+import global from './global';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDpX14fp6s_0RzJaPl4P6gs3qYTT0t6UX0",
@@ -83,6 +83,27 @@ export const sendNotif = async (message) => {
     }).then((resp) => console.log(resp)).catch((err) => console.log(err)); 
 }
 
+export const getPresetResponses = async () => {
+    const fetched = global['messages'];
+    if(fetched && fetched.length){
+        return fetched;
+    } else {
+        const dataDoc = db.collection('data').doc('backend');
+        try {
+            const dataSnapshot = await dataDoc.get();
+            if(dataSnapshot.exists){
+                const { cropsTemp } = dataSnapshot.data();
+                global['messages'] = cropsTemp;
+                return cropsTemp;
+            } else {
+                return {};
+            }
+        } catch(error){
+            return {};
+        }
+    }
+}
+
 export const getThreadNames = async () => {
     const allUsers = db.collection('users');
     const threads = [];
@@ -90,10 +111,12 @@ export const getThreadNames = async () => {
         const usersSnapshot = await allUsers.get();
         usersSnapshot.forEach(async (userSnapshot) => {
             const uid = userSnapshot.id;
-            console.log(userSnapshot.data()["token"]); 
+            const { token, read } = userSnapshot.data();
+            
             threads.push({
                 uid: uid,
-                token: userSnapshot.data()["token"]
+                token: token,
+                read: read
             });
         });
     } catch(error){
@@ -105,6 +128,17 @@ export const getThreadNames = async () => {
 
 export const getThreadRef = (uid) => {
     return db.collection('users').doc(uid).collection('messages');
+}
+
+export const updateRead = async (uid) => {
+    try {
+        await db.collection('users').doc(uid).update({
+            read: true
+        });
+    } catch(error){
+        console.log(error);
+        alert(error);
+    }
 }
 
 export const sendMessage = async (uid, message) => {

@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import MessageList from './pages/messages/MessageList';
 import MessageDetail from './pages/messages/MessageDetail';
 
+import './assets/css/styles.css';
+
 const App = () => {
     return(
         <Router>
