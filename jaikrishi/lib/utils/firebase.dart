@@ -570,6 +570,19 @@ FutureBuilder showUsername(String uid, TextEditingController controller) {
       });
 }
 
+Future<List<String>> getCrops(BuildContext context) async {
+  UserModel userModel = Provider.of<UserModel>(context, listen: false);
+  if (userModel.crops != null) {
+    print("alr got crops");
+    return userModel.crops;
+  }
+  DocumentSnapshot doc =
+      await Firestore.instance.collection("data").document("backend").get();
+  List<String> crops = List<String>.from(doc.data["crops"]);
+  userModel.crops = crops;
+  return crops;
+}
+
 addUsername(String uid, String name) async {
   await Firestore.instance
       .collection("users")

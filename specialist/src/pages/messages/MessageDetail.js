@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -9,8 +9,12 @@ const MessageDetail = (props) => {
 
     const { uid , token} = useParams();
 
+    const [lastSelected, setLastSelected] = useState("");
     const [messages, setMessages] = useState([]);
+    const [text, setText] = useState("");
 
+    const [visibleMessages, dispatch] = useReducer(reducer, []);
+    
     useEffect(() => {
         const unsubscribe = getThreadRef(uid).onSnapshot(querySnapshot => {
             const threadMessages = [];
@@ -19,7 +23,8 @@ const MessageDetail = (props) => {
                 threadMessages.push({
                     text: messageData["text"],
                     time: messageData["createdAt"],
-                    image: messageData["image"]
+                    image: messageData["image"],
+                    type: "hello"
                 });
             });
             setMessages(threadMessages);
@@ -30,16 +35,24 @@ const MessageDetail = (props) => {
         }
     }, []);
 
+    useEffect(() => {
+        if(messages && messages.length){
+            dispatch({
+                type: 'filter',
+                payload: lastSelected
+            })
+        }
+    }, [messages, lastSelected]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const { text } = event.target.elements;
         const message = {
             createdAt: Date.now(),
             customProperties: null,
             id: uuidv4(),
             image: null,
             quickReplies: null,
-            text: text.value,
+            text: text,
             user: {
                 avatar: "",
                 color: null,
@@ -67,30 +80,47 @@ const MessageDetail = (props) => {
     return (
         <>
             <Link to={"/"}>Back home</Link>
+            {/* <button onClick={() => dispatch(rice)}></button> */}
             <div className="ui container">
-                {messages.length ?
+                <>
+                    <button onClick={() => setLastSelected('hello')}>set to hello</button>
+                    <button onClick={() => setLastSelected('')}>set to ""</button>
+                </>
+                {visibleMessages.length ?
                     <div className="ui comments">
                         <h3 className="ui dividing header">Messages with {uid}</h3>
-                        {messages.map(message => 
+                        {/* {messages.map(message => 
                             <div className="comment" key={message["time"]}>
                                 <div className="content">
                                     <div className="text">
                                         {message["text"]}
                                     </div>
                                     {message["image"] && <div className="image">
-                                          <img src={message["image"]} />
+                                        <img src={message["image"]} />
+                                    </div>}
+                                </div>
+                            </div>
+                        )} */}
+                        {visibleMessages.map(visibleMessage => 
+                            <div className="comment" key={visibleMessage["time"]}>
+                                <div className="content">
+                                    <div className="text">
+                                        {visibleMessage["text"]}
+                                    </div>
+                                    {visibleMessage["image"] && <div className="image">
+                                        <img src={visibleMessage["image"]} />
                                     </div>}
                                 </div>
                             </div>
                         )}
                         <form className="ui reply form" onSubmit={handleSubmit}>
-                            <input name="text" type="text" placeholder="Reply..."/>
+                            <input name="text" type="text" placeholder="Reply..." value={text} onChange={e => setText(e.target.value)} />
                             <button>Send</button>
                         </form>
                     </div>
                 :
                     <>
-                        <h3 className="ui dividing header">No messages found with {uid}</h3>
+                        <h3 className="ui dividing header">Select a chat with {uid}</h3>
                     </>
                 }
             </div>
