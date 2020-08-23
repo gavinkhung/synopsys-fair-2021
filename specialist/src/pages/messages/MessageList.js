@@ -29,7 +29,7 @@ const MessageList = (props) => {
                     threads.map(thread => 
                         <div className="item" key={thread.uid}>
                             <div className="content">
-                                <Link className="header" to={`${thread.uid}`}>{thread.uid}</Link>
+                                <Link className="header" to={`${thread.uid}/${thread.token}`}>{thread.uid}</Link>
                             </div>
                         </div>
                     )

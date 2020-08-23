@@ -3,20 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { getThreadRef, sendMessage } from '../../services/firebase';
+import { getThreadRef, sendMessage, sendNotif } from '../../services/firebase';
 
 const MessageDetail = (props) => {
 
-    const reducer = (state, action) => {
-        switch(action.type){
-            case 'filter':
-                return messages.filter(visibleMessage => visibleMessage.type === action.payload );
-            default:
-                return state;
-        }
-    }    
-
-    const { uid } = useParams();
+    const { uid , token} = useParams();
 
     const [lastSelected, setLastSelected] = useState("");
     const [messages, setMessages] = useState([]);
@@ -75,7 +66,15 @@ const MessageDetail = (props) => {
             video: null
         }
         await sendMessage(uid, message);
-        setText("");
+        sendNotif( {
+            notification : {
+                title: "Message From JaiKrishi!", 
+                body: text.value
+            }, 
+            token: token
+        }
+            
+           ); 
     }
 
     return (
