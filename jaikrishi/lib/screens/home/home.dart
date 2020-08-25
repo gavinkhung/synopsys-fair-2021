@@ -65,13 +65,13 @@ class _Home extends State<Home> {
                 ? Color.fromRGBO(24, 165, 123, 1)
                 : Colors.grey,
           ),
-          Icon(
-            Icons.local_florist,
-            size: 30.0,
-            color: _currentTabIndex == 1
-                ? Color.fromRGBO(24, 165, 123, 1)
-                : Colors.grey,
-          ),
+          // Icon(
+          //   Icons.local_florist,
+          //   size: 30.0,
+          //   color: _currentTabIndex == 1
+          //       ? Color.fromRGBO(24, 165, 123, 1)
+          //       : Colors.grey,
+          // ),
           Icon(
             Icons.nature,
             size: 30.0,
@@ -125,8 +125,8 @@ class _Home extends State<Home> {
       case "0":
         //return MaterialPageRoute(builder: (context) => Upload(null, null));
         return MaterialPageRoute(builder: (context) => Chat());
-      case "1":
-        return MaterialPageRoute(builder: (context) => History());
+      // case "1":
+      //   return MaterialPageRoute(builder: (context) => History());
       case "2":
         return MaterialPageRoute(builder: (context) => profile());
       default:

@@ -222,8 +222,13 @@ class _Chat extends State<Chat> {
                     );
                   } else {
                     List<DocumentSnapshot> items = snapshot.data.documents;
-                    var messages =
-                        items.map((i) => ChatMessage.fromJson(i.data)).toList();
+                    List<ChatMessage> messages = new List<ChatMessage>();
+
+                    for (DocumentSnapshot i in items) {
+                      if (i.data["type"] == crop) {
+                        messages.add(ChatMessage.fromJson(i.data));
+                      }
+                    }
                     return DashChat(
                       key: _chatViewKey,
                       inverted: false,

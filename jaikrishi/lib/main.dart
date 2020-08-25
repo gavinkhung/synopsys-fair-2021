@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       ],
       theme: ThemeData(
         primaryColor: Color.fromRGBO(24, 165, 123, 1),
-        accentColor: Colors.white,
+        accentColor: Colors.redAccent,
       ),
       supportedLocales: [
         const Locale('en', ''),
