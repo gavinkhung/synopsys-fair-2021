@@ -89,7 +89,7 @@ const MessageDetail = (props) => {
         await sendMessage(uid, message);
         await sendNotif({
             notification : {
-                title: "Message From JaiKrishi!", 
+                title: "Message From JaiKrishi! - " + type, 
                 body: text.value
             }, 
             token: token
