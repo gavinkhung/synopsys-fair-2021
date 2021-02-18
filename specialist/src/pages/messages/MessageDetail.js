@@ -66,25 +66,36 @@ const MessageDetail = (props) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const message = {
-            createdAt: Date.now(),
-            customProperties: null,
-            id: uuidv4(),
-            image: null,
-            quickReplies: null,
-            text: text,
-            user: {
-                avatar: "",
-                color: null,
-                containerColor: null,
+        if(text !== ''){
+            const message = {
+                createdAt: Date.now(),
                 customProperties: null,
-                firstName: null,
-                lastName: null,
-                name: "JaiKrishi",
-                uid: "US"
-            },
-            video: null,
-            type: lastSelected
+                id: uuidv4(),
+                image: null,
+                quickReplies: null,
+                text: text,
+                user: {
+                    avatar: "",
+                    color: null,
+                    containerColor: null,
+                    customProperties: null,
+                    firstName: null,
+                    lastName: null,
+                    name: "JaiKrishi",
+                    uid: "US"
+                },
+                video: null,
+                type: lastSelected
+            }
+            await sendMessage(uid, message);
+            await sendNotif({
+                notification : {
+                    title: "Message From JaiKrishi!", 
+                    body: text.value
+                }, 
+                token: token
+            });
+            setText("");
         }
         await sendMessage(uid, message);
         await sendNotif({
