@@ -156,7 +156,7 @@ Widget usingWeatherData(BuildContext context) {
                     ),
                   ),
                   Text(
-                    data.temp + "°C",
+                    data.temp + "°F",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize:
@@ -164,7 +164,7 @@ Widget usingWeatherData(BuildContext context) {
                     ),
                   ),
                   Text(
-                    data.minTemp + "°C/" + data.maxTemp + "°C",
+                    data.minTemp + "°F/" + data.maxTemp + "°F",
                     style: TextStyle(
                       color: Colors.black38,
                       fontSize:
@@ -301,8 +301,8 @@ Future<Map> getWeatherData(String uid, String lat, String long) async {
       '&lon=' +
       long.toString().trim() +
       '&appid=' +
-      weatherKey +
-      '&units=metric';
+      "d0f5b0af2e8edc9e079d4f8e16932b82" +
+      '&units=imperial';
 
   var request = await http.get(path);
   return json.decode(request.body);
