@@ -188,8 +188,18 @@ class _profile extends State<profile> {
                             ),
                           ],
                         ),
+<<<<<<< HEAD
                         buildWeatherCard(context),
                         card(context, getUserData()),
+=======
+                        // FlatButton.icon(
+                        //   icon: Icon(Icons.flip),
+                        //   label: Text("Sign Out"),
+                        //   onPressed: () async {
+                        //     await _signOut();
+                        //   },
+                        // ),
+>>>>>>> c6f9db8ba06e6180f5f78d30a7f48dc19186643b
                       ],
                     ),
                   ),

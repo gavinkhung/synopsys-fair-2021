@@ -50,8 +50,8 @@ dependencies:
   firebase_analytics: ^5.0.16
   curved_navigation_bar: ^0.3.1
   geocoder: ^0.2.1
-  intl: ^0.16.1
-  dash_chat: ^1.1.14
+  intl: ^0.17.0
+  dash_chat: ^1.1.15
 
 dev_dependencies:
   flutter_test:

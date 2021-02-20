@@ -65,6 +65,77 @@ class _Upload extends State<Upload> {
         _position = controller.page;
       });
     });
+<<<<<<< HEAD
+=======
+    Widget getPageOne() {
+      if (_response == "Healthy Crop") _response = "Healthy";
+      print(_response);
+      return Expanded(
+          child: Center(
+              child: FutureBuilder(
+                  future: History.loadJson(_response),
+                  builder: (context, data) {
+                    if (data.hasData) {
+                      return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _response != "This is not rice" &&
+                                    _response !=
+                                        "Image is unclear. Please try again" &&
+                                    _response != "Healthy Crop"
+                                ? buildDiseaseReport(data.data)
+                                : Text(
+                                    data.data["Disease"],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                            _response != "This is not rice" &&
+                                    _response !=
+                                        "Image is unclear. Please try again" &&
+                                    _response != "Healthy"
+                                ? Upload.createMoreInfoButton(
+                                    context, data.data)
+                                : Container(
+                                    height: 0,
+                                  ),
+                            Builder(
+                              builder: (BuildContext context) {
+                                return Center(
+                                  child: FlatButton.icon(
+                                    padding: EdgeInsets.zero,
+                                    icon: Icon(Icons.share),
+                                    label: Text(DemoLocalizations.of(context)
+                                        .vals["DiseaseDetection"]["10"]),
+                                    onPressed: () {
+                                      final RenderBox box =
+                                          context.findRenderObject();
+                                      Share.share(
+                                          "JaiKrishi " +
+                                              DemoLocalizations.of(context)
+                                                      .vals["DiseaseDetection"]
+                                                  ["8"] +
+                                              data.data["Disease"] +
+                                              DemoLocalizations.of(context)
+                                                      .vals["DiseaseDetection"]
+                                                  ["9"] +
+                                              " https://play.google.com/store/apps/details?id=com.jaikrishi.appjaikrishi",
+                                          sharePositionOrigin:
+                                              box.localToGlobal(Offset.zero) &
+                                                  box.size);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          ]);
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  })));
+    }
+>>>>>>> c6f9db8ba06e6180f5f78d30a7f48dc19186643b
 
     return Container(
       //padding: EdgeInsets.all(30),
