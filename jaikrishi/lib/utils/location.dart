@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/models/weather_model.dart';
 import 'package:leaf_problem_detection/screens/home/profile.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/widgets/card.dart';
@@ -69,7 +70,7 @@ Widget showLocData(BuildContext context) {
     return Row(
       children: [
         Text(
-          DemoLocalizations.of(context).vals["FirstPage"]["7"],
+          texts["FirstPage"]["7"],
           style: TextStyle(
             color: Colors.black54,
             fontWeight: FontWeight.w500,
@@ -93,7 +94,7 @@ Widget showLocData(BuildContext context) {
     child: Wrap(
       children: [
         Text(
-          DemoLocalizations.of(context).vals["FirstPage"]["7"],
+          texts["FirstPage"]["7"],
           style: TextStyle(
             color: Colors.black54,
             fontWeight: FontWeight.w500,
@@ -181,7 +182,7 @@ Widget usingWeatherData(BuildContext context) {
           Wrap(
             children: [
               Text(
-                DemoLocalizations.of(context).vals["FirstPage"]["1"],
+                texts["FirstPage"]["1"],
                 style: TextStyle(
                   color: Colors.black54,
                   fontWeight: FontWeight.w500,
@@ -202,7 +203,7 @@ Widget usingWeatherData(BuildContext context) {
           Wrap(
             children: [
               Text(
-                DemoLocalizations.of(context).vals["FirstPage"]["2"],
+                texts["FirstPage"]["2"],
                 style: TextStyle(
                   color: Colors.black54,
                   fontWeight: FontWeight.w500,
@@ -248,13 +249,13 @@ class _locNotEnabled extends State<locNotEnabled> {
       children: [
         Center(
           child: Text(
-            DemoLocalizations.of(context).vals["FirstPage"]["8"],
+            texts["FirstPage"]["8"],
             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 17),
           ),
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text(DemoLocalizations.of(context).vals["error"]["loc"]),
+          title: Text(texts["error"]["loc"]),
           trailing: CupertinoSwitch(
             value: switchState,
             activeColor: Color.fromRGBO(24, 165, 123, 1),

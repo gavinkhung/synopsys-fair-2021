@@ -14,6 +14,7 @@ import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/models/weather_model.dart';
 import 'package:leaf_problem_detection/screens/authentication/auth.dart';
 import 'package:leaf_problem_detection/screens/home/home.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'package:leaf_problem_detection/utils/files.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/utils/location.dart';
@@ -62,7 +63,7 @@ Future<FirebaseUser> getCurrUser() async {
   return await _auth.currentUser();
 }
 
-Future pickLang(BuildContext cont, String uid) {
+Future pickLangNO(BuildContext cont, String uid) {
   //create field variable: int selectedIndex = 0;
   return showModalBottomSheet(
     shape: RoundedRectangleBorder(
@@ -120,9 +121,9 @@ Future pickLang(BuildContext cont, String uid) {
                         ListTile(
                           contentPadding: EdgeInsets.symmetric(horizontal: 30),
                           onTap: () async {
-                            DemoLocalizations.of(context).locale =
-                                new Locale("hi");
-                            DemoLocalizations.of(context).setVals();
+                            // DemoLocalizations.of(context).locale =
+                            //     new Locale("hi");
+                            // DemoLocalizations.of(context).setVals();
                             String url = await getUrl();
                             Provider.of<UserModel>(cont, listen: false).data =
                                 await loadJson(url, cont, "hi");
@@ -146,9 +147,9 @@ Future pickLang(BuildContext cont, String uid) {
                         ListTile(
                           contentPadding: EdgeInsets.symmetric(horizontal: 30),
                           onTap: () async {
-                            DemoLocalizations.of(context).locale =
-                                new Locale("en");
-                            DemoLocalizations.of(context).setVals();
+                            // DemoLocalizations.of(context).locale =
+                            //     new Locale("en");
+                            // DemoLocalizations.of(context).setVals();
                             String url = await getUrl();
                             Provider.of<UserModel>(cont, listen: false).data =
                                 await loadJson(url, cont, "en");
@@ -207,19 +208,11 @@ StreamBuilder autoLogin(BuildContext cont) {
               if (data.hasData) {
                 Provider.of<UserModel>(context, listen: false).url =
                     data.data.first;
-                DemoLocalizations.of(cont).firstSet(data.data.first);
+                // DemoLocalizations.of(cont).firstSet(data.data.first);
                 Provider.of<UserModel>(context, listen: false).tutLink =
                     data.data.last;
                 justSignedUp = true;
-                return FutureBuilder(
-                    future: DemoLocalizations.of(cont).setVals(),
-                    builder: (context, data) {
-                      if (data.hasData) {
-                        return Auth(false, false);
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    });
+                return Auth(false, false);
               } else {
                 return CircularProgressIndicator();
               }
@@ -233,19 +226,7 @@ StreamBuilder autoLogin(BuildContext cont) {
               future: setVals(cont, user),
               builder: (context, data) {
                 if (data.hasData) {
-                  return FutureBuilder(
-                      future: getData(user.uid),
-                      builder: (context, data) {
-                        if (data.hasData) {
-                          DemoLocalizations.of(cont).locale = new Locale(
-                              data.data["lang"] != null
-                                  ? data.data["lang"]
-                                  : "hi");
-                          return Home();
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      });
+                  return Home();
                 } else {
                   analytics.logEvent(name: "set_vals_failed");
                   return CircularProgressIndicator();
@@ -361,8 +342,7 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
     } catch (e) {
       print(e.toString());
       analytics.logEvent(name: "geocoder_failed");
-      userModel.address =
-          DemoLocalizations.of(context).vals["error"]["Address"];
+      userModel.address = texts["error"]["Address"];
     }
     setWeatherData(
         user.uid,
@@ -373,8 +353,8 @@ Future<bool> setVals(BuildContext context, FirebaseUser user) async {
   String lang = null;
   try {
     lang = data.data["lang"];
-    DemoLocalizations.of(context).locale = new Locale(lang);
-    DemoLocalizations.of(context).setVals();
+    // DemoLocalizations.of(context).locale = new Locale(lang);
+    // DemoLocalizations.of(context).setVals();
   } catch (e) {
     print(e.toString());
   }
@@ -510,11 +490,10 @@ List<Widget> getText(BuildContext context, String text) {
   for (int i = 0; i < steps.length; i++) {
     if (steps[i].substring(0, steps[i].indexOf(":")).trim() == "\'Days\'") {
       String days = steps[i].substring(steps[i].indexOf(":") + 1);
-      stepWidgets.add(new Text(DemoLocalizations.of(context).vals["History"]
-              ["based"] +
+      stepWidgets.add(new Text(texts["History"]["based"] +
           days.toString() +
-          DemoLocalizations.of(context).vals["History"]["days"] +
-          DemoLocalizations.of(context).vals["History"]["recomend"]));
+          texts["History"]["days"] +
+          texts["History"]["recomend"]));
       continue;
     }
   }
@@ -552,9 +531,7 @@ FutureBuilder showUsername(String uid, TextEditingController controller) {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintMaxLines: 1,
-                hintText: controller.text == ""
-                    ? DemoLocalizations.of(context).vals["FirstPage"]["14"]
-                    : "",
+                hintText: controller.text == "" ? texts["FirstPage"]["14"] : "",
               ),
               style: TextStyle(
                   fontSize: MediaQuery.of(context).size.height < 600 ? 20 : 30,

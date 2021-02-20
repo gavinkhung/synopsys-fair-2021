@@ -27,7 +27,7 @@ class _Home extends State<Home> {
   // setUpLang() async {
   //   String path = _url.toString() +
   //       "/diseases?loc=" +
-  //       DemoLocalizations.of(context).locale.languageCode +
+  //       "en" +
   //       "&uid=" +
   //       _username.toString();
   //   var request = await http.post(path);
