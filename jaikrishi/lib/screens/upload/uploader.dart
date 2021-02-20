@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/screens/upload/upload.dart';
+import 'package:leaf_problem_detection/text.dart';
 
 import 'package:leaf_problem_detection/utils/files.dart';
 import 'package:leaf_problem_detection/utils/imageProcessing.dart';
@@ -34,7 +35,7 @@ class _UploaderState extends State<Uploader> {
         color: Color.fromRGBO(24, 165, 123, 1),
       ),
       label: Text(
-        DemoLocalizations.of(context).vals["DetectRice"]["1"],
+        texts["DetectRice"]["1"],
         style: TextStyle(color: Color.fromRGBO(24, 165, 123, 1), fontSize: 17),
       ),
       onPressed: () async {

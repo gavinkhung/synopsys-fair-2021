@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/screens/onboard/onboard.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/utils/location.dart';
@@ -40,14 +41,14 @@ class _Auth extends State<Auth> {
           LatLng(value.latitude, value.longitude);
     });
     super.initState();
-    if (!check) {
-      Future.delayed(Duration.zero, () {
-        pickLang(context, "").then((value) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => Auth(false, true)));
-        });
-      });
-    }
+    // if (!check) {
+    //   Future.delayed(Duration.zero, () {
+    //     pickLang(context, "").then((value) {
+    //       Navigator.push(context,
+    //           MaterialPageRoute(builder: (context) => Auth(false, true)));
+    //     });
+    //   });
+    // }
   }
 
   @override
@@ -62,8 +63,8 @@ class _Auth extends State<Auth> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: DemoLocalizations.of(context).vals["SignUp"]["4"],
-          content: DemoLocalizations.of(context).vals["SignUp"]["6"],
+          title: texts["SignUp"]["4"],
+          content: texts["SignUp"]["6"],
           actions: <Widget>[
             FloatingActionButton(
               child: Icon(Icons.close),
@@ -169,8 +170,7 @@ class _Auth extends State<Auth> {
                                         ),
                                         Expanded(
                                           child: AutoSizeText(
-                                            DemoLocalizations.of(context)
-                                                .vals["SignUp"]["1"],
+                                            texts["SignUp"]["1"],
                                             style: TextStyle(
                                                 fontSize: 100, color: myGreen),
                                             maxLines: 1,
@@ -189,8 +189,7 @@ class _Auth extends State<Auth> {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         field(
-                                          DemoLocalizations.of(context)
-                                              .vals["SignUp"]["2"],
+                                          texts["SignUp"]["2"],
                                           TextInputType.phone,
                                         ),
                                         SizedBox(
@@ -219,16 +218,10 @@ class _Auth extends State<Auth> {
                                                         (BuildContext context) {
                                                       return AlertDialog(
                                                         title: Text(
-                                                          DemoLocalizations.of(
-                                                                      context)
-                                                                  .vals[
-                                                              "SignUp"]["4"],
+                                                          texts["SignUp"]["4"],
                                                         ),
                                                         content: Text(
-                                                          DemoLocalizations.of(
-                                                                      context)
-                                                                  .vals[
-                                                              "SignUp"]["5"],
+                                                          texts["SignUp"]["5"],
                                                         ),
                                                         actions: <Widget>[
                                                           FloatingActionButton(
@@ -253,8 +246,7 @@ class _Auth extends State<Auth> {
                                             color: myGreen,
                                             child: Center(
                                               child: AutoSizeText(
-                                                DemoLocalizations.of(context)
-                                                    .vals["SignUp"]["3"],
+                                                texts["SignUp"]["3"],
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 50,
@@ -350,7 +342,9 @@ class _Auth extends State<Auth> {
                     focusColor: myGreen,
                     hintText: type == TextInputType.phone
                         ? "0123456789"
-                        : type == TextInputType.text ? "JohnDoe" : "",
+                        : type == TextInputType.text
+                            ? "JohnDoe"
+                            : "",
                     hoverColor: myGreen,
                     counterStyle: TextStyle(color: myGreen),
                   ),
@@ -366,7 +360,9 @@ class _Auth extends State<Auth> {
                   style: new TextStyle(fontFamily: "Poppins", color: myGreen),
                   obscureText: type == TextInputType.phone
                       ? false
-                      : type == TextInputType.text ? false : true,
+                      : type == TextInputType.text
+                          ? false
+                          : true,
                 ),
               ],
             ),
@@ -382,8 +378,8 @@ class _Auth extends State<Auth> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(DemoLocalizations.of(context).vals["SignUp"]["8"]),
-            content: Text(DemoLocalizations.of(context).vals["SignUp"]["7"]),
+            title: Text(texts["SignUp"]["8"]),
+            content: Text(texts["SignUp"]["7"]),
             actions: <Widget>[
               FloatingActionButton(
                 child: Icon(Icons.close),
@@ -404,8 +400,8 @@ class _Auth extends State<Auth> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text(DemoLocalizations.of(context).vals["SignUp"]["4"]),
-              content: Text(DemoLocalizations.of(context).vals["SignUp"]["8"]),
+              title: Text(texts["SignUp"]["4"]),
+              content: Text(texts["SignUp"]["8"]),
               actions: <Widget>[
                 FloatingActionButton(
                   child: Icon(Icons.close),
@@ -420,7 +416,7 @@ class _Auth extends State<Auth> {
     } else {
       Map<String, dynamic> map = {
         'phone': this.phoneController.text,
-        'lang': DemoLocalizations.of(context).locale.languageCode
+        'lang': "en"
       };
       Provider.of<UserModel>(context, listen: false).uid = uid;
       setData(map, 0, context);

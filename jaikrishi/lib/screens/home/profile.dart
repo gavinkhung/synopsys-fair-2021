@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/models/weather_model.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/utils/location.dart';
@@ -55,11 +56,11 @@ class _profile extends State<profile> {
 
   String getVariety(String type, BuildContext context) {
     if (type == "Short") {
-      return DemoLocalizations.of(context).vals['VarietyLocation']['12'];
+      return texts['VarietyLocation']['12'];
     } else if (type == "Medium") {
-      return DemoLocalizations.of(context).vals['VarietyLocation']['13'];
+      return texts['VarietyLocation']['13'];
     } else if (type == "Long") {
-      return DemoLocalizations.of(context).vals['VarietyLocation']['14'];
+      return texts['VarietyLocation']['14'];
     }
   }
 
@@ -89,27 +90,12 @@ class _profile extends State<profile> {
                         Builder(
                           builder: (BuildContext context) {
                             return Center(
-                              child: Material(
-                                color: Color.fromRGBO(196, 243, 220, 1),
-                                child: FlatButton.icon(
-                                  label: Text(DemoLocalizations.of(context)
-                                      .vals["FirstPage"]["15"]),
-                                  padding: EdgeInsets.only(left: 3),
-                                  icon: Icon(Icons.language),
-                                  onPressed: () async {
-                                    await pickLang(
-                                        context,
-                                        Provider.of<UserModel>(context,
-                                                listen: false)
-                                            .uid);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => profile(),
-                                      ),
-                                    );
-                                  },
-                                ),
+                              child: FlatButton.icon(
+                                padding: EdgeInsets.zero,
+                                icon: Icon(Icons.share,
+                                    color: Colors.transparent),
+                                label: Text(""),
+                                onPressed: () {},
                               ),
                             );
                           },
@@ -118,8 +104,7 @@ class _profile extends State<profile> {
                           child: Container(
                               child: Center(
                             child: AutoSizeText(
-                              DemoLocalizations.of(context).vals["FirstPage"]
-                                  ["10"],
+                              texts["FirstPage"]["10"],
                               maxLines: 1,
                               maxFontSize: 25,
                               style: TextStyle(color: myGreen, fontSize: 100),
@@ -132,14 +117,11 @@ class _profile extends State<profile> {
                               child: FlatButton.icon(
                                 padding: EdgeInsets.zero,
                                 icon: Icon(Icons.share),
-                                label: Text(DemoLocalizations.of(context)
-                                    .vals["DiseaseDetection"]["10"]),
+                                label: Text(texts["DiseaseDetection"]["10"]),
                                 onPressed: () {
                                   final RenderBox box =
                                       context.findRenderObject();
-                                  Share.share(
-                                      DemoLocalizations.of(context)
-                                          .vals["FirstPage"]["9"],
+                                  Share.share(texts["FirstPage"]["9"],
                                       sharePositionOrigin:
                                           box.localToGlobal(Offset.zero) &
                                               box.size);
@@ -242,8 +224,8 @@ class _profile extends State<profile> {
                 children: [
                   Text(
                     crop == "Rice"
-                        ? DemoLocalizations.of(context).vals["FirstPage"]["3"]
-                        : DemoLocalizations.of(context).vals["FirstPage"]["3"],
+                        ? texts["FirstPage"]["3"]
+                        : texts["FirstPage"]["3"],
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.black54,
@@ -276,7 +258,7 @@ class _profile extends State<profile> {
             ? Row(
                 children: [
                   Text(
-                    DemoLocalizations.of(context).vals["FirstPage"]["4"],
+                    texts["FirstPage"]["4"],
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.black,
@@ -299,7 +281,7 @@ class _profile extends State<profile> {
             : Row(
                 children: [
                   Text(
-                    DemoLocalizations.of(context).vals["FirstPage"]["4"],
+                    texts["FirstPage"]["4"],
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.black,
@@ -323,7 +305,7 @@ class _profile extends State<profile> {
             ? Wrap(
                 children: [
                   Text(
-                    DemoLocalizations.of(context).vals["FirstPage"]["5"],
+                    texts["FirstPage"]["5"],
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.black,
@@ -346,7 +328,7 @@ class _profile extends State<profile> {
             : Wrap(
                 children: [
                   Text(
-                    DemoLocalizations.of(context).vals["FirstPage"]["5"],
+                    texts["FirstPage"]["5"],
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.black,
@@ -370,7 +352,7 @@ class _profile extends State<profile> {
             ? Wrap(
                 children: [
                   Text(
-                    DemoLocalizations.of(context).vals["FirstPage"]["6"],
+                    texts["FirstPage"]["6"],
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.black,
@@ -393,7 +375,7 @@ class _profile extends State<profile> {
             : Wrap(
                 children: [
                   Text(
-                    DemoLocalizations.of(context).vals["FirstPage"]["6"],
+                    texts["FirstPage"]["6"],
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.black,
@@ -427,11 +409,11 @@ class _profile extends State<profile> {
         showCupertinoModalPopup(
           context: context,
           builder: (BuildContext context) => CupertinoActionSheet(
-            title: Text(DemoLocalizations.of(context).vals["edit"]["question"]),
-            message: Text(DemoLocalizations.of(context).vals["edit"]["select"]),
+            title: Text(texts["edit"]["question"]),
+            message: Text(texts["edit"]["select"]),
             actions: <Widget>[
               CupertinoActionSheetAction(
-                child: Text(DemoLocalizations.of(context).vals["edit"]["crop"]),
+                child: Text(texts["edit"]["crop"]),
                 onPressed: () async {
                   setState(() {
                     Navigator.pop(
@@ -442,7 +424,7 @@ class _profile extends State<profile> {
                 },
               ),
               CupertinoActionSheetAction(
-                child: Text(DemoLocalizations.of(context).vals["edit"]["seed"]),
+                child: Text(texts["edit"]["seed"]),
                 onPressed: () async {
                   setState(() {
                     Navigator.pop(
@@ -453,8 +435,7 @@ class _profile extends State<profile> {
                 },
               ),
               CupertinoActionSheetAction(
-                child:
-                    Text(DemoLocalizations.of(context).vals["edit"]["trans"]),
+                child: Text(texts["edit"]["trans"]),
                 onPressed: () async {
                   setState(() {
                     Navigator.pop(
@@ -465,8 +446,7 @@ class _profile extends State<profile> {
                 },
               ),
               CupertinoActionSheetAction(
-                child:
-                    Text(DemoLocalizations.of(context).vals["edit"]["variety"]),
+                child: Text(texts["edit"]["variety"]),
                 onPressed: () async {
                   setState(() {
                     Navigator.pop(
@@ -477,7 +457,7 @@ class _profile extends State<profile> {
                 },
               ),
               CupertinoActionSheetAction(
-                child: Text(DemoLocalizations.of(context).vals["edit"]["loc"]),
+                child: Text(texts["edit"]["loc"]),
                 onPressed: () async {
                   setState(() {
                     Navigator.pop(
@@ -498,14 +478,11 @@ class _profile extends State<profile> {
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
-        title:
-            Text(DemoLocalizations.of(context).vals["WelcometoJaikrishi"]["6"]),
-        message:
-            Text(DemoLocalizations.of(context).vals["WelcometoJaikrishi"]["7"]),
+        title: Text(texts["WelcometoJaikrishi"]["6"]),
+        message: Text(texts["WelcometoJaikrishi"]["7"]),
         actions: <Widget>[
           CupertinoActionSheetAction(
-            child: Text(
-                DemoLocalizations.of(context).vals["WelcometoJaikrishi"]["8"]),
+            child: Text(texts["WelcometoJaikrishi"]["8"]),
             onPressed: () async {
               Map<String, dynamic> map = {"crop": "Rice"};
               Provider.of<UserModel>(mainContext, listen: false).crop = "Rice";
@@ -584,14 +561,11 @@ class _profile extends State<profile> {
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
-        title:
-            Text(DemoLocalizations.of(context).vals["VarietyLocation"]["10"]),
-        message:
-            Text(DemoLocalizations.of(context).vals["VarietyLocation"]["11"]),
+        title: Text(texts["VarietyLocation"]["10"]),
+        message: Text(texts["VarietyLocation"]["11"]),
         actions: <Widget>[
           CupertinoActionSheetAction(
-            child: Text(
-                DemoLocalizations.of(context).vals["VarietyLocation"]["12"]),
+            child: Text(texts["VarietyLocation"]["12"]),
             onPressed: () {
               setState(() {
                 Map<String, dynamic> map = {"type": 1};
@@ -611,8 +585,7 @@ class _profile extends State<profile> {
             },
           ),
           CupertinoActionSheetAction(
-            child: Text(
-                DemoLocalizations.of(context).vals["VarietyLocation"]["13"]),
+            child: Text(texts["VarietyLocation"]["13"]),
             onPressed: () {
               setState(() {
                 Map<String, dynamic> map = {"type": 2};
@@ -632,8 +605,7 @@ class _profile extends State<profile> {
             },
           ),
           CupertinoActionSheetAction(
-            child: Text(
-                DemoLocalizations.of(context).vals["VarietyLocation"]["14"]),
+            child: Text(texts["VarietyLocation"]["14"]),
             onPressed: () {
               setState(() {
                 Map<String, dynamic> map = {"type": 3};
@@ -662,10 +634,14 @@ class _profile extends State<profile> {
     _markers.add(new Marker(
       // This marker id can be anything that uniquely identifies each marker.
       markerId: MarkerId("hiya"),
-      position: currLoc != null ? currLoc : userLoc != null ? userLoc : _center,
+      position: currLoc != null
+          ? currLoc
+          : userLoc != null
+              ? userLoc
+              : _center,
       infoWindow: InfoWindow(
-        title: DemoLocalizations.of(context).vals["VarietyLocation"]["15"],
-        snippet: DemoLocalizations.of(context).vals["VarietyLocation"]["16"],
+        title: texts["VarietyLocation"]["15"],
+        snippet: texts["VarietyLocation"]["16"],
       ),
       draggable: true,
       onDragEnd: (latlang) {
@@ -730,8 +706,7 @@ class _profile extends State<profile> {
               color: Color.fromRGBO(24, 165, 123, 1),
             ),
           ),
-          title:
-              Text(DemoLocalizations.of(context).vals["VarietyLocation"]["6"]),
+          title: Text(texts["VarietyLocation"]["6"]),
           message: Container(
             child: Column(
               children: [
@@ -746,7 +721,9 @@ class _profile extends State<profile> {
                       initialCameraPosition: CameraPosition(
                         target: currLoc != null
                             ? currLoc
-                            : userLoc != null ? userLoc : _center,
+                            : userLoc != null
+                                ? userLoc
+                                : _center,
                         zoom: 5.0,
                       ),
                       rotateGesturesEnabled: true,

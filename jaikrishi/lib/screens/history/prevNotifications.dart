@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'dart:async';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
@@ -39,31 +40,27 @@ class _notifications extends State<Notifications> {
       // print(docs[0].data["steps"] == docs[1].data["steps"]);
       for (var i in docs) {
         // print(widgets);
-        // print(i.data["steps"][DemoLocalizations.of(context).locale.languageCode]
+        // print(i.data["steps"]["en"]
         //     .toString());
         DateTime dt = DateTime.parse(i["time"] + "Z").toLocal();
         String link = "";
 
         try {
           // print(i.data["steps"]);
-          // print(DemoLocalizations.of(context).locale.languageCode);
+          // print("en");
           // print(i.data["steps"]["en"]);
           // print(i.data["steps"]["hi"]);
           // print(i.data["steps"]
-          // [DemoLocalizations.of(context).locale.languageCode]);
-          if (i["steps"] != null &&
-              i["steps"][DemoLocalizations.of(context).locale.languageCode][0]
-                      ["Link"] !=
-                  "") {
-            link = i["steps"][DemoLocalizations.of(context).locale.languageCode]
-                [0]["Link"];
+          // ["en"]);
+          if (i["steps"] != null && i["steps"]["en"][0]["Link"] != "") {
+            link = i["steps"]["en"][0]["Link"];
           } else if (i["data"] != null && i["data"]["Link"] != null)
             link = i["data"]["Link"];
         } catch (e, st) {
           print(e.toString());
           analytics.logEvent(name: "old_notif_error");
           // print(i.data["steps"]
-          //         [DemoLocalizations.of(context).locale.languageCode]
+          //         ["en"]
           //     .toString());
           // if (i["steps"] != null && i["steps"][0]["Link"] != "")
           //   link = i["steps"][0]["Link"];
@@ -103,10 +100,8 @@ class _notifications extends State<Notifications> {
         }
       }
       if (widgets.length == 0) {
-        widgets.add(card(
-            context,
-            Text(DemoLocalizations.of(context).vals["prevNotifications"]
-                ["noNotifications"])));
+        widgets.add(
+            card(context, Text(texts["prevNotifications"]["noNotifications"])));
       }
       return widgets;
     } catch (e) {
@@ -141,9 +136,7 @@ class _notifications extends State<Notifications> {
                   ),
                   Expanded(
                       child: Center(
-                          child: Text(
-                              DemoLocalizations.of(context)
-                                  .vals["prevNotifications"]["warning"],
+                          child: Text(texts["prevNotifications"]["warning"],
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600))))

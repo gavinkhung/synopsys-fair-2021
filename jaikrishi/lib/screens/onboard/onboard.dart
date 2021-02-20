@@ -8,13 +8,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/screens/home/home.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:location/location.dart' as loc;
 import 'package:provider/provider.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'dart:async';
 
 import '../../main.dart';
@@ -58,24 +59,24 @@ class _Onboard extends State<Onboard> {
     // getLocation().then((_locationData) {
     //   userLoc = new LatLng(_locationData.latitude, _locationData.longitude);
     // });
-    _youtubePlayerController = YoutubePlayerController(
-      flags: YoutubePlayerFlags(
-        autoPlay: true,
-        mute: false,
-      ),
-      initialVideoId: YoutubePlayer.convertUrlToId(
-          Provider.of<UserModel>(context, listen: false).tutLink),
-    );
+    // _youtubePlayerController = YoutubePlayerController(
+    //   flags: YoutubePlayerFlags(
+    //     autoPlay: true,
+    //     mute: false,
+    //   ),
+    //   initialVideoId: YoutubePlayer.convertUrlToId(
+    //       Provider.of<UserModel>(context, listen: false).tutLink),
+    // );
   }
 
   @override
   void dispose() {
-    _youtubePlayerController.dispose();
+    //_youtubePlayerController.dispose();
     super.dispose();
   }
 
   Completer<GoogleMapController> _controller = Completer();
-  YoutubePlayerController _youtubePlayerController;
+  // YoutubePlayerController _youtubePlayerController;
 
   static LatLng _center = LatLng(20.0, 79.0);
   final PermissionHandler _permissionHandler = PermissionHandler();
@@ -121,7 +122,7 @@ class _Onboard extends State<Onboard> {
         bodyWidget: Column(
           children: [
             // AutoSizeText(
-            //   DemoLocalizations.of(context).vals["WelcometoJaikrishi"]["1"],
+            //   texts["WelcometoJaikrishi"]["1"],
             //   maxLines: 1,
             //   textAlign: TextAlign.center,
             //   style: TextStyle(
@@ -134,7 +135,7 @@ class _Onboard extends State<Onboard> {
             // Container(
             //   padding: EdgeInsets.symmetric(horizontal: 50),
             //   child: AutoSizeText(
-            //     DemoLocalizations.of(context).vals["WelcometoJaikrishi"]["2"],
+            //     texts["WelcometoJaikrishi"]["2"],
             //     textAlign: TextAlign.center,
             //     maxLines: 5,
             //     style:
@@ -142,7 +143,7 @@ class _Onboard extends State<Onboard> {
             //   ),
             // ),
             AutoSizeText(
-              DemoLocalizations.of(context).vals["Instructions"]["1"],
+              texts["Instructions"]["1"],
               maxLines: 1,
               style: TextStyle(
                 color: Colors.white,
@@ -150,14 +151,14 @@ class _Onboard extends State<Onboard> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: YoutubePlayer(
-                controller: _youtubePlayerController,
-                showVideoProgressIndicator: false,
-              ),
-            ),
+            // SizedBox(height: 10),
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 15),
+            //   child: YoutubePlayer(
+            //     controller: _youtubePlayerController,
+            //     showVideoProgressIndicator: false,
+            //   ),
+            // ),
 
             SizedBox(height: 20),
             Container(
@@ -173,14 +174,11 @@ class _Onboard extends State<Onboard> {
                     showCupertinoModalPopup(
                       context: context,
                       builder: (BuildContext context) => CupertinoActionSheet(
-                        title: Text(DemoLocalizations.of(context)
-                            .vals["WelcometoJaikrishi"]["6"]),
-                        message: Text(DemoLocalizations.of(context)
-                            .vals["WelcometoJaikrishi"]["7"]),
+                        title: Text(texts["WelcometoJaikrishi"]["6"]),
+                        message: Text(texts["WelcometoJaikrishi"]["7"]),
                         actions: <Widget>[
                           CupertinoActionSheetAction(
-                            child: Text(DemoLocalizations.of(context)
-                                .vals["WelcometoJaikrishi"]["8"]),
+                            child: Text(texts["WelcometoJaikrishi"]["8"]),
                             onPressed: () async {
                               setState(() {
                                 _crop = "Rice";
@@ -197,10 +195,8 @@ class _Onboard extends State<Onboard> {
                   child: Center(
                     child: AutoSizeText(
                       _crop == "Rice"
-                          ? DemoLocalizations.of(context)
-                              .vals["WelcometoJaikrishi"]["8"]
-                          : DemoLocalizations.of(context)
-                              .vals["WelcometoJaikrishi"]["3"],
+                          ? texts["WelcometoJaikrishi"]["8"]
+                          : texts["WelcometoJaikrishi"]["3"],
                       maxFontSize: 20,
                       style: TextStyle(
                           color: Colors.white,
@@ -230,8 +226,7 @@ class _Onboard extends State<Onboard> {
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               children: [
-                AutoSizeText(
-                    DemoLocalizations.of(context).vals["SeedingLocation"]["1"],
+                AutoSizeText(texts["SeedingLocation"]["1"],
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -241,7 +236,7 @@ class _Onboard extends State<Onboard> {
                     )),
                 SizedBox(height: 10),
                 AutoSizeText(
-                  DemoLocalizations.of(context).vals["SeedingLocation"]["2"],
+                  texts["SeedingLocation"]["2"],
                   textAlign: TextAlign.center,
                   maxLines: 3,
                   style: TextStyle(
@@ -277,8 +272,7 @@ class _Onboard extends State<Onboard> {
                     child: Center(
                       child: AutoSizeText(
                         _seedingDate == null
-                            ? DemoLocalizations.of(context)
-                                .vals["SeedingLocation"]["3"]
+                            ? texts["SeedingLocation"]["3"]
                             : _seedingDate.toString().substring(
                                 0, _seedingDate.toString().indexOf(" ")),
                         maxFontSize: 20,
@@ -317,8 +311,7 @@ class _Onboard extends State<Onboard> {
                     child: Center(
                       child: AutoSizeText(
                         _transplantingDate == null
-                            ? DemoLocalizations.of(context)
-                                .vals["SeedingLocation"]["4"]
+                            ? texts["SeedingLocation"]["4"]
                             : _transplantingDate.toString().substring(
                                 0, _seedingDate.toString().indexOf(" ")),
                         maxFontSize: 20,
@@ -350,7 +343,7 @@ class _Onboard extends State<Onboard> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 child: AutoSizeText(
-                  DemoLocalizations.of(context).vals["VarietyLocation"]["1"],
+                  texts["VarietyLocation"]["1"],
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   style: TextStyle(
@@ -362,7 +355,7 @@ class _Onboard extends State<Onboard> {
               ),
               SizedBox(height: 10),
               Text(
-                DemoLocalizations.of(context).vals["VarietyLocation"]["2"],
+                texts["VarietyLocation"]["2"],
                 textAlign: TextAlign.center,
                 maxLines: 3,
                 style: TextStyle(
@@ -382,14 +375,11 @@ class _Onboard extends State<Onboard> {
                     showCupertinoModalPopup(
                       context: context,
                       builder: (BuildContext context) => CupertinoActionSheet(
-                        title: Text(DemoLocalizations.of(context)
-                            .vals["VarietyLocation"]["10"]),
-                        message: Text(DemoLocalizations.of(context)
-                            .vals["VarietyLocation"]["11"]),
+                        title: Text(texts["VarietyLocation"]["10"]),
+                        message: Text(texts["VarietyLocation"]["11"]),
                         actions: <Widget>[
                           CupertinoActionSheetAction(
-                            child: Text(DemoLocalizations.of(context)
-                                .vals["VarietyLocation"]["12"]),
+                            child: Text(texts["VarietyLocation"]["12"]),
                             onPressed: () {
                               setState(() {
                                 _length = "Short";
@@ -399,8 +389,7 @@ class _Onboard extends State<Onboard> {
                             },
                           ),
                           CupertinoActionSheetAction(
-                            child: Text(DemoLocalizations.of(context)
-                                .vals["VarietyLocation"]["13"]),
+                            child: Text(texts["VarietyLocation"]["13"]),
                             onPressed: () {
                               setState(() {
                                 _length = "Medium";
@@ -410,8 +399,7 @@ class _Onboard extends State<Onboard> {
                             },
                           ),
                           CupertinoActionSheetAction(
-                            child: Text(DemoLocalizations.of(context)
-                                .vals["VarietyLocation"]["14"]),
+                            child: Text(texts["VarietyLocation"]["14"]),
                             onPressed: () {
                               setState(() {
                                 _length = "Long";
@@ -429,16 +417,12 @@ class _Onboard extends State<Onboard> {
                   child: Center(
                     child: AutoSizeText(
                       _length == "Short"
-                          ? DemoLocalizations.of(context)
-                              .vals["VarietyLocation"]["12"]
+                          ? texts["VarietyLocation"]["12"]
                           : _length == "Medium"
-                              ? DemoLocalizations.of(context)
-                                  .vals["VarietyLocation"]["13"]
+                              ? texts["VarietyLocation"]["13"]
                               : _length == "Long"
-                                  ? DemoLocalizations.of(context)
-                                      .vals["VarietyLocation"]["14"]
-                                  : DemoLocalizations.of(context)
-                                      .vals["VarietyLocation"]["3"],
+                                  ? texts["VarietyLocation"]["14"]
+                                  : texts["VarietyLocation"]["3"],
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 19,
@@ -453,7 +437,7 @@ class _Onboard extends State<Onboard> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Center(
                   child: AutoSizeText(
-                    DemoLocalizations.of(context).vals["VarietyLocation"]["7"],
+                    texts["VarietyLocation"]["7"],
                     style: TextStyle(color: Colors.white, fontSize: 1000),
                     maxLines: 1,
                   ),
@@ -473,12 +457,12 @@ class _Onboard extends State<Onboard> {
                       markerId: MarkerId("hiya"),
                       position: currLoc != null
                           ? currLoc
-                          : userLoc != null ? userLoc : _center,
+                          : userLoc != null
+                              ? userLoc
+                              : _center,
                       infoWindow: InfoWindow(
-                        title: DemoLocalizations.of(context)
-                            .vals["VarietyLocation"]["15"],
-                        snippet: DemoLocalizations.of(context)
-                            .vals["VarietyLocation"]["16"],
+                        title: texts["VarietyLocation"]["15"],
+                        snippet: texts["VarietyLocation"]["16"],
                       ),
                       draggable: true,
                       onDragEnd: (latlang) {
@@ -501,8 +485,7 @@ class _Onboard extends State<Onboard> {
                               color: Color.fromRGBO(24, 165, 123, 1),
                             ),
                           ),
-                          title: Text(DemoLocalizations.of(context)
-                              .vals["VarietyLocation"]["6"]),
+                          title: Text(texts["VarietyLocation"]["6"]),
                           message: Container(
                             child: Column(
                               children: [
@@ -576,8 +559,7 @@ class _Onboard extends State<Onboard> {
                   child: Center(
                     child: Center(
                       child: AutoSizeText(
-                        DemoLocalizations.of(context).vals["VarietyLocation"]
-                            ["4"],
+                        texts["VarietyLocation"]["4"],
                         maxFontSize: 20,
                         style: TextStyle(
                           color: Colors.white,
@@ -607,10 +589,8 @@ class _Onboard extends State<Onboard> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text(DemoLocalizations.of(context)
-                        .vals["VarietyLocation"]["8"]),
-                    content: Text(DemoLocalizations.of(context)
-                        .vals["VarietyLocation"]["9"]),
+                    title: Text(texts["VarietyLocation"]["8"]),
+                    content: Text(texts["VarietyLocation"]["9"]),
                     actions: <Widget>[
                       FloatingActionButton(
                         child: Icon(Icons.close),
@@ -725,13 +705,13 @@ class _Onboard extends State<Onboard> {
             },
           );
         },
-        done: Text(DemoLocalizations.of(context).vals["VarietyLocation"]["5"],
+        done: Text(texts["VarietyLocation"]["5"],
             style: TextStyle(color: Colors.white, fontSize: 20)),
         showSkipButton: false,
-        skip: Text(DemoLocalizations.of(context).vals["SeedingLocation"]["5"],
+        skip: Text(texts["SeedingLocation"]["5"],
             style: TextStyle(color: Colors.white, fontSize: 20)),
         showNextButton: true,
-        next: Text(DemoLocalizations.of(context).vals["SeedingLocation"]["6"],
+        next: Text(texts["SeedingLocation"]["6"],
             style: TextStyle(color: Colors.white, fontSize: 20)),
         dotsDecorator: DotsDecorator(
             size: const Size.square(10.0),

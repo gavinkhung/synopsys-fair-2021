@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/main.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -126,8 +127,7 @@ class _instructions extends State<Instructions> {
                                   Expanded(
                                     child: Center(
                                       child: data == null
-                                          ? Text(DemoLocalizations.of(context)
-                                              .vals["Instructions"]["2"])
+                                          ? Text(texts["Instructions"]["2"])
                                           : Text(
                                               data["Disease"],
                                               textAlign: TextAlign.center,
@@ -177,8 +177,7 @@ class _instructions extends State<Instructions> {
                           Expanded(
                               child: Center(
                                   child: data == null
-                                      ? Text(DemoLocalizations.of(context)
-                                          .vals["Instructions"]["2"])
+                                      ? Text(texts["Instructions"]["2"])
                                       : Text(data["Disease"],
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
@@ -207,7 +206,7 @@ class _instructions extends State<Instructions> {
             color: Color.fromRGBO(196, 243, 220, 1),
             child: Column(
               children: [
-                Text(DemoLocalizations.of(context).vals["Instructions"]["1"],
+                Text(texts["Instructions"]["1"],
                     textAlign: TextAlign.center,
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),

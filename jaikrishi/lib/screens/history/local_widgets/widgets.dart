@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/imageProcessing.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
@@ -27,7 +28,7 @@ Column jsonPrevDiseaseCard(
       Wrap(
         children: [
           Text(
-            DemoLocalizations.of(context).vals["History"]["detected"],
+            texts["History"]["detected"],
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
           ),
@@ -53,7 +54,7 @@ Column jsonPrevDiseaseCard(
           ? Column(
               children: [
                 Text(
-                  DemoLocalizations.of(context).vals["History"]["work"],
+                  texts["History"]["work"],
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
@@ -113,17 +114,13 @@ Future feedbackResponse(BuildContext context, bool yes) {
       builder: (context) => AlertDialog(
             content: ListTile(
               title: yes
-                  ? Text(DemoLocalizations.of(context).vals["History"]["glad"])
-                  : Text(DemoLocalizations.of(context).vals["History"]["glad"]),
-              subtitle: yes
-                  ? Text("")
-                  : Text(DemoLocalizations.of(context).vals["History"]
-                      ["thankyou"]),
+                  ? Text(texts["History"]["glad"])
+                  : Text(texts["History"]["glad"]),
+              subtitle: yes ? Text("") : Text(texts["History"]["thankyou"]),
             ),
             actions: <Widget>[
               FlatButton(
-                child:
-                    Text(DemoLocalizations.of(context).vals["History"]["ok"]),
+                child: Text(texts["History"]["ok"]),
                 onPressed: () => Navigator.of(context).pop(),
               )
             ],
@@ -137,44 +134,21 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
     String step3 = "";
     String days = "";
     try {
-      notifs["steps"][DemoLocalizations.of(context).locale.languageCode][0]
-                      ["Step 1"] !=
-                  null &&
-              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
-                      [0]["Step 1"] !=
-                  ""
-          ? step1 = "1. " +
-              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
-                  [0]["Step 1"]
+      notifs["steps"]["en"][0]["Step 1"] != null &&
+              notifs["steps"]["en"][0]["Step 1"] != ""
+          ? step1 = "1. " + notifs["steps"]["en"][0]["Step 1"]
           : "";
-      notifs["steps"][DemoLocalizations.of(context).locale.languageCode][0]
-                      ["Step 2"] !=
-                  null &&
-              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
-                      [0]["Step 2"] !=
-                  ""
-          ? step2 = "2. " +
-              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
-                  [0]["Step 2"]
+      notifs["steps"]["en"][0]["Step 2"] != null &&
+              notifs["steps"]["en"][0]["Step 2"] != ""
+          ? step2 = "2. " + notifs["steps"]["en"][0]["Step 2"]
           : "";
-      notifs["steps"][DemoLocalizations.of(context).locale.languageCode][0]
-                      ["Step 3"] !=
-                  null &&
-              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
-                      [0]["Step 3"] !=
-                  ""
-          ? step3 = "3. " +
-              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
-                  [0]["Step 3"]
+      notifs["steps"]["en"][0]["Step 3"] != null &&
+              notifs["steps"]["en"][0]["Step 3"] != ""
+          ? step3 = "3. " + notifs["steps"]["en"][0]["Step 3"]
           : "";
-      notifs["steps"][DemoLocalizations.of(context).locale.languageCode][0]
-                      ["Days"] !=
-                  null &&
-              notifs["steps"][DemoLocalizations.of(context).locale.languageCode]
-                      [0]["Days"] !=
-                  ""
-          ? days = notifs["steps"]
-              [DemoLocalizations.of(context).locale.languageCode][0]["Days"]
+      notifs["steps"]["en"][0]["Days"] != null &&
+              notifs["steps"]["en"][0]["Days"] != ""
+          ? days = notifs["steps"]["en"][0]["Days"]
           : "";
     } catch (e) {
       print(e);
@@ -194,10 +168,10 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
     }
 
     return Column(children: [
-      Text(DemoLocalizations.of(context).vals["History"]["based"].toString() +
+      Text(texts["History"]["based"].toString() +
           days.toString() +
-          DemoLocalizations.of(context).vals["History"]["days"].toString() +
-          DemoLocalizations.of(context).vals["History"]["recomend"].toString()),
+          texts["History"]["days"].toString() +
+          texts["History"]["recomend"].toString()),
       Text(step1),
       Text(step2),
       Text(step3),
@@ -208,14 +182,12 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
               child: FlatButton.icon(
                 padding: EdgeInsets.zero,
                 icon: Icon(Icons.share),
-                label: Text(DemoLocalizations.of(context)
-                    .vals["DiseaseDetection"]["10"]),
+                label: Text(texts["DiseaseDetection"]["10"]),
                 onPressed: () {
                   final RenderBox box = context.findRenderObject();
                   Share.share(
                       "JaiKrishi" +
-                          DemoLocalizations.of(context).vals["History"]
-                              ["warningNotif"] +
+                          texts["History"]["warningNotif"] +
                           step1 +
                           " " +
                           step2 +
@@ -249,9 +221,7 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
       children: [
         Center(
           child: Text(
-              DemoLocalizations.of(context).vals["History"]["highChance"] +
-                  tp +
-                  DemoLocalizations.of(context).vals["History"]["present"],
+              texts["History"]["highChance"] + tp + texts["History"]["present"],
               style: TextStyle(fontSize: 20)),
         ),
         imageType(context, notifs['disease']),
@@ -262,17 +232,14 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
                 child: FlatButton.icon(
                   padding: EdgeInsets.zero,
                   icon: Icon(Icons.share),
-                  label: Text(DemoLocalizations.of(context)
-                      .vals["DiseaseDetection"]["10"]),
+                  label: Text(texts["DiseaseDetection"]["10"]),
                   onPressed: () {
                     final RenderBox box = context.findRenderObject();
                     Share.share(
                         "JaiKrishi" +
-                            DemoLocalizations.of(context).vals["History"]
-                                ["warns"] +
+                            texts["History"]["warns"] +
                             tp +
-                            DemoLocalizations.of(context).vals["History"]
-                                ["warningDisease"],
+                            texts["History"]["warningDisease"],
                         sharePositionOrigin:
                             box.localToGlobal(Offset.zero) & box.size);
                   },
@@ -298,12 +265,9 @@ Widget notifBody(DateTime dt, Map notifs, BuildContext context, bool page) {
       children: [
         Center(
           child: page
-              ? Text(
-                  DemoLocalizations.of(context).vals["History"]["suggestLink"],
+              ? Text(texts["History"]["suggestLink"],
                   style: TextStyle(fontSize: 20))
-              : Text(
-                  DemoLocalizations.of(context).vals["History"]
-                      ["suggestLinkOnPrev"],
+              : Text(texts["History"]["suggestLinkOnPrev"],
                   style: TextStyle(fontSize: 20)),
         )
       ],

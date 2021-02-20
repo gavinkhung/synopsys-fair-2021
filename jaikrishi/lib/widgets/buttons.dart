@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/screens/upload/instructions.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:share/share.dart';
@@ -11,7 +12,7 @@ Widget infoButton(BuildContext context, Map data) {
       color: Color.fromRGBO(24, 165, 123, 1),
     ),
     label: Text(
-      DemoLocalizations.of(context).vals["DetectRice"]["3"],
+      texts["DetectRice"]["3"],
       style: TextStyle(color: Color.fromRGBO(24, 165, 123, 1), fontSize: 20),
     ),
     onPressed: () {
@@ -23,7 +24,7 @@ Widget infoButton(BuildContext context, Map data) {
 
 Widget seeMore(BuildContext context, Widget next) {
   return GestureDetector(
-      child: Text(DemoLocalizations.of(context).vals["History"]["seeMore"],
+      child: Text(texts["History"]["seeMore"],
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.blue,
@@ -41,8 +42,7 @@ Widget shareButton(BuildContext context, String text) {
         child: FlatButton.icon(
           padding: EdgeInsets.zero,
           icon: Icon(Icons.share),
-          label: Text(
-              DemoLocalizations.of(context).vals["DiseaseDetection"]["10"]),
+          label: Text(texts["DiseaseDetection"]["10"]),
           onPressed: () {
             analytics.logShare(contentType: null, itemId: null, method: text);
             final RenderBox box = context.findRenderObject();

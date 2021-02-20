@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'dart:async';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
@@ -64,9 +65,7 @@ class _detection extends State<Detection> {
     if (widgets.length == 0) {
       widgets.add(card(
           context,
-          Text(
-              DemoLocalizations.of(context).vals["prevDetections"]
-                  ["noDetected"],
+          Text(texts["prevDetections"]["noDetected"],
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600))));
     }
@@ -85,10 +84,10 @@ class _detection extends State<Detection> {
           color: Colors.white,
         ),
         label: yes
-            ? Text(DemoLocalizations.of(context).vals["prevDetections"]["yes"],
+            ? Text(texts["prevDetections"]["yes"],
                 style: TextStyle(color: Colors.white, fontSize: 20))
             : Text(
-                DemoLocalizations.of(context).vals["prevDetections"]["no"],
+                texts["prevDetections"]["no"],
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ));
   }
@@ -121,9 +120,7 @@ class _detection extends State<Detection> {
                   ),
                   Expanded(
                       child: Center(
-                          child: Text(
-                              DemoLocalizations.of(context)
-                                  .vals["prevDetections"]["detected"],
+                          child: Text(texts["prevDetections"]["detected"],
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.w600))))

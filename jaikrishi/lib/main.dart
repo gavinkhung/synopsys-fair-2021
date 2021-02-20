@@ -8,10 +8,10 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'models/weather_model.dart';
 import 'models/user_model.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:location/location.dart' as loc;
 
-void main() {
+void main() async {
+  // await signOut();
   runApp(
     MultiProvider(
       providers: [
@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+<<<<<<< HEAD
       localizationsDelegates: [
         const DemoLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
@@ -47,6 +48,18 @@ class MyApp extends StatelessWidget {
         const Locale('en', ''),
         const Locale('hi', ''),
       ],
+=======
+      // localizationsDelegates: [
+      //   const DemoLocalizationsDelegate(),
+      //   GlobalMaterialLocalizations.delegate,
+      //   GlobalWidgetsLocalizations.delegate,
+      //   GlobalCupertinoLocalizations.delegate,
+      // ],
+      // supportedLocales: [
+      //   const Locale('en', ''),
+      //   const Locale('hi', ''),
+      // ],
+>>>>>>> ccfa69c2094a728db8b8e54ff2a62c58f3400350
       home: App(),
       navigatorObservers: getanalyticsNav(context),
       debugShowCheckedModeBanner: false,

@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
 import 'package:leaf_problem_detection/screens/history/prevDetections.dart';
 import 'package:leaf_problem_detection/screens/history/prevNotifications.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:provider/provider.dart';
@@ -392,8 +394,7 @@ class _History extends State<History> {
                               Container(
                                 child: Center(
                                   child: Text(
-                                    DemoLocalizations.of(context)
-                                        .vals["CropStatus"]["1"],
+                                    texts["CropStatus"]["1"],
                                     maxLines: 1,
                                     style: TextStyle(
                                       color: myGreen,
@@ -414,7 +415,7 @@ class _History extends State<History> {
                   ),
                   card(Column(children: [
                     Text(
-                      DemoLocalizations.of(context).vals["History"]["warning"],
+                      texts["History"]["warning"],
                       style: TextStyle(
                           fontSize: MediaQuery.of(context).size.height > 600
                               ? 20
@@ -433,7 +434,7 @@ class _History extends State<History> {
                     child: Column(
                       children: [
                         Text(
-                          DemoLocalizations.of(context).vals["CropStatus"]["8"],
+                          texts["CropStatus"]["8"],
                           // "Previous Disease Detections",
                           style: TextStyle(
                               fontSize: MediaQuery.of(context).size.height > 600
@@ -480,7 +481,7 @@ class _History extends State<History> {
             } else {
               return Center(
                   child: Text(
-                DemoLocalizations.of(context).vals["History"]["noDetect"],
+                texts["History"]["noDetect"],
                 style: TextStyle(fontSize: 17),
               ));
             }
@@ -544,13 +545,10 @@ class _History extends State<History> {
                       yesNoButton(true, id),
                       yesNoButton(false, id),
                       context)
-                  : Text(DemoLocalizations.of(context).vals["History"]
-                      ["haventDetect"]),
+                  : Text(texts["History"]["haventDetect"]),
               count != 0
                   ? GestureDetector(
-                      child: Text(
-                          DemoLocalizations.of(context).vals["History"]
-                              ["seeMore"],
+                      child: Text(texts["History"]["seeMore"],
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.blue,
@@ -579,10 +577,10 @@ class _History extends State<History> {
           color: Colors.white,
         ),
         label: yes
-            ? Text(DemoLocalizations.of(context).vals["prevDetections"]["yes"],
+            ? Text(texts["prevDetections"]["yes"],
                 style: TextStyle(color: Colors.white, fontSize: 20))
             : Text(
-                DemoLocalizations.of(context).vals["prevDetections"]["no"],
+                texts["prevDetections"]["no"],
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ));
   }
@@ -603,8 +601,7 @@ class _History extends State<History> {
             if (notifs.length == 0) {
               return Center(
                   child: Text(
-                DemoLocalizations.of(context).vals["History"]
-                    ["noNotifications"],
+                texts["History"]["noNotifications"],
                 style: TextStyle(
                     fontSize:
                         MediaQuery.of(context).size.height > 600 ? 20 : 15),
@@ -615,9 +612,7 @@ class _History extends State<History> {
               return Column(children: [
                 notifBody(dt, notifs[0].data, context, true),
                 GestureDetector(
-                    child: Text(
-                        DemoLocalizations.of(context).vals["History"]
-                            ["seeMore"],
+                    child: Text(texts["History"]["seeMore"],
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.blue,

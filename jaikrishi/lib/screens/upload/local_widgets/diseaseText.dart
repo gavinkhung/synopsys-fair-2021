@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/widgets/buttons.dart';
 import 'package:provider/provider.dart';
@@ -41,9 +42,9 @@ Widget diseaseText(BuildContext context, String _response) {
         shareButton(
             context,
             "JaiKrishi " +
-                DemoLocalizations.of(context).vals["DiseaseDetection"]["8"] +
+                texts["DiseaseDetection"]["8"] +
                 data["Disease"] +
-                DemoLocalizations.of(context).vals["DiseaseDetection"]["9"] +
+                texts["DiseaseDetection"]["9"] +
                 " www.jaikrishi.com")
       ])));
 }
@@ -54,7 +55,7 @@ Text buildDiseaseReport(BuildContext context, String resp, Map data) {
   }
 
   return Text(
-    DemoLocalizations.of(context).vals["DetectRice"]["2"] + data["Disease"],
+    texts["DetectRice"]["2"] + data["Disease"],
     textAlign: TextAlign.center,
     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
   );

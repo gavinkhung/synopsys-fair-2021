@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:leaf_problem_detection/text.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/widgets/buttons.dart';
@@ -167,8 +168,7 @@ class _Upload extends State<Upload> {
                                 children: [
                                   Center(
                                     child: Text(
-                                      DemoLocalizations.of(context)
-                                          .vals["DiseaseDetection"]["1"],
+                                      texts["DiseaseDetection"]["1"],
                                       maxLines: 1,
                                       style: TextStyle(
                                         color: Color.fromRGBO(24, 165, 123, 1),
@@ -282,13 +282,11 @@ class _Upload extends State<Upload> {
     return showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
-        title:
-            Text(DemoLocalizations.of(context).vals["DiseaseDetection"]["11"]),
-        message:
-            Text(DemoLocalizations.of(context).vals["DiseaseDetection"]["12"]),
+        title: Text(texts["DiseaseDetection"]["11"]),
+        message: Text(texts["DiseaseDetection"]["12"]),
         actions: <Widget>[
           CupertinoActionSheetAction(
-            child: Text(DemoLocalizations.of(context).vals["Crops"]["1"]),
+            child: Text(texts["Crops"]["1"]),
             onPressed: () async {
               File selected;
               check
@@ -297,8 +295,7 @@ class _Upload extends State<Upload> {
               setState(() {
                 _disease = 'rice';
                 Provider.of<UserModel>(context, listen: false).crop = "rice";
-                Navigator.pop(
-                    context, DemoLocalizations.of(context).vals["Crops"]["1"]);
+                Navigator.pop(context, texts["Crops"]["1"]);
 
                 _imageFile = selected;
               });
@@ -314,7 +311,7 @@ class _Upload extends State<Upload> {
       child: Column(
         children: [
           Text(
-            DemoLocalizations.of(context).vals["DiseaseDetection"]["2"],
+            texts["DiseaseDetection"]["2"],
             style: TextStyle(
                 fontSize: MediaQuery.of(context).size.height > 600 ? 20 : 15),
           ),
@@ -339,9 +336,7 @@ class _Upload extends State<Upload> {
                               ? 15
                               : 20)),
                   Flexible(
-                    child: Text(
-                        DemoLocalizations.of(context).vals["DiseaseDetection"]
-                            ["3"],
+                    child: Text(texts["DiseaseDetection"]["3"],
                         style: TextStyle(
                             fontWeight: FontWeight.w300,
                             fontSize: MediaQuery.of(context).size.height < 600
@@ -360,9 +355,7 @@ class _Upload extends State<Upload> {
                               ? 15
                               : 20)),
                   Flexible(
-                    child: Text(
-                        DemoLocalizations.of(context).vals["DiseaseDetection"]
-                            ["4"],
+                    child: Text(texts["DiseaseDetection"]["4"],
                         style: TextStyle(
                             fontWeight: FontWeight.w300,
                             fontSize: MediaQuery.of(context).size.height < 600
@@ -381,9 +374,7 @@ class _Upload extends State<Upload> {
                               ? 15
                               : 20)),
                   Flexible(
-                    child: Text(
-                        DemoLocalizations.of(context).vals["DiseaseDetection"]
-                            ["5"],
+                    child: Text(texts["DiseaseDetection"]["5"],
                         style: TextStyle(
                             fontWeight: FontWeight.w300,
                             fontSize: MediaQuery.of(context).size.height < 600
@@ -431,8 +422,7 @@ class _Upload extends State<Upload> {
                                 cropSelectoin(context, true);
                               }),
                           Text(
-                            DemoLocalizations.of(context)
-                                .vals["DiseaseDetection"]["6"],
+                            texts["DiseaseDetection"]["6"],
                             maxLines: 1,
                             style: TextStyle(
                                 color: Colors.white,
@@ -462,8 +452,7 @@ class _Upload extends State<Upload> {
                                 cropSelectoin(context, false);
                               }),
                           Text(
-                            DemoLocalizations.of(context)
-                                .vals["DiseaseDetection"]["7"],
+                            texts["DiseaseDetection"]["7"],
                             maxLines: 1,
                             style: TextStyle(
                                 color: Colors.white,
