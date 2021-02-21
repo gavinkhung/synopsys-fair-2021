@@ -84,9 +84,9 @@ Future<String> startUploadToAPI(
     'temp': weather.temp,
     'maxTemp': weather.maxTemp,
     'minTemp': weather.minTemp,
-    'seeding': user.seed,
-    'transplant': user.trans,
-    'type': user.type,
+    'seeding': (user.seed.millisecondsSinceEpoch ~/ 1000).toString(),
+    'transplant': (user.trans.millisecondsSinceEpoch ~/ 1000).toString(),
+    'type': user.type.toString(),
     'humidity': weather.humidity,
     'loc': weather.loc.toString()
   });
