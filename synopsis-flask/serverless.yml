@@ -1,0 +1,40 @@
+service: synopsis-flask
+
+provider:
+  name: aws
+  runtime: python3.8
+
+iamRoleStatements:
+  - Effect: 'Allow'
+    Action:
+      - 'cloudformation:DescribeStackResource'
+      - 'sagemaker:InvokeEndpoint'
+    Resource:
+      - '*'
+
+custom:
+  wsgi:
+    app: api.app
+    packRequirements: false
+  pythonRequirements:
+    zip: true
+    dockerizePip: non-linux
+    slim: false
+
+package:
+  exclude:
+    - node_modules/**
+    - __pycache__/**
+    - venv/**
+    - env/**
+
+functions:
+  api:
+    handler: wsgi_handler.handler
+    events:
+      - http: ANY /
+      - http: ANY {proxy+}
+
+plugins:
+  - serverless-wsgi
+  - serverless-python-requirements
