@@ -12,7 +12,7 @@ import numpy as np
 import boto3
 import botocore
 import json
-import matplotlib.pyplot as plt
+import time
 
 from ciede2000 import CIEDE2000
 from batch import get_diseases
@@ -87,14 +87,16 @@ L_LCC5, a_LCC5, b_LCC5 = convertToLAB(LCC5)
 @app.route("/upload", methods=["POST"])
 def upload():
   try:
+    form = request.form.to_dict(flat=False)
     data = {}
-    data["temperature"] = request.json["temp"]  
-    data["dTemp"] = request.json['maxTemp']
-    data["nTemp"] = request.json['minTemp']
-    data["seed"] = int((int(time.time()) - int(request.json['seeding']))/86400)
-    data["trans"] = int((int(time.time()) - int(request.json['transplanting']))/86400)
-    data["type"] = request.json['type']
-    data["humid"] = request.json['humidity']
+
+    data["temperature"] = form["temp"][0]  
+    data["dTemp"] = form['maxTemp'][0]
+    data["nTemp"] = form['minTemp'][0]
+    data["seed"] = int((int(time.time()) - int(form['seeding'][0]))/86400)
+    data["trans"] = int((int(time.time()) - int(form['transplant'][0]))/86400)
+    data["type"] = form['type'][0]
+    data["humid"] = form['humidity'][0]
     
     weather_disease = get_diseases(data)
 
@@ -103,7 +105,7 @@ def upload():
     ENDPOINT_NAME = 'tensorflow-training-2021-02-21-06-42-15-142'
 
     # disease prediction
-    img_str = request.json['img']
+    img_str = form['img'][0]
     img_bytes = base64.b64decode(img_str)
     img = Image.frombytes(mode='RGB', data=img_bytes, size=(10, 10))
 

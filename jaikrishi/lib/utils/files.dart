@@ -78,7 +78,7 @@ Future<String> startUploadToAPI(
   Uint8List bytes = await imgFile.readAsBytes();
   String base64Image = base64Encode(bytes);
   print("img: " + base64Image);
-  var url = 'https://example.com/whatsit/create';
+  var url = 'http://10.0.2.2:5000/upload';
   var response = await http.post(url, body: {
     'img': base64Image,
     'temp': weather.temp,

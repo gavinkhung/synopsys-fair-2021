@@ -294,8 +294,8 @@ class _locNotEnabled extends State<locNotEnabled> {
 }
 
 Future<Map> getWeatherData(String uid, String lat, String long) async {
-  String apiKey = await rootBundle.loadString("data/keys.json");
-  String weatherKey = jsonDecode(apiKey)["weather"];
+  // String apiKey = await rootBundle.loadString("data/keys.json");
+  // String weatherKey = jsonDecode("d0f5b0af2e8edc9e079d4f8e16932b82")["weather"];
   String path = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
       lat.toString().trim() +
       '&lon=' +
