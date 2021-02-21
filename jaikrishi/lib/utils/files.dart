@@ -1,10 +1,17 @@
+import 'dart:ffi';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:leaf_problem_detection/models/user_model.dart';
+import 'package:leaf_problem_detection/models/weather_model.dart';
 import 'package:leaf_problem_detection/utils/firebase.dart';
 import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 Map<String, dynamic> data = null;
 Future<String> localPath() async {
@@ -56,14 +63,37 @@ Future<Map> loadJson(String url, BuildContext context, String lang) async {
   return data[lang];
 }
 
-Future<String> startUploadToAPI(String uid, String path, String url) async {
-  var request = http.MultipartRequest('POST', Uri.parse(url));
-  request.fields['uid'] = uid;
-  request.headers["Content-Type"] = "multipart/form-data";
-  request.files.add(await http.MultipartFile.fromPath('image', path));
-  var res = await request.send();
-  var response = await res.stream.bytesToString();
-  return response;
+Future<String> startUploadToAPI(
+    String uid, String path, String url, BuildContext context) async {
+  // var request = http.MultipartRequest('POST', Uri.parse(url));
+  // request.fields['img'] = uid;
+  // request.headers["Content-Type"] = "multipart/form-data";
+  // request.files.add(await http.MultipartFile.fromPath('image', path));
+  // var res = await request.send();
+  // var response = await res.stream.bytesToString();
+  // return response;
+  WeatherModel weather = Provider.of<WeatherModel>(context, listen: false);
+  UserModel user = Provider.of<UserModel>(context, listen: false);
+  File imgFile = File(path);
+  Uint8List bytes = await imgFile.readAsBytes();
+  String base64Image = base64Encode(bytes);
+  print("img: " + base64Image);
+  var url = 'https://example.com/whatsit/create';
+  var response = await http.post(url, body: {
+    'img': base64Image,
+    'temp': weather.temp,
+    'maxTemp': weather.maxTemp,
+    'minTemp': weather.minTemp,
+    'seeding': user.seed,
+    'transplant': user.trans,
+    'type': user.type,
+    'humidity': weather.humidity,
+    'loc': weather.loc.toString()
+  });
+
+  print('Response status: ${response.statusCode}');
+  print('Response body: ${response.body}');
+  return response.body.toString();
 }
 
 Future<String> getTextData(String url) async {

@@ -61,7 +61,10 @@ class _UploaderState extends State<Uploader> {
               "&crop=" +
               Provider.of<UserModel>(context, listen: false).crop;
           res = await startUploadToAPI(
-              Provider.of<UserModel>(context, listen: false).uid, path, url);
+              Provider.of<UserModel>(context, listen: false).uid,
+              path,
+              url,
+              context);
         } catch (e) {
           res = e.toString();
         }
