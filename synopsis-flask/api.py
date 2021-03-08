@@ -102,7 +102,7 @@ def upload():
 
     config = botocore.config.Config(read_timeout=80)
     runtime= boto3.client('runtime.sagemaker', region_name='us-west-1', config=config)
-    ENDPOINT_NAME = 'tensorflow-training-2021-02-21-06-42-15-142'
+    ENDPOINT_NAME = 'tensorflow-training-2021-03-08-06-10-54-194'
 
     # disease prediction
     img_str = form['img'][0]
@@ -130,14 +130,16 @@ def upload():
     payload = json.dumps(img.tolist())
 
     # temp
-    results = {'predictions': [[0.252986103, 0.451201886, 0.295812041]]}
+    # image_disease_classes = ['bacterial_leaf_blight', 'brown_spot', 'leaf_smut']
+    results = {'predictions': [[0.252986103, 0.295812041, 0.451201886]]}
 
     # response = runtime.invoke_endpoint(EndpointName=ENDPOINT_NAME, ContentType='application/json', Body=payload)
-    # results=json.loads(response['Body'].read().decode())['predictions']
+    # results=json.loads(response['Body'].read().decode())
 
     print(lcc_differences, results)
 
-    image_disease_classification = image_disease_classes[results.index(max(results))]
+    # image_disease_classification = image_disease_classes[results['predictions'].index(max(results))]
+    image_disease_classification = image_disease_classes[results['predictions'][0].index(max(results['predictions'][0]))]
     lcc_chart = lcc_classes[lcc_differences.index(max(lcc_differences))]
 
     response = {
@@ -145,6 +147,8 @@ def upload():
         "weather_disease": weather_disease,
         "lcc_chart": lcc_chart,
     }
+
+    print(response)
 
     return make_response(jsonify(response), 200)
   except Exception as e:

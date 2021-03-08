@@ -8,6 +8,7 @@ import 'package:leaf_problem_detection/utils/localization.dart';
 import 'package:leaf_problem_detection/widgets/buttons.dart';
 import 'package:provider/provider.dart';
 import 'package:leaf_problem_detection/screens/upload/upload.dart';
+import 'dart:convert';
 
 import '../uploader.dart';
 
@@ -50,27 +51,55 @@ import '../uploader.dart';
 //       ])));
 // }
 
-Widget diseaseTextHardCode(BuildContext context) {
+Widget diseaseTextHardCode(BuildContext context, String res) {
   // _response = _response.trim();
   // if (_response == "Healthy Crop") _response = "Healthy";
   // Map data = Provider.of<UserModel>(context, listen: false).data[_response];
-
+  Map map = jsonDecode(res);
+  String weather = map["weather_disease"]
+      .toString()
+      .substring(1, map["weather_disease"].toString().length - 1);
+  int lcc = int.parse(map["lcc_chart"].toString());
+  if (map["image_disease_classification"] == "bacterial_leaf_blight") {
+    map = {
+      "Disease": "Bacterial Leaf Blight",
+      "Step 1":
+          "Spray Streptomycin sulphate + Tetracycline combination 300 g + Copper oxychloride 1.25kg/ha. If necessary repeat 15 days later.",
+      "Step 2": "Drain the field if in vegetative stage",
+      "Step 3": "Leave the field dry for 3-4 days",
+      "Link": "https://youtu.be/C44FxCu7ubo",
+      "Image": "https://m.farms.com/Portals/0/bacterial-leaf-blight-300-1_1.png"
+    };
+  } else if (map["image_disease_classification"] == "leaf_smut") {
+    map = {
+      "Disease": "LeafSmut",
+      "Step 1":
+          "2 times spray of hexaconazole @ 1.0ml/ litre water at 7 days interval",
+      "Step 2": "",
+      "Step 3": "",
+      "Link": "https://youtu.be/zxbcXWJ6cTA",
+      "Image":
+          "https://www.lsuagcenter.com/~/media/system/9/4/a/e/94ae4909bab82f9b5def7eabc3bb6983/falsesmut4.jpg"
+    };
+  } else {
+    map = {
+      "Disease": "Brown Spot",
+      "Step 1":
+          "Apply PotashSpray Propiconazole@1.0 gm or Chlorothalonil@2.0 gm per litre of water or Tricyclazole 18% + Manocozeb 62% WP 1000- 1250 gm per Hectare and repeat after 10-12 days if symptoms persist",
+      "Step 2": "",
+      "Step 3": "",
+      "Link": "https://youtu.be/AxFCqZFwDQo",
+      "Image":
+          "https://www.indogulfbioag.com/Rice-Protect-Kits/images/brown-spot-big.jpg"
+    };
+  }
   return Expanded(
     child: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          buildDiseaseReportHardCode(context),
-          infoButtonHardCode(context, {
-            "Disease": "Bacterial Leaf Blight",
-            "Step 1":
-                "Spray Streptomycin sulphate + Tetracycline combination 300 g + Copper oxychloride 1.25kg/ha. If necessary repeat 15 days later.",
-            "Step 2": "Drain the field if in vegetative stage",
-            "Step 3": "Leave the field dry for 3-4 days",
-            "Link": "https://youtu.be/C44FxCu7ubo",
-            "Image":
-                "https://m.farms.com/Portals/0/bacterial-leaf-blight-300-1_1.png"
-          }),
+          buildDiseaseReportHardCode(context, map["Disease"], lcc, weather),
+          infoButtonHardCode(context, map),
           shareButtonHardCode(
             context,
             "JaiKrishi",
@@ -93,9 +122,23 @@ Text buildDiseaseReport(BuildContext context, String resp, Map data) {
   );
 }
 
-Text buildDiseaseReportHardCode(BuildContext context) {
+Text buildDiseaseReportHardCode(
+    BuildContext context, String disease, int lcc, String weather) {
+  String text =
+      "Detected: " + disease + " in your crop.\n" + "LCC: " + lcc.toString();
+  // "If the color is over level 3 it is
+  // recommended to add 25 kg of Nitrogen and ha-1 (if needed cover with urea) per
+  // season."
+  if (lcc > 3) {
+    text += ". Add 25 kg nitrogen to your crop.";
+  }
+  if (weather.length > 0) {
+    text += "\n Weather Diseases: " + weather;
+  } else {
+    text += "\n Weather Diseases: None";
+  }
   return Text(
-    "Detected: " + "Bacterial Leaf Blight in your crop.",
+    text,
     textAlign: TextAlign.center,
     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
   );

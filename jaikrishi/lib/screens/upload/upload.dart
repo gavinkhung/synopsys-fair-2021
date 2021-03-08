@@ -188,7 +188,7 @@ class _Upload extends State<Upload> {
                           IntrinsicHeight(
                             child: Column(
                               children: [
-                                diseaseTextHardCode(context),
+                                diseaseTextHardCode(context, _response),
                               ],
                             ),
                           )),
