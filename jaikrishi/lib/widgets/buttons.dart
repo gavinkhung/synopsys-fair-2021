@@ -22,6 +22,23 @@ Widget infoButton(BuildContext context, Map data) {
   );
 }
 
+Widget infoButtonHardCode(BuildContext context, Map data) {
+  return FlatButton.icon(
+    icon: Icon(
+      Icons.info,
+      color: Color.fromRGBO(24, 165, 123, 1),
+    ),
+    label: Text(
+      "Disease Treatment",
+      style: TextStyle(color: Color.fromRGBO(24, 165, 123, 1), fontSize: 20),
+    ),
+    onPressed: () {
+      Navigator.of(context, rootNavigator: true)
+          .push(MaterialPageRoute(builder: (context) => Instructions(data)));
+    },
+  );
+}
+
 Widget seeMore(BuildContext context, Widget next) {
   return GestureDetector(
       child: Text(texts["History"]["seeMore"],
@@ -36,6 +53,26 @@ Widget seeMore(BuildContext context, Widget next) {
 }
 
 Widget shareButton(BuildContext context, String text) {
+  return Builder(
+    builder: (BuildContext context) {
+      return Center(
+        child: FlatButton.icon(
+          padding: EdgeInsets.zero,
+          icon: Icon(Icons.share),
+          label: Text(texts["DiseaseDetection"]["10"]),
+          onPressed: () {
+            analytics.logShare(contentType: null, itemId: null, method: text);
+            final RenderBox box = context.findRenderObject();
+            Share.share(text,
+                sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
+          },
+        ),
+      );
+    },
+  );
+}
+
+Widget shareButtonHardCode(BuildContext context, String text) {
   return Builder(
     builder: (BuildContext context) {
       return Center(

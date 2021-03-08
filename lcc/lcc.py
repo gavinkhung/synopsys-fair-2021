@@ -90,7 +90,7 @@ def total_difference(L1, a1, b1, L2, a2, b2):
 if __name__ == "__main__":
 
     # REPLACE THE NAME OF THE IMAGE
-    filename = 'leaf3.jpeg'
+    filename = 'DSC_0100.jpg'
 
 
     LCC2 = 'LCC2.jpeg'

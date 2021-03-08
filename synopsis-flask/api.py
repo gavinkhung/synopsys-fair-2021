@@ -130,10 +130,10 @@ def upload():
     payload = json.dumps(img.tolist())
 
     # temp
-    # results = {'predictions': [[0.252986103, 0.451201886, 0.295812041]]}
+    results = {'predictions': [[0.252986103, 0.451201886, 0.295812041]]}
 
-    response = runtime.invoke_endpoint(EndpointName=ENDPOINT_NAME, ContentType='application/json', Body=payload)
-    results=json.loads(response['Body'].read().decode())['predictions']
+    # response = runtime.invoke_endpoint(EndpointName=ENDPOINT_NAME, ContentType='application/json', Body=payload)
+    # results=json.loads(response['Body'].read().decode())['predictions']
 
     print(lcc_differences, results)
 
@@ -147,7 +147,8 @@ def upload():
     }
 
     return make_response(jsonify(response), 200)
-  except Exception:
+  except Exception as e:
+    print(e)
     response = {
         "image_disease_classification": "",
         "weather_disease": [""],
